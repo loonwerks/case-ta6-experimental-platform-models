@@ -4,7 +4,7 @@ import art.{ArtNative_Ext, Empty}
 import hamr._
 import org.sireum._
 
-// the contents of this file will not be overwritten
+// This file will not be overwritten so is safe to edit
 class SW_Impl_Instance_WPM_WaypointPlanManagerService_Test extends BridgeTestSuite[WaypointPlanManagerService_thr_Impl_Bridge](Arch.SW_Impl_Instance_WPM_WaypointPlanManagerService) {
   test("Example Unit Test"){
     executeTest()
@@ -33,7 +33,7 @@ class SW_Impl_Instance_WPM_WaypointPlanManagerService_Test extends BridgeTestSui
   def get_MissionCommand(): Option[Base_Types.Bits] = {
     val value: Option[Base_Types.Bits] = get_MissionCommand_payload() match {
       case Some(Base_Types.Bits_Payload(v)) => Some(v)
-      case Some(v) => fail(s"Unexpected payload on port MissionCommand.  Expecting 'Base_Types.Bits_Payload' but received ${v}") 
+      case Some(v) => fail(s"Unexpected payload on port MissionCommand.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
       case _ => None[Base_Types.Bits]()
     }
     return value

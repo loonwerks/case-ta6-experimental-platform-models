@@ -79,9 +79,9 @@ object UxAS_thr_Impl_Bridge {
     def getAutomationRequest() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(AutomationRequest_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port AutomationRequest.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -90,9 +90,9 @@ object UxAS_thr_Impl_Bridge {
     def getAirVehicleState() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(AirVehicleState_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port AirVehicleState.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -101,9 +101,9 @@ object UxAS_thr_Impl_Bridge {
     def getOperatingRegion() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(OperatingRegion_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port OperatingRegion.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -112,9 +112,9 @@ object UxAS_thr_Impl_Bridge {
     def getLineSearchTask() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(LineSearchTask_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port LineSearchTask.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value

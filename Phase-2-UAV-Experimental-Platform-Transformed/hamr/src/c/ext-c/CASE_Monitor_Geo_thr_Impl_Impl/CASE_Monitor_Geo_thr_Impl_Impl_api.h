@@ -5,54 +5,38 @@
 
 // This file was auto-generated.  Do not edit
 
-B api_get_keep_in_zones__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
+bool api_get_keep_in_zones__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
   hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl this,
-  IS_C4F575 value);
+  size_t *numBits,
+  uint8_t *byteArray);
 
-B api_get_keep_in_zones__alt__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
+bool api_get_keep_out_zones__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
   hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl this,
-  Z *numBits,
-  U8 *byteArray);
+  size_t *numBits,
+  uint8_t *byteArray);
 
-B api_get_keep_out_zones__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
+bool api_get_observed__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
   hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl this,
-  IS_C4F575 value);
+  size_t *numBits,
+  uint8_t *byteArray);
 
-B api_get_keep_out_zones__alt__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
+void api_send_output__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
   hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl this,
-  Z *numBits,
-  U8 *byteArray);
+  size_t numBits,
+  uint8_t *byteArray);
 
-B api_get_observed__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
-  hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl this,
-  IS_C4F575 value);
-
-B api_get_observed__alt__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
-  hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl this,
-  Z *numBits,
-  U8 *byteArray);
-
-Unit api_send_output__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
-  hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl this,
-  IS_C4F575 value);
-
-Unit api_send_output__alt__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
-  hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl this,
-  Z numBits,
-  U8 *byteArray);
-
-Unit api_send_alert__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
+void api_send_alert__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
   hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl this);
 
-Unit api_logInfo__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
+void api_logInfo__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
   hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl this,
   String str);
 
-Unit api_logDebug__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
+void api_logDebug__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
   hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl this,
   String str);
 
-Unit api_logError__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
+void api_logError__hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl(
   hamr_SW_CASE_Monitor_Geo_thr_Impl_Impl this,
   String str);
 

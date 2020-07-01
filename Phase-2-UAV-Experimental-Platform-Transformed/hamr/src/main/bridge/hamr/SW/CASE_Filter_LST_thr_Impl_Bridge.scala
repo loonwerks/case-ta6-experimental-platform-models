@@ -61,9 +61,9 @@ object CASE_Filter_LST_thr_Impl_Bridge {
     def getfilter_in() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(filter_in_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port filter_in.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value

@@ -9,11 +9,11 @@ lazy val SW_Impl_Instance = slangEmbeddedTestProject("SW_Impl_Instance", ".")
 
 val scalaVer = "2.12.11"
 
-val sireumScalacVersion = "4.20200423.382fffa" // https://github.com/sireum/scalac-plugin/tree/4.20200423.382fffa
+val sireumScalacVersion = "4.20200603.47564a7" // https://github.com/sireum/scalac-plugin/tree/4.20200603.47564a7
 
-val runtimeVersion = "59f0e47" // https://github.com/sireum/runtime/tree/59f0e47
+val runtimeVersion = "07533cc0f8" // https://github.com/sireum/kekinian/tree/07533cc0f8
 
-val scalaTestVersion = "3.1.1"
+val scalaTestVersion = "3.1.2"
 
 
 val commonSettings = Seq(
@@ -26,7 +26,7 @@ val commonSettings = Seq(
   resolvers ++= Seq(Resolver.sonatypeRepo("public"), "jitpack" at "https://jitpack.io"),
   addCompilerPlugin("org.sireum" %% "scalac-plugin" % sireumScalacVersion),
   libraryDependencies ++= Seq(
-    "org.sireum.runtime" %% "library" % runtimeVersion withSources() withJavadoc()
+    "org.sireum.kekinian" %% "library" % runtimeVersion withSources() withJavadoc()
   )
 )
 

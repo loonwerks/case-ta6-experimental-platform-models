@@ -5,7 +5,7 @@ package hamr.SW
 import org.sireum._
 import hamr._
 
-// the contents of this file will not be overwritten
+// This file will not be overwritten so is safe to edit
 @record class WaypointPlanManagerService_thr_Impl_Impl (val api : WaypointPlanManagerService_thr_Impl_Bridge.Api) extends WaypointPlanManagerService_thr_Impl {
 
   override def initialise(): Unit = {

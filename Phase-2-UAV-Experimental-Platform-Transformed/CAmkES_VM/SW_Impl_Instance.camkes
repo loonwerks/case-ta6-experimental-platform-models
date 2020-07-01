@@ -1,0 +1,211 @@
+// This file will be regenerated, do not edit
+
+#include <configurations/vm.h>
+import <std_connector.camkes>;
+import <global-connectors.camkes>;
+import <seL4VMDTBPassthrough.idl4>;
+import <FileServerInterface.camkes>;
+import <FileServer/FileServer.camkes>;
+import <SerialServer/SerialServer.camkes>;
+import <TimeServer/TimeServer.camkes>;
+import <vm-connectors.camkes>;
+import <devices.camkes>;
+import "components/Pacer/Pacer.camkes";
+import "components/UARTDriver_Impl/UARTDriver_Impl.camkes";
+import "components/FlyZonesDatabase_thr_Impl/FlyZonesDatabase_thr_Impl.camkes";
+import "components/WaypointPlanManagerService_thr_Impl/WaypointPlanManagerService_thr_Impl.camkes";
+import "components/CASE_AttestationManager_thr_Impl/CASE_AttestationManager_thr_Impl.camkes";
+import "components/CASE_AttestationGate_thr_Impl/CASE_AttestationGate_thr_Impl.camkes";
+import "components/CASE_Filter_AReq_thr_Impl/CASE_Filter_AReq_thr_Impl.camkes";
+import "components/CASE_Filter_OR_thr_Impl/CASE_Filter_OR_thr_Impl.camkes";
+import "components/CASE_Filter_LST_thr_Impl/CASE_Filter_LST_thr_Impl.camkes";
+import "components/CASE_Monitor_Req_thr_Impl/CASE_Monitor_Req_thr_Impl.camkes";
+import "components/CASE_Filter_ARes_thr_Impl/CASE_Filter_ARes_thr_Impl.camkes";
+import "components/CASE_Monitor_Geo_thr_Impl/CASE_Monitor_Geo_thr_Impl.camkes";
+import "components/VM/VM.camkes";
+
+assembly {
+  composition {
+    component UARTDriver_Impl UARTDriver;
+    component FlyZonesDatabase_thr_Impl FlyZonesDatabase;
+    component WaypointPlanManagerService_thr_Impl WaypointPlanManagerService;
+    component CASE_AttestationManager_thr_Impl CASE_AttestationManager;
+    component CASE_AttestationGate_thr_Impl CASE_AttestationGate;
+    component CASE_Filter_AReq_thr_Impl CASE_Filter_AReq;
+    component CASE_Filter_OR_thr_Impl CASE_Filter_OR;
+    component CASE_Filter_LST_thr_Impl CASE_Filter_LST;
+    component CASE_Monitor_Req_thr_Impl CASE_Monitor_Req;
+    component CASE_Filter_ARes_thr_Impl CASE_Filter_ARes;
+    component CASE_Monitor_Geo_thr_Impl CASE_Monitor_Geo;
+    component VM vmRADIO;
+    component VM vmUXAS;
+    component Pacer pacer;
+
+    connection seL4VMDTBPassthrough conn1(from vmRADIO.dtb_self, to vmRADIO.dtb);
+    connection seL4VMDTBPassthrough conn2(from vmUXAS.dtb_self, to vmUXAS.dtb);
+    connection seL4Notification conn3(from UARTDriver.sb_AirVehicleState_WPM_1_notification, to WaypointPlanManagerService.sb_AirVehicleState_notification);
+    connection seL4SharedData conn4(from UARTDriver.sb_AirVehicleState_WPM_queue_1, to WaypointPlanManagerService.sb_AirVehicleState_queue);
+    connection seL4GlobalAsynch conn5(from UARTDriver.sb_AirVehicleState_UXAS_1_notification, to vmUXAS.sb_AirVehicleState_notification);
+    connection seL4SharedDataWithCaps conn6(from UARTDriver.sb_AirVehicleState_UXAS_queue_1, to vmUXAS.sb_AirVehicleState_UXAS_AirVehicleState_queue_1);
+    connection seL4Notification conn7(from vmRADIO.sb_AutomationRequest_1_notification, to CASE_AttestationGate.sb_AutomationRequest_in_notification);
+    connection seL4SharedDataWithCaps conn8(from vmRADIO.sb_AutomationRequest_AutomationRequest_in_queue_1, to CASE_AttestationGate.sb_AutomationRequest_in_queue);
+    connection seL4Notification conn9(from vmRADIO.sb_OperatingRegion_1_notification, to CASE_AttestationGate.sb_OperatingRegion_in_notification);
+    connection seL4SharedDataWithCaps conn10(from vmRADIO.sb_OperatingRegion_OperatingRegion_in_queue_1, to CASE_AttestationGate.sb_OperatingRegion_in_queue);
+    connection seL4Notification conn11(from vmRADIO.sb_LineSearchTask_1_notification, to CASE_AttestationGate.sb_LineSearchTask_in_notification);
+    connection seL4SharedDataWithCaps conn12(from vmRADIO.sb_LineSearchTask_LineSearchTask_in_queue_1, to CASE_AttestationGate.sb_LineSearchTask_in_queue);
+    connection seL4Notification conn13(from vmRADIO.sb_am_response_1_notification, to CASE_AttestationManager.sb_attestation_response_notification);
+    connection seL4SharedDataWithCaps conn14(from vmRADIO.sb_am_response_attestation_response_queue_1, to CASE_AttestationManager.sb_attestation_response_queue);
+    connection seL4SharedData conn15(from FlyZonesDatabase.sb_keep_in_zones, to CASE_Monitor_Geo.sb_keep_in_zones);
+    connection seL4SharedData conn16(from FlyZonesDatabase.sb_keep_out_zones, to CASE_Monitor_Geo.sb_keep_out_zones);
+    connection seL4Notification conn17(from vmUXAS.sb_AutomationResponse_1_notification, to CASE_Filter_ARes.sb_filter_in_notification);
+    connection seL4SharedDataWithCaps conn18(from vmUXAS.sb_AutomationResponse_filter_in_queue_1, to CASE_Filter_ARes.sb_filter_in_queue);
+    connection seL4Notification conn19(from WaypointPlanManagerService.sb_MissionCommand_1_notification, to UARTDriver.sb_MissionCommand_notification);
+    connection seL4SharedData conn20(from WaypointPlanManagerService.sb_MissionCommand_queue_1, to UARTDriver.sb_MissionCommand_queue);
+    connection seL4SharedData conn21(from CASE_AttestationManager.sb_trusted_ids, to CASE_AttestationGate.sb_trusted_ids);
+    connection seL4GlobalAsynch conn22(from CASE_AttestationManager.sb_attestation_request_1_notification, to vmRADIO.sb_am_request_notification);
+    connection seL4SharedDataWithCaps conn23(from CASE_AttestationManager.sb_attestation_request_queue_1, to vmRADIO.sb_attestation_request_am_request_queue_1);
+    connection seL4Notification conn24(from CASE_AttestationGate.sb_AutomationRequest_out_1_notification, to CASE_Filter_AReq.sb_filter_in_notification);
+    connection seL4SharedData conn25(from CASE_AttestationGate.sb_AutomationRequest_out_queue_1, to CASE_Filter_AReq.sb_filter_in_queue);
+    connection seL4Notification conn26(from CASE_AttestationGate.sb_OperatingRegion_out_1_notification, to CASE_Filter_OR.sb_filter_in_notification);
+    connection seL4SharedData conn27(from CASE_AttestationGate.sb_OperatingRegion_out_queue_1, to CASE_Filter_OR.sb_filter_in_queue);
+    connection seL4Notification conn28(from CASE_AttestationGate.sb_LineSearchTask_out_1_notification, to CASE_Filter_LST.sb_filter_in_notification);
+    connection seL4SharedData conn29(from CASE_AttestationGate.sb_LineSearchTask_out_queue_1, to CASE_Filter_LST.sb_filter_in_queue);
+    connection seL4GlobalAsynch conn30(from CASE_Filter_AReq.sb_filter_out_UXAS_1_notification, to vmUXAS.sb_AutomationRequest_notification);
+    connection seL4SharedDataWithCaps conn31(from CASE_Filter_AReq.sb_filter_out_UXAS_queue_1, to vmUXAS.sb_filter_out_UXAS_AutomationRequest_queue_1);
+    connection seL4Notification conn32(from CASE_Filter_AReq.sb_filter_out_MON_REQ_1_notification, to CASE_Monitor_Req.sb_reference_1_notification);
+    connection seL4SharedData conn33(from CASE_Filter_AReq.sb_filter_out_MON_REQ_queue_1, to CASE_Monitor_Req.sb_reference_1_queue);
+    connection seL4GlobalAsynch conn34(from CASE_Filter_OR.sb_filter_out_1_notification, to vmUXAS.sb_OperatingRegion_notification);
+    connection seL4SharedDataWithCaps conn35(from CASE_Filter_OR.sb_filter_out_queue_1, to vmUXAS.sb_filter_out_OperatingRegion_queue_1);
+    connection seL4GlobalAsynch conn36(from CASE_Filter_LST.sb_filter_out_1_notification, to vmUXAS.sb_LineSearchTask_notification);
+    connection seL4SharedDataWithCaps conn37(from CASE_Filter_LST.sb_filter_out_queue_1, to vmUXAS.sb_filter_out_LineSearchTask_queue_1);
+    connection seL4Notification conn38(from CASE_Filter_ARes.sb_filter_out_1_notification, to CASE_Monitor_Req.sb_observed_notification);
+    connection seL4SharedData conn39(from CASE_Filter_ARes.sb_filter_out_queue_1, to CASE_Monitor_Req.sb_observed_queue);
+    connection seL4Notification conn40(from CASE_Filter_ARes.sb_filter_out_1_notification, to CASE_Monitor_Geo.sb_observed_notification);
+    connection seL4SharedData conn41(from CASE_Filter_ARes.sb_filter_out_queue_1, to CASE_Monitor_Geo.sb_observed_queue);
+    connection seL4Notification conn42(from CASE_Monitor_Geo.sb_output_1_notification, to WaypointPlanManagerService.sb_AutomationResponse_notification);
+    connection seL4SharedData conn43(from CASE_Monitor_Geo.sb_output_queue_1, to WaypointPlanManagerService.sb_AutomationResponse_queue);
+    connection seL4Notification conn44(from CASE_Monitor_Geo.sb_alert, to WaypointPlanManagerService.sb_ReturnHome);
+    connection seL4SharedData conn45(from CASE_Monitor_Geo.sb_alert_counter, to WaypointPlanManagerService.sb_ReturnHome_counter);
+    connection seL4Notification conn46(from pacer.tick, to pacer.tock);
+    connection seL4Notification conn47(from pacer.period, to UARTDriver.sb_pacer_notification);
+    connection seL4SharedDataWithCaps conn48(from pacer.period_to_vmRADIO, to vmRADIO.sb_pacer_period_queue);
+    connection seL4Notification conn49(from pacer.period, to FlyZonesDatabase.sb_pacer_notification);
+    connection seL4SharedDataWithCaps conn50(from pacer.period_to_vmUXAS, to vmUXAS.sb_pacer_period_queue);
+    connection seL4Notification conn51(from pacer.period, to WaypointPlanManagerService.sb_pacer_notification);
+    connection seL4Notification conn52(from pacer.period, to CASE_AttestationManager.sb_pacer_notification);
+    connection seL4Notification conn53(from pacer.period, to CASE_AttestationGate.sb_pacer_notification);
+    connection seL4Notification conn54(from pacer.period, to CASE_Filter_AReq.sb_pacer_notification);
+    connection seL4Notification conn55(from pacer.period, to CASE_Filter_OR.sb_pacer_notification);
+    connection seL4Notification conn56(from pacer.period, to CASE_Filter_LST.sb_pacer_notification);
+    connection seL4Notification conn57(from pacer.period, to CASE_Monitor_Req.sb_pacer_notification);
+    connection seL4Notification conn58(from pacer.period, to CASE_Filter_ARes.sb_pacer_notification);
+    connection seL4Notification conn59(from pacer.period, to CASE_Monitor_Geo.sb_pacer_notification);
+    VM_GENERAL_COMPOSITION_DEF()
+    VM_COMPONENT_CONNECTIONS_DEF(RADIO)
+    VM_VIRTUAL_SERIAL_COMPONENTS_DEF()
+    PER_VM_VIRTUAL_SERIAL_CONNECTIONS_DEF(RADIO)
+    VM_COMPONENT_CONNECTIONS_DEF(UXAS)
+    PER_VM_VIRTUAL_SERIAL_CONNECTIONS_DEF(UXAS)
+  }
+
+  configuration {
+    vmRADIO.cnode_size_bits = 18;
+    vmRADIO.simple_untyped21_pool = 12;
+    vmRADIO.simple_untyped12_pool = 12;
+    vmRADIO.num_extra_frame_caps = 0;
+    vmRADIO.extra_frame_map_address = 0;
+    FlyZonesDatabase.keep_in_zones_access = "W";
+    FlyZonesDatabase.keep_out_zones_access = "W";
+    vmUXAS.cnode_size_bits = 18;
+    vmUXAS.simple_untyped21_pool = 12;
+    vmUXAS.simple_untyped12_pool = 12;
+    vmUXAS.num_extra_frame_caps = 0;
+    vmUXAS.extra_frame_map_address = 0;
+    CASE_AttestationManager.trusted_ids_access = "W";
+    CASE_AttestationGate.trusted_ids_access = "R";
+    CASE_Monitor_Geo.keep_in_zones_access = "R";
+    CASE_Monitor_Geo.keep_out_zones_access = "R";
+    conn4.size = 262144;
+    UARTDriver.sb_AirVehicleState_WPM_queue_1_access = "W";
+    WaypointPlanManagerService.sb_AirVehicleState_queue_access = "R";
+    conn6.size = 262144;
+    UARTDriver.sb_AirVehicleState_UXAS_queue_1_access = "W";
+    vmUXAS.sb_AirVehicleState_UXAS_AirVehicleState_queue_1_access = "R";
+    conn8.size = 262144;
+    vmRADIO.sb_AutomationRequest_AutomationRequest_in_queue_1_access = "W";
+    CASE_AttestationGate.sb_AutomationRequest_in_queue_access = "R";
+    conn10.size = 262144;
+    vmRADIO.sb_OperatingRegion_OperatingRegion_in_queue_1_access = "W";
+    CASE_AttestationGate.sb_OperatingRegion_in_queue_access = "R";
+    conn12.size = 262144;
+    vmRADIO.sb_LineSearchTask_LineSearchTask_in_queue_1_access = "W";
+    CASE_AttestationGate.sb_LineSearchTask_in_queue_access = "R";
+    conn14.size = 262144;
+    vmRADIO.sb_am_response_attestation_response_queue_1_access = "W";
+    CASE_AttestationManager.sb_attestation_response_queue_access = "R";
+    conn15.size = 262144;
+    conn16.size = 262144;
+    conn18.size = 262144;
+    vmUXAS.sb_AutomationResponse_filter_in_queue_1_access = "W";
+    CASE_Filter_ARes.sb_filter_in_queue_access = "R";
+    conn20.size = 262144;
+    WaypointPlanManagerService.sb_MissionCommand_queue_1_access = "W";
+    UARTDriver.sb_MissionCommand_queue_access = "R";
+    conn21.size = 262144;
+    conn23.size = 262144;
+    CASE_AttestationManager.sb_attestation_request_queue_1_access = "W";
+    vmRADIO.sb_attestation_request_am_request_queue_1_access = "R";
+    conn25.size = 262144;
+    CASE_AttestationGate.sb_AutomationRequest_out_queue_1_access = "W";
+    CASE_Filter_AReq.sb_filter_in_queue_access = "R";
+    conn27.size = 262144;
+    CASE_AttestationGate.sb_OperatingRegion_out_queue_1_access = "W";
+    CASE_Filter_OR.sb_filter_in_queue_access = "R";
+    conn29.size = 262144;
+    CASE_AttestationGate.sb_LineSearchTask_out_queue_1_access = "W";
+    CASE_Filter_LST.sb_filter_in_queue_access = "R";
+    conn31.size = 262144;
+    CASE_Filter_AReq.sb_filter_out_UXAS_queue_1_access = "W";
+    vmUXAS.sb_filter_out_UXAS_AutomationRequest_queue_1_access = "R";
+    conn33.size = 262144;
+    CASE_Filter_AReq.sb_filter_out_MON_REQ_queue_1_access = "W";
+    CASE_Monitor_Req.sb_reference_1_queue_access = "R";
+    conn35.size = 262144;
+    CASE_Filter_OR.sb_filter_out_queue_1_access = "W";
+    vmUXAS.sb_filter_out_OperatingRegion_queue_1_access = "R";
+    conn37.size = 262144;
+    CASE_Filter_LST.sb_filter_out_queue_1_access = "W";
+    vmUXAS.sb_filter_out_LineSearchTask_queue_1_access = "R";
+    conn39.size = 262144;
+    CASE_Filter_ARes.sb_filter_out_queue_1_access = "W";
+    CASE_Monitor_Req.sb_observed_queue_access = "R";
+    conn41.size = 262144;
+    CASE_Monitor_Geo.sb_observed_queue_access = "R";
+    conn43.size = 262144;
+    CASE_Monitor_Geo.sb_output_queue_1_access = "W";
+    WaypointPlanManagerService.sb_AutomationResponse_queue_access = "R";
+    CASE_Monitor_Geo.sb_alert_counter_access = "W";
+    WaypointPlanManagerService.sb_ReturnHome_counter_access = "R";
+    pacer._domain = 1;
+    UARTDriver._domain = 3;
+    vmRADIO._domain = 2;
+    FlyZonesDatabase._domain = 10;
+    vmUXAS._domain = 9;
+    WaypointPlanManagerService._domain = 14;
+    CASE_AttestationManager._domain = 4;
+    CASE_AttestationGate._domain = 5;
+    CASE_Filter_AReq._domain = 6;
+    CASE_Filter_OR._domain = 8;
+    CASE_Filter_LST._domain = 7;
+    CASE_Monitor_Req._domain = 11;
+    CASE_Filter_ARes._domain = 12;
+    CASE_Monitor_Geo._domain = 13;
+
+    VM_GENERAL_CONFIGURATION_DEF()
+    VM_CONFIGURATION_DEF(RADIO)
+    VM_VIRTUAL_SERIAL_GENERAL_CONFIGURATION_DEF()
+    PER_VM_VIRTUAL_SERIAL_CONFIGURATION_DEF(RADIO)
+    VM_CONFIGURATION_DEF(UXAS)
+    PER_VM_VIRTUAL_SERIAL_CONFIGURATION_DEF(UXAS)
+  }
+}

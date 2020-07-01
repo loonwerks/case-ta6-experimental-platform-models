@@ -1,0 +1,1 @@
+../../../../hamr/src/c/ext-c/adapters/SW_Impl_Instance_WPM_WaypointPlanManagerService/WaypointPlanManagerService_thr_Impl_adapter.h

@@ -1,0 +1,13 @@
+#include <CASE_Filter_ARes_thr_Impl_adapter.h>
+
+Unit hamr_SW_CASE_Filter_ARes_thr_Impl_adapter_initialiseArchitecture() {
+  hamr_SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes_CASE_Filter_ARes_initialiseArchitecture(SF_LAST);
+}
+
+Unit hamr_SW_CASE_Filter_ARes_thr_Impl_adapter_initialiseEntryPoint() {
+  hamr_SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes_CASE_Filter_ARes_initialiseEntryPoint(SF_LAST);
+}
+
+Unit hamr_SW_CASE_Filter_ARes_thr_Impl_adapter_computeEntryPoint() {
+  hamr_SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes_CASE_Filter_ARes_computeEntryPoint(SF_LAST);
+}

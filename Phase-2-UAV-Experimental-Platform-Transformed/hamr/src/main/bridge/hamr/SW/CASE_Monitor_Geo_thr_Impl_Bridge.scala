@@ -78,9 +78,9 @@ object CASE_Monitor_Geo_thr_Impl_Bridge {
     def getobserved() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(observed_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port observed.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -97,9 +97,9 @@ object CASE_Monitor_Geo_thr_Impl_Bridge {
     def getkeep_in_zones() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(keep_in_zones_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port keep_in_zones.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -108,9 +108,9 @@ object CASE_Monitor_Geo_thr_Impl_Bridge {
     def getkeep_out_zones() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(keep_out_zones_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port keep_out_zones.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value

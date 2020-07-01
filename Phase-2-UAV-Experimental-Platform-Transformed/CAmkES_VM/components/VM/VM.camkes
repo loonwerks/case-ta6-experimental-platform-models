@@ -1,0 +1,29 @@
+#include <configurations/vm.h>
+component VM {
+  include <sb_types.h>;
+  include <sb_queue_union_art_DataContent_1.h>;
+  include <sb_queue_int8_t_1.h>;
+
+  emits ReceiveEvent sb_AutomationRequest_1_notification;
+  emits ReceiveEvent sb_OperatingRegion_1_notification;
+  emits ReceiveEvent sb_LineSearchTask_1_notification;
+  emits ReceiveEvent sb_am_response_1_notification;
+  emits ReceiveEvent sb_AutomationResponse_1_notification;
+  maybe consumes ReceiveEvent sb_am_request_notification;
+  maybe consumes ReceiveEvent sb_AutomationRequest_notification;
+  maybe consumes ReceiveEvent sb_AirVehicleState_notification;
+  maybe consumes ReceiveEvent sb_OperatingRegion_notification;
+  maybe consumes ReceiveEvent sb_LineSearchTask_notification;
+  maybe dataport sb_queue_union_art_DataContent_1_t sb_AutomationRequest_AutomationRequest_in_queue_1;
+  maybe dataport sb_queue_union_art_DataContent_1_t sb_OperatingRegion_OperatingRegion_in_queue_1;
+  maybe dataport sb_queue_union_art_DataContent_1_t sb_LineSearchTask_LineSearchTask_in_queue_1;
+  maybe dataport sb_queue_union_art_DataContent_1_t sb_attestation_request_am_request_queue_1;
+  maybe dataport sb_queue_union_art_DataContent_1_t sb_am_response_attestation_response_queue_1;
+  dataport sb_queue_int8_t_1_t sb_pacer_period_queue;
+  maybe dataport sb_queue_union_art_DataContent_1_t sb_filter_out_UXAS_AutomationRequest_queue_1;
+  maybe dataport sb_queue_union_art_DataContent_1_t sb_AirVehicleState_UXAS_AirVehicleState_queue_1;
+  maybe dataport sb_queue_union_art_DataContent_1_t sb_filter_out_OperatingRegion_queue_1;
+  maybe dataport sb_queue_union_art_DataContent_1_t sb_filter_out_LineSearchTask_queue_1;
+  maybe dataport sb_queue_union_art_DataContent_1_t sb_AutomationResponse_filter_in_queue_1;
+  VM_INIT_DEF()
+}

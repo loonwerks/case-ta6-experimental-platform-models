@@ -1,0 +1,1 @@
+../../../../hamr/src/c/ext-c/adapters/SW_Impl_Instance_FC_UART_UARTDriver/UARTDriver_Impl_adapter.h

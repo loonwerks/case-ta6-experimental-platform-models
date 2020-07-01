@@ -5,7 +5,7 @@ package hamr.Drivers
 import org.sireum._
 import hamr._
 
-// the contents of this file will not be overwritten
+// This file will not be overwritten so is safe to edit
 @record class UARTDriver_Impl_Impl (val api : UARTDriver_Impl_Bridge.Api) extends UARTDriver_Impl {
 
   override def initialise(): Unit = {
@@ -18,7 +18,8 @@ import hamr._
     val apiUsage_recv_data: Option[Base_Types.Bits] = api.getrecv_data()
     val apiUsage_MissionCommand: Option[Base_Types.Bits] = api.getMissionCommand()
     api.sendsend_data(Base_Types.Bits_empty())
-    api.sendAirVehicleState(Base_Types.Bits_empty())
+    api.sendAirVehicleState_WPM(Base_Types.Bits_empty())
+    api.sendAirVehicleState_UXAS(Base_Types.Bits_empty())
   }
 
   override def timeTriggered(): Unit = {

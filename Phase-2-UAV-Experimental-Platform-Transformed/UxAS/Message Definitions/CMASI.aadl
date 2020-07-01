@@ -39,7 +39,7 @@ public
 		subcomponents
 			value: data Address.i[3];
 		properties
-			HAMR::Bit_Codec_Max_Size => CM_Property_Set::Address_Array_Codec_Max_Size;
+			HAMR::Bit_Codec_Max_Size => CM_Property_Set::Address_Array_Bit_Codec_Max_Size;
 	end AddressArray.i;
 		
 	data AddressAttributedMessage
@@ -50,7 +50,7 @@ public
 			id: data Address.i;
 			payload: data LMCPObject.i;
 		properties
-			HAMR::Bit_Codec_Max_Size => CM_Property_Set::AddressAttributedMessage_Codec_Max_Size;
+			HAMR::Bit_Codec_Max_Size => CM_Property_Set::AddressAttributedMessage_Bit_Codec_Max_Size;
 	end AddressAttributedMessage.i;
 	
 	data AltitudeType extends Base_Types::Integer
@@ -624,7 +624,7 @@ public
 	        -- KeepOutAreas: data Integer_64 {Data_Model::Data_Representation => Array; Data_Model::Dimension => (1);};
 	        KeepOutAreas: data Int64Array;
 		properties
-			HAMR::Bit_Codec_Max_Size => CM_Property_Set::OperatingRegion_Codec_Max_Size;
+			HAMR::Bit_Codec_Max_Size => CM_Property_Set::OperatingRegion_Bit_Codec_Max_Size;
 	end OperatingRegion.i;
 
 	--Sent to denote that the target id numbers in the list are obsolete
@@ -764,7 +764,7 @@ public
     		
     		UseInertialViewAngles: data Boolean;
 		properties
-			HAMR::Bit_Codec_Max_Size => CM_Property_Set::LineSearchTask_Codec_Max_Size;
+			HAMR::Bit_Codec_Max_Size => CM_Property_Set::LineSearchTask_Bit_Codec_Max_Size;
     end LineSearchTask.i;
 
     ------------------------------------------------------------------------

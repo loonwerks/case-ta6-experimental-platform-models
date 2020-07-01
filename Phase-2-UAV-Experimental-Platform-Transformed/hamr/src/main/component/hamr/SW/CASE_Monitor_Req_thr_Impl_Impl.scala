@@ -5,7 +5,7 @@ package hamr.SW
 import org.sireum._
 import hamr._
 
-// the contents of this file will not be overwritten
+// This file will not be overwritten so is safe to edit
 @record class CASE_Monitor_Req_thr_Impl_Impl (val api : CASE_Monitor_Req_thr_Impl_Bridge.Api) extends CASE_Monitor_Req_thr_Impl {
 
   override def initialise(): Unit = {
@@ -17,6 +17,7 @@ import hamr._
 
     val apiUsage_observed: Option[Base_Types.Bits] = api.getobserved()
     val apiUsage_reference_1: Option[Base_Types.Bits] = api.getreference_1()
+    api.sendalert(Base_Types.Bits_empty())
   }
 
   override def timeTriggered(): Unit = {

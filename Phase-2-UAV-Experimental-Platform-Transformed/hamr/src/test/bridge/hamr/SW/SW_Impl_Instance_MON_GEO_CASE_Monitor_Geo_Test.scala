@@ -4,7 +4,7 @@ import art.{ArtNative_Ext, Empty}
 import hamr._
 import org.sireum._
 
-// the contents of this file will not be overwritten
+// This file will not be overwritten so is safe to edit
 class SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_Test extends BridgeTestSuite[CASE_Monitor_Geo_thr_Impl_Bridge](Arch.SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo) {
   test("Example Unit Test"){
     executeTest()
@@ -33,7 +33,7 @@ class SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_Test extends BridgeTestSuite[CAS
   def get_output(): Option[Base_Types.Bits] = {
     val value: Option[Base_Types.Bits] = get_output_payload() match {
       case Some(Base_Types.Bits_Payload(v)) => Some(v)
-      case Some(v) => fail(s"Unexpected payload on port output.  Expecting 'Base_Types.Bits_Payload' but received ${v}") 
+      case Some(v) => fail(s"Unexpected payload on port output.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
       case _ => None[Base_Types.Bits]()
     }
     return value
@@ -48,7 +48,7 @@ class SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_Test extends BridgeTestSuite[CAS
   def get_alert(): Option[art.Empty] = {
     val value: Option[art.Empty] = get_alert_payload() match {
       case Some(Empty()) => Some(Empty())
-      case Some(v) => fail(s"Unexpected payload on port alert.  Expecting 'Empty' but received ${v}") 
+      case Some(v) => fail(s"Unexpected payload on port alert.  Expecting 'Empty' but received ${v}")
       case _ => None[art.Empty]()
     }
     return value

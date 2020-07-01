@@ -17,14 +17,16 @@ import hamr._
   recv_data: Port[Base_Types.Bits],
   MissionCommand: Port[Base_Types.Bits],
   send_data: Port[Base_Types.Bits],
-  AirVehicleState: Port[Base_Types.Bits]
+  AirVehicleState_WPM: Port[Base_Types.Bits],
+  AirVehicleState_UXAS: Port[Base_Types.Bits]
   ) extends Bridge {
 
   val ports : Bridge.Ports = Bridge.Ports(
     all = ISZ(recv_data,
               MissionCommand,
               send_data,
-              AirVehicleState),
+              AirVehicleState_WPM,
+              AirVehicleState_UXAS),
 
     dataIns = ISZ(),
 
@@ -34,7 +36,8 @@ import hamr._
                    MissionCommand),
 
     eventOuts = ISZ(send_data,
-                    AirVehicleState)
+                    AirVehicleState_WPM,
+                    AirVehicleState_UXAS)
   )
 
   val api : UARTDriver_Impl_Bridge.Api =
@@ -43,7 +46,8 @@ import hamr._
       recv_data.id,
       MissionCommand.id,
       send_data.id,
-      AirVehicleState.id
+      AirVehicleState_WPM.id,
+      AirVehicleState_UXAS.id
     )
 
   val entryPoints : Bridge.EntryPoints =
@@ -53,7 +57,8 @@ import hamr._
       recv_data.id,
       MissionCommand.id,
       send_data.id,
-      AirVehicleState.id,
+      AirVehicleState_WPM.id,
+      AirVehicleState_UXAS.id,
 
       dispatchTriggers,
 
@@ -68,14 +73,15 @@ object UARTDriver_Impl_Bridge {
     recv_data_Id : Art.PortId,
     MissionCommand_Id : Art.PortId,
     send_data_Id : Art.PortId,
-    AirVehicleState_Id : Art.PortId) {
+    AirVehicleState_WPM_Id : Art.PortId,
+    AirVehicleState_UXAS_Id : Art.PortId) {
 
     def getrecv_data() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(recv_data_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port recv_data.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -84,9 +90,9 @@ object UARTDriver_Impl_Bridge {
     def getMissionCommand() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(MissionCommand_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port MissionCommand.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -96,8 +102,12 @@ object UARTDriver_Impl_Bridge {
       Art.putValue(send_data_Id, Base_Types.Bits_Payload(value))
     }
 
-    def sendAirVehicleState(value : Base_Types.Bits) : Unit = {
-      Art.putValue(AirVehicleState_Id, Base_Types.Bits_Payload(value))
+    def sendAirVehicleState_WPM(value : Base_Types.Bits) : Unit = {
+      Art.putValue(AirVehicleState_WPM_Id, Base_Types.Bits_Payload(value))
+    }
+
+    def sendAirVehicleState_UXAS(value : Base_Types.Bits) : Unit = {
+      Art.putValue(AirVehicleState_UXAS_Id, Base_Types.Bits_Payload(value))
     }
 
 
@@ -120,7 +130,8 @@ object UARTDriver_Impl_Bridge {
     recv_data_Id : Art.PortId,
     MissionCommand_Id : Art.PortId,
     send_data_Id : Art.PortId,
-    AirVehicleState_Id : Art.PortId,
+    AirVehicleState_WPM_Id : Art.PortId,
+    AirVehicleState_UXAS_Id : Art.PortId,
 
     dispatchTriggers : Option[ISZ[Art.PortId]],
 
@@ -134,7 +145,8 @@ object UARTDriver_Impl_Bridge {
     val dataOutPortIds: ISZ[Art.PortId] = ISZ()
 
     val eventOutPortIds: ISZ[Art.PortId] = ISZ(send_data_Id,
-                                               AirVehicleState_Id)
+                                               AirVehicleState_WPM_Id,
+                                               AirVehicleState_UXAS_Id)
 
     def compute(): Unit = {
       Art.receiveInput(eventInPortIds, dataInPortIds)

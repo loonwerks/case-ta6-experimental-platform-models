@@ -15,12 +15,14 @@ import hamr._
   val dispatchTriggers: Option[ISZ[Art.PortId]],
 
   observed: Port[Base_Types.Bits],
-  reference_1: Port[Base_Types.Bits]
+  reference_1: Port[Base_Types.Bits],
+  alert: Port[Base_Types.Bits]
   ) extends Bridge {
 
   val ports : Bridge.Ports = Bridge.Ports(
     all = ISZ(observed,
-              reference_1),
+              reference_1,
+              alert),
 
     dataIns = ISZ(),
 
@@ -29,14 +31,15 @@ import hamr._
     eventIns = ISZ(observed,
                    reference_1),
 
-    eventOuts = ISZ()
+    eventOuts = ISZ(alert)
   )
 
   val api : CASE_Monitor_Req_thr_Impl_Bridge.Api =
     CASE_Monitor_Req_thr_Impl_Bridge.Api(
       id,
       observed.id,
-      reference_1.id
+      reference_1.id,
+      alert.id
     )
 
   val entryPoints : Bridge.EntryPoints =
@@ -45,6 +48,7 @@ import hamr._
 
       observed.id,
       reference_1.id,
+      alert.id,
 
       dispatchTriggers,
 
@@ -57,14 +61,15 @@ object CASE_Monitor_Req_thr_Impl_Bridge {
   @record class Api(
     id : Art.BridgeId,
     observed_Id : Art.PortId,
-    reference_1_Id : Art.PortId) {
+    reference_1_Id : Art.PortId,
+    alert_Id : Art.PortId) {
 
     def getobserved() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(observed_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port observed.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -73,12 +78,16 @@ object CASE_Monitor_Req_thr_Impl_Bridge {
     def getreference_1() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(reference_1_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port reference_1.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
+    }
+
+    def sendalert(value : Base_Types.Bits) : Unit = {
+      Art.putValue(alert_Id, Base_Types.Bits_Payload(value))
     }
 
 
@@ -100,6 +109,7 @@ object CASE_Monitor_Req_thr_Impl_Bridge {
 
     observed_Id : Art.PortId,
     reference_1_Id : Art.PortId,
+    alert_Id : Art.PortId,
 
     dispatchTriggers : Option[ISZ[Art.PortId]],
 
@@ -112,7 +122,7 @@ object CASE_Monitor_Req_thr_Impl_Bridge {
 
     val dataOutPortIds: ISZ[Art.PortId] = ISZ()
 
-    val eventOutPortIds: ISZ[Art.PortId] = ISZ()
+    val eventOutPortIds: ISZ[Art.PortId] = ISZ(alert_Id)
 
     def compute(): Unit = {
       Art.receiveInput(eventInPortIds, dataInPortIds)

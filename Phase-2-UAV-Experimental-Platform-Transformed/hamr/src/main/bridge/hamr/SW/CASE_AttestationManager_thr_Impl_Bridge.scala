@@ -70,9 +70,9 @@ object CASE_AttestationManager_thr_Impl_Bridge {
     def getattestation_response() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(attestation_response_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port attestation_response.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value

@@ -1,0 +1,1 @@
+../../../../hamr/src/c/ext-c/adapters/SW_Impl_Instance_RADIO_RadioDriver_Attestation/RadioDriver_Attestation_thr_Impl_adapter.h

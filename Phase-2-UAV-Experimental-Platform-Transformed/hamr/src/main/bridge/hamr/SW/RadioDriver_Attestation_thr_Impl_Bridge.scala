@@ -91,9 +91,9 @@ object RadioDriver_Attestation_thr_Impl_Bridge {
     def getrecv_data() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(recv_data_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port recv_data.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -118,9 +118,9 @@ object RadioDriver_Attestation_thr_Impl_Bridge {
     def getam_request() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(am_request_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port am_request.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value

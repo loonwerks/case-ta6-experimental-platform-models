@@ -4,7 +4,7 @@ import art.{ArtNative_Ext, Empty}
 import hamr._
 import org.sireum._
 
-// the contents of this file will not be overwritten
+// This file will not be overwritten so is safe to edit
 class SW_Impl_Instance_AM_Gate_CASE_AttestationGate_Test extends BridgeTestSuite[CASE_AttestationGate_thr_Impl_Bridge](Arch.SW_Impl_Instance_AM_Gate_CASE_AttestationGate) {
   test("Example Unit Test"){
     executeTest()
@@ -38,7 +38,7 @@ class SW_Impl_Instance_AM_Gate_CASE_AttestationGate_Test extends BridgeTestSuite
   def get_AutomationRequest_out(): Option[Base_Types.Bits] = {
     val value: Option[Base_Types.Bits] = get_AutomationRequest_out_payload() match {
       case Some(Base_Types.Bits_Payload(v)) => Some(v)
-      case Some(v) => fail(s"Unexpected payload on port AutomationRequest_out.  Expecting 'Base_Types.Bits_Payload' but received ${v}") 
+      case Some(v) => fail(s"Unexpected payload on port AutomationRequest_out.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
       case _ => None[Base_Types.Bits]()
     }
     return value
@@ -53,7 +53,7 @@ class SW_Impl_Instance_AM_Gate_CASE_AttestationGate_Test extends BridgeTestSuite
   def get_OperatingRegion_out(): Option[Base_Types.Bits] = {
     val value: Option[Base_Types.Bits] = get_OperatingRegion_out_payload() match {
       case Some(Base_Types.Bits_Payload(v)) => Some(v)
-      case Some(v) => fail(s"Unexpected payload on port OperatingRegion_out.  Expecting 'Base_Types.Bits_Payload' but received ${v}") 
+      case Some(v) => fail(s"Unexpected payload on port OperatingRegion_out.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
       case _ => None[Base_Types.Bits]()
     }
     return value
@@ -68,7 +68,7 @@ class SW_Impl_Instance_AM_Gate_CASE_AttestationGate_Test extends BridgeTestSuite
   def get_LineSearchTask_out(): Option[Base_Types.Bits] = {
     val value: Option[Base_Types.Bits] = get_LineSearchTask_out_payload() match {
       case Some(Base_Types.Bits_Payload(v)) => Some(v)
-      case Some(v) => fail(s"Unexpected payload on port LineSearchTask_out.  Expecting 'Base_Types.Bits_Payload' but received ${v}") 
+      case Some(v) => fail(s"Unexpected payload on port LineSearchTask_out.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
       case _ => None[Base_Types.Bits]()
     }
     return value

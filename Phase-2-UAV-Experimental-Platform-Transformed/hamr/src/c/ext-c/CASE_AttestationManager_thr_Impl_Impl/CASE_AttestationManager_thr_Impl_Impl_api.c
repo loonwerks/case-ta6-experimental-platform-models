@@ -2,19 +2,10 @@
 
 // This file was auto-generated.  Do not edit
 
-Unit api_send_trusted_ids__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
+void api_send_trusted_ids__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
   hamr_SW_CASE_AttestationManager_thr_Impl_Impl this,
-  IS_C4F575 value) {
-
-  hamr_SW_CASE_AttestationManager_thr_Impl_Bridge_Api_settrusted_ids_(
-    hamr_SW_CASE_AttestationManager_thr_Impl_Impl_api_(this),
-    value);
-}
-
-Unit api_send_trusted_ids__alt__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
-  hamr_SW_CASE_AttestationManager_thr_Impl_Impl this,
-  Z numBits,
-  U8 *byteArray) {
+  size_t numBits,
+  uint8_t *byteArray) {
 
   sfAssert((Z) numBits >= 0, "numBits must be non-negative for IS[Z, B].");
   sfAssert((Z) numBits <= MaxIS_C4F575, "numBits too large for IS[Z, B].");
@@ -31,19 +22,10 @@ Unit api_send_trusted_ids__alt__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
     &t_0);
 }
 
-Unit api_send_attestation_request__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
+void api_send_attestation_request__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
   hamr_SW_CASE_AttestationManager_thr_Impl_Impl this,
-  IS_C4F575 value) {
-
-  hamr_SW_CASE_AttestationManager_thr_Impl_Bridge_Api_sendattestation_request_(
-    hamr_SW_CASE_AttestationManager_thr_Impl_Impl_api_(this),
-    value);
-}
-
-Unit api_send_attestation_request__alt__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
-  hamr_SW_CASE_AttestationManager_thr_Impl_Impl this,
-  Z numBits,
-  U8 *byteArray) {
+  size_t numBits,
+  uint8_t *byteArray) {
 
   sfAssert((Z) numBits >= 0, "numBits must be non-negative for IS[Z, B].");
   sfAssert((Z) numBits <= MaxIS_C4F575, "numBits too large for IS[Z, B].");
@@ -60,29 +42,10 @@ Unit api_send_attestation_request__alt__hamr_SW_CASE_AttestationManager_thr_Impl
     &t_0);
 }
 
-B api_get_attestation_response__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
+bool api_get_attestation_response__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
   hamr_SW_CASE_AttestationManager_thr_Impl_Impl this,
-  IS_C4F575 value){
-  // Option_30119F = Option[IS[Z, B]]
-  // Some_8D03B1 = Some[IS[Z, B]]
-  DeclNewOption_30119F(t_0);
-  hamr_SW_CASE_AttestationManager_thr_Impl_Bridge_Api_getattestation_response_(
-    SF
-    (Option_30119F) &t_0,
-    hamr_SW_CASE_AttestationManager_thr_Impl_Impl_api_(this));
-
-  if(t_0.type == TSome_8D03B1){
-    Type_assign(value, &t_0.Some_8D03B1.value, sizeof(struct IS_C4F575));
-    return T;
-  } else {
-    return F;
-  }
-}
-
-B api_get_attestation_response__alt__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
-  hamr_SW_CASE_AttestationManager_thr_Impl_Impl this,
-  Z *numBits,
-  U8 *byteArray){
+  size_t *numBits,
+  uint8_t *byteArray){
   // Option_30119F = Option[IS[Z, B]]
   // Some_8D03B1 = Some[IS[Z, B]]
   DeclNewOption_30119F(t_0);
@@ -94,13 +57,13 @@ B api_get_attestation_response__alt__hamr_SW_CASE_AttestationManager_thr_Impl_Im
   if(t_0.type == TSome_8D03B1){
     *numBits = t_0.Some_8D03B1.value.size;
     memcpy(byteArray, &t_0.Some_8D03B1.value.value, (*numBits / 8) + 1);
-    return T;
+    return true;
   } else {
-    return F;
+    return false;
   }
 }
 
-Unit api_logInfo__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
+void api_logInfo__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
   hamr_SW_CASE_AttestationManager_thr_Impl_Impl this,
   String str) {
   hamr_SW_CASE_AttestationManager_thr_Impl_Bridge_Api_logInfo_(
@@ -109,7 +72,7 @@ Unit api_logInfo__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
     str);
 }
 
-Unit api_logDebug__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
+void api_logDebug__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
   hamr_SW_CASE_AttestationManager_thr_Impl_Impl this,
   String str) {
   hamr_SW_CASE_AttestationManager_thr_Impl_Bridge_Api_logDebug_(
@@ -118,7 +81,7 @@ Unit api_logDebug__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
     str);
 }
 
-Unit api_logError__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
+void api_logError__hamr_SW_CASE_AttestationManager_thr_Impl_Impl(
   hamr_SW_CASE_AttestationManager_thr_Impl_Impl this,
   String str) {
   hamr_SW_CASE_AttestationManager_thr_Impl_Bridge_Api_logError_(

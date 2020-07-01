@@ -1,0 +1,13 @@
+#include <CASE_Filter_AReq_thr_Impl_adapter.h>
+
+Unit hamr_SW_CASE_Filter_AReq_thr_Impl_adapter_initialiseArchitecture() {
+  hamr_SW_Impl_Instance_FLT_AReq_CASE_Filter_AReq_CASE_Filter_AReq_initialiseArchitecture(SF_LAST);
+}
+
+Unit hamr_SW_CASE_Filter_AReq_thr_Impl_adapter_initialiseEntryPoint() {
+  hamr_SW_Impl_Instance_FLT_AReq_CASE_Filter_AReq_CASE_Filter_AReq_initialiseEntryPoint(SF_LAST);
+}
+
+Unit hamr_SW_CASE_Filter_AReq_thr_Impl_adapter_computeEntryPoint() {
+  hamr_SW_Impl_Instance_FLT_AReq_CASE_Filter_AReq_CASE_Filter_AReq_computeEntryPoint(SF_LAST);
+}

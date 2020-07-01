@@ -90,9 +90,9 @@ object CASE_AttestationGate_thr_Impl_Bridge {
     def getAutomationRequest_in() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(AutomationRequest_in_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port AutomationRequest_in.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -105,9 +105,9 @@ object CASE_AttestationGate_thr_Impl_Bridge {
     def getOperatingRegion_in() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(OperatingRegion_in_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port OperatingRegion_in.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -120,9 +120,9 @@ object CASE_AttestationGate_thr_Impl_Bridge {
     def getLineSearchTask_in() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(LineSearchTask_in_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port LineSearchTask_in.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -135,9 +135,9 @@ object CASE_AttestationGate_thr_Impl_Bridge {
     def gettrusted_ids() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(trusted_ids_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port trusted_ids.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value

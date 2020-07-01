@@ -4,7 +4,7 @@ import art.{ArtNative_Ext, Empty}
 import hamr._
 import org.sireum._
 
-// the contents of this file will not be overwritten
+// This file will not be overwritten so is safe to edit
 class SW_Impl_Instance_RADIO_RadioDriver_Attestation_Test extends BridgeTestSuite[RadioDriver_Attestation_thr_Impl_Bridge](Arch.SW_Impl_Instance_RADIO_RadioDriver_Attestation) {
   test("Example Unit Test"){
     executeTest()
@@ -28,7 +28,7 @@ class SW_Impl_Instance_RADIO_RadioDriver_Attestation_Test extends BridgeTestSuit
   def get_send_data(): Option[Base_Types.Bits] = {
     val value: Option[Base_Types.Bits] = get_send_data_payload() match {
       case Some(Base_Types.Bits_Payload(v)) => Some(v)
-      case Some(v) => fail(s"Unexpected payload on port send_data.  Expecting 'Base_Types.Bits_Payload' but received ${v}") 
+      case Some(v) => fail(s"Unexpected payload on port send_data.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
       case _ => None[Base_Types.Bits]()
     }
     return value
@@ -43,7 +43,7 @@ class SW_Impl_Instance_RADIO_RadioDriver_Attestation_Test extends BridgeTestSuit
   def get_AutomationRequest(): Option[Base_Types.Bits] = {
     val value: Option[Base_Types.Bits] = get_AutomationRequest_payload() match {
       case Some(Base_Types.Bits_Payload(v)) => Some(v)
-      case Some(v) => fail(s"Unexpected payload on port AutomationRequest.  Expecting 'Base_Types.Bits_Payload' but received ${v}") 
+      case Some(v) => fail(s"Unexpected payload on port AutomationRequest.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
       case _ => None[Base_Types.Bits]()
     }
     return value
@@ -58,7 +58,7 @@ class SW_Impl_Instance_RADIO_RadioDriver_Attestation_Test extends BridgeTestSuit
   def get_OperatingRegion(): Option[Base_Types.Bits] = {
     val value: Option[Base_Types.Bits] = get_OperatingRegion_payload() match {
       case Some(Base_Types.Bits_Payload(v)) => Some(v)
-      case Some(v) => fail(s"Unexpected payload on port OperatingRegion.  Expecting 'Base_Types.Bits_Payload' but received ${v}") 
+      case Some(v) => fail(s"Unexpected payload on port OperatingRegion.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
       case _ => None[Base_Types.Bits]()
     }
     return value
@@ -73,7 +73,7 @@ class SW_Impl_Instance_RADIO_RadioDriver_Attestation_Test extends BridgeTestSuit
   def get_LineSearchTask(): Option[Base_Types.Bits] = {
     val value: Option[Base_Types.Bits] = get_LineSearchTask_payload() match {
       case Some(Base_Types.Bits_Payload(v)) => Some(v)
-      case Some(v) => fail(s"Unexpected payload on port LineSearchTask.  Expecting 'Base_Types.Bits_Payload' but received ${v}") 
+      case Some(v) => fail(s"Unexpected payload on port LineSearchTask.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
       case _ => None[Base_Types.Bits]()
     }
     return value
@@ -88,7 +88,7 @@ class SW_Impl_Instance_RADIO_RadioDriver_Attestation_Test extends BridgeTestSuit
   def get_am_response(): Option[Base_Types.Bits] = {
     val value: Option[Base_Types.Bits] = get_am_response_payload() match {
       case Some(Base_Types.Bits_Payload(v)) => Some(v)
-      case Some(v) => fail(s"Unexpected payload on port am_response.  Expecting 'Base_Types.Bits_Payload' but received ${v}") 
+      case Some(v) => fail(s"Unexpected payload on port am_response.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
       case _ => None[Base_Types.Bits]()
     }
     return value

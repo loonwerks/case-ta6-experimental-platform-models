@@ -73,9 +73,9 @@ object WaypointPlanManagerService_thr_Impl_Bridge {
     def getAutomationResponse() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(AutomationResponse_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port AutomationResponse.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -84,9 +84,9 @@ object WaypointPlanManagerService_thr_Impl_Bridge {
     def getAirVehicleState() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(AirVehicleState_Id) match {
         case Some(Base_Types.Bits_Payload(v)) => Some(v)
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port AirVehicleState.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
-          None[Base_Types.Bits]() 
+          None[Base_Types.Bits]()
         case _ => None[Base_Types.Bits]()
       }
       return value
@@ -99,9 +99,9 @@ object WaypointPlanManagerService_thr_Impl_Bridge {
     def getReturnHome() : Option[art.Empty] = {
       val value : Option[art.Empty] = Art.getValue(ReturnHome_Id) match {
         case Some(Empty()) => Some(Empty())
-        case Some(v) => 
+        case Some(v) =>
           Art.logError(id, s"Unexpected payload on port ReturnHome.  Expecting 'Empty' but received ${v}")
-          None[art.Empty]() 
+          None[art.Empty]()
         case _ => None[art.Empty]()
       }
       return value

@@ -4,7 +4,7 @@ import art.{ArtNative_Ext, Empty}
 import hamr._
 import org.sireum._
 
-// the contents of this file will not be overwritten
+// This file will not be overwritten so is safe to edit
 class SW_Impl_Instance_FLT_LST_CASE_Filter_LST_Test extends BridgeTestSuite[CASE_Filter_LST_thr_Impl_Bridge](Arch.SW_Impl_Instance_FLT_LST_CASE_Filter_LST) {
   test("Example Unit Test"){
     executeTest()
@@ -23,7 +23,7 @@ class SW_Impl_Instance_FLT_LST_CASE_Filter_LST_Test extends BridgeTestSuite[CASE
   def get_filter_out(): Option[Base_Types.Bits] = {
     val value: Option[Base_Types.Bits] = get_filter_out_payload() match {
       case Some(Base_Types.Bits_Payload(v)) => Some(v)
-      case Some(v) => fail(s"Unexpected payload on port filter_out.  Expecting 'Base_Types.Bits_Payload' but received ${v}") 
+      case Some(v) => fail(s"Unexpected payload on port filter_out.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
       case _ => None[Base_Types.Bits]()
     }
     return value

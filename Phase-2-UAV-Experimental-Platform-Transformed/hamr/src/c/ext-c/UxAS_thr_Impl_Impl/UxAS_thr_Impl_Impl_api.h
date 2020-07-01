@@ -5,60 +5,40 @@
 
 // This file was auto-generated.  Do not edit
 
-B api_get_AutomationRequest__hamr_SW_UxAS_thr_Impl_Impl(
+bool api_get_AutomationRequest__hamr_SW_UxAS_thr_Impl_Impl(
   hamr_SW_UxAS_thr_Impl_Impl this,
-  IS_C4F575 value);
+  size_t *numBits,
+  uint8_t *byteArray);
 
-B api_get_AutomationRequest__alt__hamr_SW_UxAS_thr_Impl_Impl(
+bool api_get_AirVehicleState__hamr_SW_UxAS_thr_Impl_Impl(
   hamr_SW_UxAS_thr_Impl_Impl this,
-  Z *numBits,
-  U8 *byteArray);
+  size_t *numBits,
+  uint8_t *byteArray);
 
-B api_get_AirVehicleState__hamr_SW_UxAS_thr_Impl_Impl(
+bool api_get_OperatingRegion__hamr_SW_UxAS_thr_Impl_Impl(
   hamr_SW_UxAS_thr_Impl_Impl this,
-  IS_C4F575 value);
+  size_t *numBits,
+  uint8_t *byteArray);
 
-B api_get_AirVehicleState__alt__hamr_SW_UxAS_thr_Impl_Impl(
+bool api_get_LineSearchTask__hamr_SW_UxAS_thr_Impl_Impl(
   hamr_SW_UxAS_thr_Impl_Impl this,
-  Z *numBits,
-  U8 *byteArray);
+  size_t *numBits,
+  uint8_t *byteArray);
 
-B api_get_OperatingRegion__hamr_SW_UxAS_thr_Impl_Impl(
+void api_send_AutomationResponse__hamr_SW_UxAS_thr_Impl_Impl(
   hamr_SW_UxAS_thr_Impl_Impl this,
-  IS_C4F575 value);
+  size_t numBits,
+  uint8_t *byteArray);
 
-B api_get_OperatingRegion__alt__hamr_SW_UxAS_thr_Impl_Impl(
-  hamr_SW_UxAS_thr_Impl_Impl this,
-  Z *numBits,
-  U8 *byteArray);
-
-B api_get_LineSearchTask__hamr_SW_UxAS_thr_Impl_Impl(
-  hamr_SW_UxAS_thr_Impl_Impl this,
-  IS_C4F575 value);
-
-B api_get_LineSearchTask__alt__hamr_SW_UxAS_thr_Impl_Impl(
-  hamr_SW_UxAS_thr_Impl_Impl this,
-  Z *numBits,
-  U8 *byteArray);
-
-Unit api_send_AutomationResponse__hamr_SW_UxAS_thr_Impl_Impl(
-  hamr_SW_UxAS_thr_Impl_Impl this,
-  IS_C4F575 value);
-
-Unit api_send_AutomationResponse__alt__hamr_SW_UxAS_thr_Impl_Impl(
-  hamr_SW_UxAS_thr_Impl_Impl this,
-  Z numBits,
-  U8 *byteArray);
-
-Unit api_logInfo__hamr_SW_UxAS_thr_Impl_Impl(
+void api_logInfo__hamr_SW_UxAS_thr_Impl_Impl(
   hamr_SW_UxAS_thr_Impl_Impl this,
   String str);
 
-Unit api_logDebug__hamr_SW_UxAS_thr_Impl_Impl(
+void api_logDebug__hamr_SW_UxAS_thr_Impl_Impl(
   hamr_SW_UxAS_thr_Impl_Impl this,
   String str);
 
-Unit api_logError__hamr_SW_UxAS_thr_Impl_Impl(
+void api_logError__hamr_SW_UxAS_thr_Impl_Impl(
   hamr_SW_UxAS_thr_Impl_Impl this,
   String str);
 

@@ -5,7 +5,7 @@ package hamr.SW
 import org.sireum._
 import hamr._
 
-// the contents of this file will not be overwritten
+// This file will not be overwritten so is safe to edit
 @record class CASE_Monitor_Geo_thr_Impl_Impl (val api : CASE_Monitor_Geo_thr_Impl_Bridge.Api) extends CASE_Monitor_Geo_thr_Impl {
 
   override def initialise(): Unit = {
