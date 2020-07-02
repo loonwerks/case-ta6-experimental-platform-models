@@ -70,8 +70,8 @@ public
 		features
 			trusted_ids: in data port CMASI::AddressArray.i;
 			AutomationRequest_in: in event data port CMASI::AddressAttributedMessage.i;
-			AutomationRequest_UXAS: out event data port CMASI::AutomationRequest.i;
-			AutomationRequest_MON_REQ: out event data port CMASI::AutomationRequest.i;
+			AutomationRequest_out_UXAS: out event data port CMASI::AutomationRequest.i;
+			AutomationRequest_out_MON_REQ: out event data port CMASI::AutomationRequest.i;
 			OperatingRegion_in: in event data port CMASI::AddressAttributedMessage.i;
 			OperatingRegion_out: out event data port CMASI::OperatingRegion.i;
 			LineSearchTask_in: in event data port CMASI::AddressAttributedMessage.i;
@@ -83,12 +83,12 @@ public
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
 		annex agree {**
---			fun IS_TRUSTED(src_id : CMASI::Address) : bool = exists id in trusted_ids, id = src_id;
---			guarantee CASE_AttestationGate_policy "Only messages from trusted sources shall be forwarded" :
---				if event(AutomationRequest_in) and IS_TRUSTED(AutomationRequest_in.id) then event(AutomationRequest_out) and not (event(OperatingRegion_out) or event(LineSearchTask_out)) and AutomationRequest_out = AutomationRequest_in.payload.AutomationRequest
---				else if event(OperatingRegion_in) and IS_TRUSTED(OperatingRegion_in.id) then event(OperatingRegion_out) and not (event(AutomationRequest_out) or event(LineSearchTask_out)) and OperatingRegion_out = OperatingRegion_in.payload.OperatingRegion
---				else if event(LineSearchTask_in) and IS_TRUSTED(LineSearchTask_in.id) then event(LineSearchTask_out) and not (event(AutomationRequest_out) or event(OperatingRegion_out)) and LineSearchTask_out = LineSearchTask_in.payload.LineSearchTask
---				else not (event(AutomationRequest_out) or event(OperatingRegion_out) or event(LineSearchTask_out));
+			fun IS_TRUSTED(src_id : CMASI::Address.i) : bool = exists id in trusted_ids.value, id = src_id;
+			guarantee CASE_AttestationGate_policy "Only messages from trusted sources shall be forwarded" :
+				if event(AutomationRequest_in) and IS_TRUSTED(AutomationRequest_in.id) then event(AutomationRequest_out_UXAS) and event(AutomationRequest_out_MON_REQ) and not (event(OperatingRegion_out) or event(LineSearchTask_out)) and AutomationRequest_out_UXAS = AutomationRequest_in.payload.AutomationRequest and AutomationRequest_out_MON_REQ = AutomationRequest_in.payload.AutomationRequest
+				else if event(OperatingRegion_in) and IS_TRUSTED(OperatingRegion_in.id) then event(OperatingRegion_out) and not (event(AutomationRequest_out_UXAS) or event(AutomationRequest_out_MON_REQ) or event(LineSearchTask_out)) and OperatingRegion_out = OperatingRegion_in.payload.OperatingRegion
+				else if event(LineSearchTask_in) and IS_TRUSTED(LineSearchTask_in.id) then event(LineSearchTask_out) and not (event(AutomationRequest_out_UXAS) or event(AutomationRequest_out_MON_REQ) or event(OperatingRegion_out)) and LineSearchTask_out = LineSearchTask_in.payload.LineSearchTask
+				else not (event(AutomationRequest_out_UXAS) or event(AutomationRequest_out_MON_REQ) or event(OperatingRegion_out) or event(LineSearchTask_out));
 		**};
 	end CASE_AttestationGate_thr;
 
@@ -99,8 +99,8 @@ public
 		features
 			trusted_ids: in data port CMASI::AddressArray.i;
 			AutomationRequest_in: in event data port CMASI::AddressAttributedMessage.i;
-			AutomationRequest_UXAS: out event data port CMASI::AutomationRequest.i;
-			AutomationRequest_MON_REQ: out event data port CMASI::AutomationRequest.i;
+			AutomationRequest_out_UXAS: out event data port CMASI::AutomationRequest.i;
+			AutomationRequest_out_MON_REQ: out event data port CMASI::AutomationRequest.i;
 			OperatingRegion_in: in event data port CMASI::AddressAttributedMessage.i;
 			OperatingRegion_out: out event data port CMASI::OperatingRegion.i;
 			LineSearchTask_in: in event data port CMASI::AddressAttributedMessage.i;
@@ -115,8 +115,8 @@ public
 		connections
 			c1: port trusted_ids -> CASE_AttestationGate.trusted_ids;
 			c2: port AutomationRequest_in -> CASE_AttestationGate.AutomationRequest_in;
-			c3_1: port CASE_AttestationGate.AutomationRequest_UXAS -> AutomationRequest_UXAS;
-			c3_2: port CASE_AttestationGate.AutomationRequest_MON_REQ -> AutomationRequest_MON_REQ;
+			c3_1: port CASE_AttestationGate.AutomationRequest_out_UXAS -> AutomationRequest_out_UXAS;
+			c3_2: port CASE_AttestationGate.AutomationRequest_out_MON_REQ -> AutomationRequest_out_MON_REQ;
 			c4: port OperatingRegion_in -> CASE_AttestationGate.OperatingRegion_in;
 			c5: port CASE_AttestationGate.OperatingRegion_out -> OperatingRegion_out;
 			c6: port LineSearchTask_in -> CASE_AttestationGate.LineSearchTask_in;
@@ -305,18 +305,30 @@ public
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
 		annex agree {**
-
 			-- a constant generated from the component property above, handy for expressing the monitor guarantee
---			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
+			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
 
 			-- Monitor policy (models the expected behavior in terms of the input ports)
 			-- AutomationResponse (observed) occurs within two scheduling cycles after AutomationRequest (reference_1)
 --			eq empty_day : bool = not event(observed) and not event(reference_1);
 --			property CASE_Monitor_Req_Resp_policy = Historically(event(reference_1) or (empty_day and Yesterday(event(reference_1) or (empty_day and Yesterday(event(reference_1))))) => event(observed));		
+            eq counter_increment : int = 0 ->
+              if (event(observed))
+                then 0
+                else if (event(reference_1))
+                  then 1
+                  else pre(counter_increment);
+            eq count : int = 0 ->
+              if (event(reference_1) or event(observed))
+                then 0
+                else pre(count) + counter_increment;
+            const nMonitorInvocations : int = 10; -- user-defined value for "days"
+            eq response_received_in_time : bool = count < nMonitorInvocations;
+            property CASE_Monitor_Req_Resp_policy = Historically(response_received_in_time);
 
 			-- Monitor guarantee (guarantees on the output ports in terms of the input ports and monitor policy)
---			guarantee Req002_ReqRespMonitorEvent "The monitor shall only output an alert when the monitor policy is false" :
---				alert <=> false -> (is_latched and pre(event(alert))) or not CASE_Monitor_Req_Resp_policy;
+			guarantee Req002_ReqRespMonitorEvent "The monitor shall only output an alert when the monitor policy is false" :
+				alert <=> false -> (is_latched and pre(event(alert))) or not CASE_Monitor_Req_Resp_policy;
 		**};
 	end CASE_Monitor_Req_thr;
 
@@ -618,7 +630,7 @@ public
 			c07: port RADIO.AutomationRequest -> AM_Gate.AutomationRequest_in;
 			c08: port RADIO.OperatingRegion -> AM_Gate.OperatingRegion_in;
 			c09: port RADIO.LineSearchTask -> AM_Gate.LineSearchTask_in;
-			c10: port AM_Gate.AutomationRequest_UXAS -> UXAS.AutomationRequest;
+			c10: port AM_Gate.AutomationRequest_out_UXAS -> UXAS.AutomationRequest;
 			c11: port AM_Gate.OperatingRegion_out -> UXAS.OperatingRegion;
 			c12: port AM_Gate.LineSearchTask_out -> FLT_LST.filter_in;
 			c13: port FLT_LST.filter_out -> UXAS.LineSearchTask;
@@ -631,7 +643,7 @@ public
 			c18: port FlyZones.keep_out_zones -> MON_GEO.keep_out_zones;
 			c19: port UXAS.AutomationResponse_MON_GEO -> MON_GEO.observed;
 			c20: port MON_GEO.alert -> WPM.ReturnHome;
-			c21: port AM_Gate.AutomationRequest_MON_REQ -> MON_REQ.reference_1;
+			c21: port AM_Gate.AutomationRequest_out_MON_REQ -> MON_REQ.reference_1;
 			c22: port UXAS.AutomationResponse_MON_REQ -> MON_REQ.observed;
 
 			--------

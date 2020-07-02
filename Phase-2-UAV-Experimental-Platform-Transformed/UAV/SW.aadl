@@ -124,7 +124,7 @@ public
 			Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
-			fun IS_TRUSTED(src_id : CMASI::Address) : bool = exists id in trusted_ids, id = src_id;
+			fun IS_TRUSTED(src_id : CMASI::Address.i) : bool = exists id in trusted_ids.value, id = src_id;
 			guarantee CASE_AttestationGate_policy "Only messages from trusted sources shall be forwarded" :
 				if event(AutomationRequest_in) and IS_TRUSTED(AutomationRequest_in.id) then event(AutomationRequest_out) and not (event(OperatingRegion_out) or event(LineSearchTask_out)) and AutomationRequest_out = AutomationRequest_in.payload.AutomationRequest
 				else if event(OperatingRegion_in) and IS_TRUSTED(OperatingRegion_in.id) then event(OperatingRegion_out) and not (event(AutomationRequest_out) or event(LineSearchTask_out)) and OperatingRegion_out = OperatingRegion_in.payload.OperatingRegion
@@ -354,8 +354,21 @@ public
 
 			-- Monitor policy (models the expected behavior in terms of the input ports)
 			-- AutomationResponse (observed) occurs within two scheduling cycles after AutomationRequest (reference_1)
-			eq empty_day : bool = not event(observed) and not event(reference_1);
-			property CASE_Monitor_Req_Resp_policy = Historically(event(reference_1) or (empty_day and Yesterday(event(reference_1) or (empty_day and Yesterday(event(reference_1))))) => event(observed));		
+--			eq empty_day : bool = not event(observed) and not event(reference_1);
+--			property CASE_Monitor_Req_Resp_policy = Historically(event(reference_1) or (empty_day and Yesterday(event(reference_1) or (empty_day and Yesterday(event(reference_1))))) => event(observed));
+            eq counter_increment : int = 0 ->
+              if (event(observed))
+                then 0
+                else if (event(reference_1))
+                  then 1
+                  else pre(counter_increment);
+            eq count : int = 0 ->
+              if (event(reference_1) or event(observed))
+                then 0
+                else pre(count) + counter_increment;
+            const nMonitorInvocations : int = 10; -- user-defined value for "days"
+            eq response_received_in_time : bool = count < nMonitorInvocations;
+            property CASE_Monitor_Req_Resp_policy = Historically(response_received_in_time);
 
 			-- Monitor guarantee (guarantees on the output ports in terms of the input ports and monitor policy)
 			guarantee Req002_ReqRespMonitorEvent "The monitor shall only output an alert when the monitor policy is false" :
