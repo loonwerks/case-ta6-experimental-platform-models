@@ -69,6 +69,7 @@ annex agree {**
     fun WELL_FORMED_VIEWANGLE(viewangle : CMASI::Wedge.i) : bool =
     	viewangle.AzimuthCenterline >= AZIMUTH_CENTERLINE_MIN and viewangle.AzimuthCenterline <= AZIMUTH_CENTERLINE_MAX and
     	viewangle.VerticalCenterline >= VERTICAL_CENTERLINE_MIN and viewangle.VerticalCenterline <= VERTICAL_CENTERLINE_MAX;
+    	
 **};
 
 
