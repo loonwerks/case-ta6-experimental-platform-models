@@ -20,7 +20,7 @@ annex agree {**
 	const KEEP_OUT_ZONE_ID_MIN : int = 0;
 	const KEEP_OUT_ZONE_ID_MAX : int = 500;
 	const TASK_ID_MIN : int = 0;
-	const TASK_ID_MAX : int = 500;
+	const TASK_ID_MAX : int = 2000;
 	const ENTITY_ID_MIN : int = 0;
 	const ENTITY_ID_MAX : int = 500;
 	const ALTITUDE_MIN : real = 0.0;
