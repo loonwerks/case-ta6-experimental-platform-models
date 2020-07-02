@@ -56,7 +56,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=7" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_RADIO_RadioDriver_Attestation.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_RADIO_RadioDriver_Attestation.RadioDriver_Attestation" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/RadioDriver_Attestation_thr_Impl_Impl/RadioDriver_Attestation_thr_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/RadioDriver_Attestation_thr_Impl_Impl/RadioDriver_Attestation_thr_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/RadioDriver_Attestation_thr_Impl_Impl/RadioDriver_Attestation_thr_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_RADIO_RadioDriver_Attestation/RadioDriver_Attestation_thr_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_RADIO_RadioDriver_Attestation/RadioDriver_Attestation_thr_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \
@@ -81,7 +81,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=2" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_FlyZones_FlyZonesDatabase.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_FlyZones_FlyZonesDatabase.FlyZonesDatabase" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/FlyZonesDatabase_thr_Impl_Impl/FlyZonesDatabase_thr_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/FlyZonesDatabase_thr_Impl_Impl/FlyZonesDatabase_thr_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/FlyZonesDatabase_thr_Impl_Impl/FlyZonesDatabase_thr_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_FlyZones_FlyZonesDatabase/FlyZonesDatabase_thr_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_FlyZones_FlyZonesDatabase/FlyZonesDatabase_thr_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \
@@ -106,7 +106,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=5" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_UXAS_UxAS.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_UXAS_UxAS.UxAS" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/UxAS_thr_Impl_Impl/UxAS_thr_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/UxAS_thr_Impl_Impl/UxAS_thr_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/UxAS_thr_Impl_Impl/UxAS_thr_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_UXAS_UxAS/UxAS_thr_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_UXAS_UxAS/UxAS_thr_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \
@@ -131,7 +131,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=4" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_WPM_WaypointPlanManagerService.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_WPM_WaypointPlanManagerService.WaypointPlanManagerService" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/WaypointPlanManagerService_thr_Impl_Impl/WaypointPlanManagerService_thr_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/WaypointPlanManagerService_thr_Impl_Impl/WaypointPlanManagerService_thr_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/WaypointPlanManagerService_thr_Impl_Impl/WaypointPlanManagerService_thr_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_WPM_WaypointPlanManagerService/WaypointPlanManagerService_thr_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_WPM_WaypointPlanManagerService/WaypointPlanManagerService_thr_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \
@@ -156,7 +156,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=3" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_AM_CASE_AttestationManager.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_AM_CASE_AttestationManager.CASE_AttestationManager" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_AttestationManager_thr_Impl_Impl/CASE_AttestationManager_thr_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_AttestationManager_thr_Impl_Impl/CASE_AttestationManager_thr_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_AttestationManager_thr_Impl_Impl/CASE_AttestationManager_thr_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_AM_CASE_AttestationManager/CASE_AttestationManager_thr_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_AM_CASE_AttestationManager/CASE_AttestationManager_thr_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \
@@ -181,7 +181,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=7" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_AM_Gate_CASE_AttestationGate.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_AM_Gate_CASE_AttestationGate.CASE_AttestationGate" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_AttestationGate_thr_Impl_Impl/CASE_AttestationGate_thr_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_AttestationGate_thr_Impl_Impl/CASE_AttestationGate_thr_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_AttestationGate_thr_Impl_Impl/CASE_AttestationGate_thr_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_AM_Gate_CASE_AttestationGate/CASE_AttestationGate_thr_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_AM_Gate_CASE_AttestationGate/CASE_AttestationGate_thr_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \
@@ -206,7 +206,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=3" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_FLT_AReq_CASE_Filter_AReq.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_FLT_AReq_CASE_Filter_AReq.CASE_Filter_AReq" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Filter_AReq_thr_Impl_Impl/CASE_Filter_AReq_thr_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Filter_AReq_thr_Impl_Impl/CASE_Filter_AReq_thr_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Filter_AReq_thr_Impl_Impl/CASE_Filter_AReq_thr_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_FLT_AReq_CASE_Filter_AReq/CASE_Filter_AReq_thr_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_FLT_AReq_CASE_Filter_AReq/CASE_Filter_AReq_thr_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \
@@ -256,7 +256,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=2" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_FLT_LST_CASE_Filter_LST.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_FLT_LST_CASE_Filter_LST.CASE_Filter_LST" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Filter_LST_thr_Impl_Impl/CASE_Filter_LST_thr_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Filter_LST_thr_Impl_Impl/CASE_Filter_LST_thr_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Filter_LST_thr_Impl_Impl/CASE_Filter_LST_thr_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_FLT_LST_CASE_Filter_LST/CASE_Filter_LST_thr_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_FLT_LST_CASE_Filter_LST/CASE_Filter_LST_thr_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \
@@ -281,7 +281,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=3" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_MON_REQ_CASE_Monitor_Req.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_MON_REQ_CASE_Monitor_Req.CASE_Monitor_Req" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Monitor_Req_thr_Impl_Impl/CASE_Monitor_Req_thr_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Monitor_Req_thr_Impl_Impl/CASE_Monitor_Req_thr_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Monitor_Req_thr_Impl_Impl/CASE_Monitor_Req_thr_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_MON_REQ_CASE_Monitor_Req/CASE_Monitor_Req_thr_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_MON_REQ_CASE_Monitor_Req/CASE_Monitor_Req_thr_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \
@@ -306,7 +306,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=2" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes.CASE_Filter_ARes" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Filter_ARes_thr_Impl_Impl/CASE_Filter_ARes_thr_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Filter_ARes_thr_Impl_Impl/CASE_Filter_ARes_thr_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Filter_ARes_thr_Impl_Impl/CASE_Filter_ARes_thr_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes/CASE_Filter_ARes_thr_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes/CASE_Filter_ARes_thr_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \
@@ -331,7 +331,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=5" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo.CASE_Monitor_Geo" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Monitor_Geo_thr_Impl_Impl/CASE_Monitor_Geo_thr_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Monitor_Geo_thr_Impl_Impl/CASE_Monitor_Geo_thr_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Monitor_Geo_thr_Impl_Impl/CASE_Monitor_Geo_thr_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo/CASE_Monitor_Geo_thr_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo/CASE_Monitor_Geo_thr_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \

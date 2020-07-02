@@ -10,6 +10,7 @@ public
 	renames AGREE_PLTL::all;
 	with CM_Property_Set;
 	with HAMR;
+	with CASEConsts;
 
 	
 	------------------
@@ -24,6 +25,7 @@ public
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
 			Compute_Execution_Time => 20ms .. 20ms;
+			Stack_Size => CM_Property_Set::Stack_Size;
 	end RadioDriver_Attestation_thr;
 
 	thread implementation RadioDriver_Attestation_thr.Impl extends Drivers::RadioDriver.Impl
@@ -80,6 +82,7 @@ public
 			CASE_Properties::Cache_Timeout => 30;
 			CASE_Properties::Cache_Size => 3;
 			Dispatch_Protocol => Periodic;
+			Stack_Size => CM_Property_Set::Stack_Size;
 	end CASE_AttestationManager_thr.Impl;
 	
 	process CASE_AttestationManager
@@ -119,13 +122,14 @@ public
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
+			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
---			fun IS_TRUSTED(src_id : CMASI::Address) : bool = exists id in trusted_ids, id = src_id;
---			guarantee CASE_AttestationGate_policy "Only messages from trusted sources shall be forwarded" :
---				if event(AutomationRequest_in) and IS_TRUSTED(AutomationRequest_in.id) then event(AutomationRequest_out) and not (event(OperatingRegion_out) or event(LineSearchTask_out)) and AutomationRequest_out = AutomationRequest_in.payload.AutomationRequest
---				else if event(OperatingRegion_in) and IS_TRUSTED(OperatingRegion_in.id) then event(OperatingRegion_out) and not (event(AutomationRequest_out) or event(LineSearchTask_out)) and OperatingRegion_out = OperatingRegion_in.payload.OperatingRegion
---				else if event(LineSearchTask_in) and IS_TRUSTED(LineSearchTask_in.id) then event(LineSearchTask_out) and not (event(AutomationRequest_out) or event(OperatingRegion_out)) and LineSearchTask_out = LineSearchTask_in.payload.LineSearchTask
---				else not (event(AutomationRequest_out) or event(OperatingRegion_out) or event(LineSearchTask_out));
+			fun IS_TRUSTED(src_id : CMASI::Address) : bool = exists id in trusted_ids, id = src_id;
+			guarantee CASE_AttestationGate_policy "Only messages from trusted sources shall be forwarded" :
+				if event(AutomationRequest_in) and IS_TRUSTED(AutomationRequest_in.id) then event(AutomationRequest_out) and not (event(OperatingRegion_out) or event(LineSearchTask_out)) and AutomationRequest_out = AutomationRequest_in.payload.AutomationRequest
+				else if event(OperatingRegion_in) and IS_TRUSTED(OperatingRegion_in.id) then event(OperatingRegion_out) and not (event(AutomationRequest_out) or event(LineSearchTask_out)) and OperatingRegion_out = OperatingRegion_in.payload.OperatingRegion
+				else if event(LineSearchTask_in) and IS_TRUSTED(LineSearchTask_in.id) then event(LineSearchTask_out) and not (event(AutomationRequest_out) or event(OperatingRegion_out)) and LineSearchTask_out = LineSearchTask_in.payload.LineSearchTask
+				else not (event(AutomationRequest_out) or event(OperatingRegion_out) or event(LineSearchTask_out));
 		**};
 	end CASE_AttestationGate_thr;
 
@@ -173,6 +177,7 @@ public
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
+			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
 			guarantee Req_Filter_LST "Well-formed Line Search Task message" : CASEAgree::WELL_FORMED_LINE_SEARCH_TASK(filter_out);
 		**};
@@ -252,6 +257,7 @@ public
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
+			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
 			guarantee Req_Filter_AReq "Well-formed Automation Request message" : CASEAgree::WELL_FORMED_AUTOMATION_REQUEST(filter_out_UXAS);
 		**};
@@ -293,7 +299,8 @@ public
         properties
             Dispatch_Protocol => Periodic;
             Period => 500ms;
-            Compute_Execution_Time => 2ms .. 2ms;                
+            Compute_Execution_Time => 2ms .. 2ms;   
+			Stack_Size => CM_Property_Set::Stack_Size;             
     end UxAS_thr;
     
     thread implementation UxAS_thr.Impl 
@@ -339,19 +346,20 @@ public
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
+			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
 
 			-- a constant generated from the component property above, handy for expressing the monitor guarantee
---			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
+			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
 
 			-- Monitor policy (models the expected behavior in terms of the input ports)
 			-- AutomationResponse (observed) occurs within two scheduling cycles after AutomationRequest (reference_1)
---			eq empty_day : bool = not event(observed) and not event(reference_1);
---			property CASE_Monitor_Req_Resp_policy = Historically(event(reference_1) or (empty_day and Yesterday(event(reference_1) or (empty_day and Yesterday(event(reference_1))))) => event(observed));		
+			eq empty_day : bool = not event(observed) and not event(reference_1);
+			property CASE_Monitor_Req_Resp_policy = Historically(event(reference_1) or (empty_day and Yesterday(event(reference_1) or (empty_day and Yesterday(event(reference_1))))) => event(observed));		
 
 			-- Monitor guarantee (guarantees on the output ports in terms of the input ports and monitor policy)
---			guarantee Req002_ReqRespMonitorEvent "The monitor shall only output an alert when the monitor policy is false" :
---				alert <=> false -> (is_latched and pre(event(alert))) or not CASE_Monitor_Req_Resp_policy;
+			guarantee Req002_ReqRespMonitorEvent "The monitor shall only output an alert when the monitor policy is false" :
+				alert <=> false -> (is_latched and pre(event(alert))) or not CASE_Monitor_Req_Resp_policy;
 		**};
 	end CASE_Monitor_Req_thr;
 
@@ -390,6 +398,7 @@ public
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
+			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
 			guarantee Req_Filter_ARes "Well-formed Automation Response message" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(filter_out);
 		**};
@@ -430,6 +439,7 @@ public
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
+			Stack_Size => CM_Property_Set::Stack_Size;
 	end FlyZonesDatabase_thr;
 
 	thread implementation FlyZonesDatabase_thr.Impl
@@ -470,6 +480,7 @@ public
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
+			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
 			-- a constant generated from the component property above, handy for expressing the monitor guarantee
 			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
@@ -560,6 +571,7 @@ public
             Dispatch_Protocol => Periodic;
             Period => 500ms;
             Compute_Execution_Time => 2ms .. 2ms;
+			Stack_Size => CM_Property_Set::Stack_Size;
     end WaypointPlanManagerService_thr;
     
     thread implementation WaypointPlanManagerService_thr.Impl
@@ -642,19 +654,17 @@ public
 			uart_recv: in event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
 			uart_send: out event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
 		annex agree {**
---			guarantee Req001_SW "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
---				 if (event(radio_recv) and CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEConsts::UAV_ID, CASEConsts::GS_ID))
-				--   event(radio_send) and radio_send = radio_recv and CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEConsts::UAV_ID, CASEConsts::GS_ID)
-				-- else
-				--   not event(radio_send);
---			CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEConsts::UAV_ID, CASEConsts::GS_ID);
+			guarantee Req001_SW "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
+				 if (event(radio_recv) and CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEConsts::UAV_ID, CASEConsts::GS_ID)) then
+				   event(radio_send) and radio_send = radio_recv and CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEConsts::UAV_ID, CASEConsts::GS_ID)
+				 else
+				   not event(radio_send);
 			
---			guarantee Req002_SW "The uart_send outputs only well formed CASE_RF_Msg.Impl types" :
-				-- if (event(uart_recv) and CASEAgree::WellformedCASE_UART_Msg(uart_recv))
-				--   event(uart_send) and uart_send = uart_recv and CASEAgree::WellformedCASE_UART_Msg(uart_send)
-				-- else
-				--   not event(uart_send);
---				CASEAgree::WellformedCASE_UART_Msg(uart_send);
+			guarantee Req002_SW "The uart_send outputs only well formed CASE_RF_Msg.Impl types" :
+				 if (event(uart_recv) and CASEAgree::WellformedCASE_UART_Msg(uart_recv)) then
+				   event(uart_send) and uart_send = uart_recv and CASEAgree::WellformedCASE_UART_Msg(uart_send)
+				 else
+				   not event(uart_send);
 		**};
 
 	end SW;

@@ -75,11 +75,11 @@ endif(WITH_LOC)
 
 
 add_library(SW_Impl_Instance_FLT_OR_CASE_Filter_OR STATIC
-        runtime/lib.h
-        runtime/misc.c
-        runtime/misc.h
         runtime/type.c
+        runtime/lib.h
+        runtime/misc.h
         runtime/stackframe.h
+        runtime/misc.c
         runtime/stackframe.c
         runtime/type.h
         runtime/ztype.h

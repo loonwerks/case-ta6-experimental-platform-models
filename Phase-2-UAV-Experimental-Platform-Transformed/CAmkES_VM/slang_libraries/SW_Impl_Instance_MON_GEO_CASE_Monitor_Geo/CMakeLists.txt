@@ -29,12 +29,12 @@ function(to_hex DEC HEX)
 endfunction()
 
 if ("${CMAKE_CXX_COMPILER_ID}" MATCHES "(C|c?)lang")
-  to_hex("16777216" stack_size)
+  to_hex("524288" stack_size)
   set(CMAKE_EXE_LINKER_FLAGS "-Wl,-stack_size -Wl,${stack_size}")
   add_compile_options("$<$<CONFIG:Release>:-Oz>")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
   if (WIN32 OR MINGW OR MSYS OR CYGWIN)
-    to_hex("16777216" stack_size)
+    to_hex("524288" stack_size)
     set(CMAKE_EXE_LINKER_FLAGS "-Wl,--stack,${stack_size}")
   endif()
   add_compile_options(-fstack-usage)
@@ -75,11 +75,11 @@ endif(WITH_LOC)
 
 
 add_library(SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo STATIC
-        runtime/lib.h
-        runtime/misc.c
-        runtime/misc.h
         runtime/type.c
+        runtime/lib.h
+        runtime/misc.h
         runtime/stackframe.h
+        runtime/misc.c
         runtime/stackframe.c
         runtime/type.h
         runtime/ztype.h
