@@ -12,6 +12,9 @@ import art._
   // returns result of dequeuing seL4's filter_in port 
   def filter_in_Receive(): Option[DataContent] = $
 
-  // send payload 'd' to components connected to seL4's filter_out port
-  def filter_out_Send(d: DataContent): Unit = $
+  // send payload 'd' to components connected to seL4's filter_out_MON_GEO port
+  def filter_out_MON_GEO_Send(d: DataContent): Unit = $
+
+  // send payload 'd' to components connected to seL4's filter_out_MON_REQ port
+  def filter_out_MON_REQ_Send(d: DataContent): Unit = $
 }

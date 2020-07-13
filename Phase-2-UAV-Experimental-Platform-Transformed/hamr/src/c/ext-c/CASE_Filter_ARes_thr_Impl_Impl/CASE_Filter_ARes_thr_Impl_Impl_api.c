@@ -23,7 +23,7 @@ bool api_get_filter_in__hamr_SW_CASE_Filter_ARes_thr_Impl_Impl(
   }
 }
 
-void api_send_filter_out__hamr_SW_CASE_Filter_ARes_thr_Impl_Impl(
+void api_send_filter_out_MON_GEO__hamr_SW_CASE_Filter_ARes_thr_Impl_Impl(
   hamr_SW_CASE_Filter_ARes_thr_Impl_Impl this,
   size_t numBits,
   uint8_t *byteArray) {
@@ -38,7 +38,27 @@ void api_send_filter_out__hamr_SW_CASE_Filter_ARes_thr_Impl_Impl(
     memcpy(&t_0.value, byteArray, (numBits / 8) + 1);
   }
 
-  hamr_SW_CASE_Filter_ARes_thr_Impl_Bridge_Api_sendfilter_out_(
+  hamr_SW_CASE_Filter_ARes_thr_Impl_Bridge_Api_sendfilter_out_MON_GEO_(
+    hamr_SW_CASE_Filter_ARes_thr_Impl_Impl_api_(this),
+    &t_0);
+}
+
+void api_send_filter_out_MON_REQ__hamr_SW_CASE_Filter_ARes_thr_Impl_Impl(
+  hamr_SW_CASE_Filter_ARes_thr_Impl_Impl this,
+  size_t numBits,
+  uint8_t *byteArray) {
+
+  sfAssert((Z) numBits >= 0, "numBits must be non-negative for IS[Z, B].");
+  sfAssert((Z) numBits <= MaxIS_C4F575, "numBits too large for IS[Z, B].");
+
+  DeclNewIS_C4F575(t_0);
+
+  t_0.size = numBits;
+  if(numBits > 0) {
+    memcpy(&t_0.value, byteArray, (numBits / 8) + 1);
+  }
+
+  hamr_SW_CASE_Filter_ARes_thr_Impl_Bridge_Api_sendfilter_out_MON_REQ_(
     hamr_SW_CASE_Filter_ARes_thr_Impl_Impl_api_(this),
     &t_0);
 }

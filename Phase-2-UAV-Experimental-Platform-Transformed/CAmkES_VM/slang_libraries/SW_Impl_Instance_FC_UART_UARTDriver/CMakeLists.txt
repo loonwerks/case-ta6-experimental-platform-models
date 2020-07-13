@@ -75,13 +75,13 @@ endif(WITH_LOC)
 
 
 add_library(SW_Impl_Instance_FC_UART_UARTDriver STATIC
-        runtime/type.c
-        runtime/lib.h
-        runtime/misc.h
-        runtime/stackframe.h
         runtime/misc.c
         runtime/stackframe.c
+        runtime/lib.h
         runtime/type.h
+        runtime/misc.h
+        runtime/type.c
+        runtime/stackframe.h
         runtime/ztype.h
         runtime/type-composite.h
         runtime/types.h

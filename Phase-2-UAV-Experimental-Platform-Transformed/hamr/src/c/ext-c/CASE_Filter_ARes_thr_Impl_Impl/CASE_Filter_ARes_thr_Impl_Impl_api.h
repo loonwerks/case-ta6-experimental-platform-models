@@ -10,7 +10,12 @@ bool api_get_filter_in__hamr_SW_CASE_Filter_ARes_thr_Impl_Impl(
   size_t *numBits,
   uint8_t *byteArray);
 
-void api_send_filter_out__hamr_SW_CASE_Filter_ARes_thr_Impl_Impl(
+void api_send_filter_out_MON_GEO__hamr_SW_CASE_Filter_ARes_thr_Impl_Impl(
+  hamr_SW_CASE_Filter_ARes_thr_Impl_Impl this,
+  size_t numBits,
+  uint8_t *byteArray);
+
+void api_send_filter_out_MON_REQ__hamr_SW_CASE_Filter_ARes_thr_Impl_Impl(
   hamr_SW_CASE_Filter_ARes_thr_Impl_Impl this,
   size_t numBits,
   uint8_t *byteArray);

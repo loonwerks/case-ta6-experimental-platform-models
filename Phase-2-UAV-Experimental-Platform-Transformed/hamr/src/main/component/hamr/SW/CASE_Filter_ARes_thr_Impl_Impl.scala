@@ -16,7 +16,8 @@ import hamr._
     api.logError("Example error logging")
 
     val apiUsage_filter_in: Option[Base_Types.Bits] = api.getfilter_in()
-    api.sendfilter_out(Base_Types.Bits_empty())
+    api.sendfilter_out_MON_GEO(Base_Types.Bits_empty())
+    api.sendfilter_out_MON_REQ(Base_Types.Bits_empty())
   }
 
   override def timeTriggered(): Unit = {

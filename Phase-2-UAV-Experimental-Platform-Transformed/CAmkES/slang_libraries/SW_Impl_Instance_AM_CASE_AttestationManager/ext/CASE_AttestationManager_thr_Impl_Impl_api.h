@@ -1,0 +1,1 @@
+../../../../hamr/src/c/ext-c/CASE_AttestationManager_thr_Impl_Impl/CASE_AttestationManager_thr_Impl_Impl_api.h

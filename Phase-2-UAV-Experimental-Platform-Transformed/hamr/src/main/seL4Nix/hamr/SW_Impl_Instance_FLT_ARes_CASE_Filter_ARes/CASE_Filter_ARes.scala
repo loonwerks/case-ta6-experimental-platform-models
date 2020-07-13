@@ -13,7 +13,8 @@ object CASE_Filter_ARes extends App {
 
   val CASE_Filter_AResBridge : hamr.SW.CASE_Filter_ARes_thr_Impl_Bridge = {
     val filter_in = Port[Base_Types.Bits] (id = 0, name = "SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes_filter_in", mode = EventIn)
-    val filter_out = Port[Base_Types.Bits] (id = 1, name = "SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes_filter_out", mode = EventOut)
+    val filter_out_MON_GEO = Port[Base_Types.Bits] (id = 1, name = "SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes_filter_out_MON_GEO", mode = EventOut)
+    val filter_out_MON_REQ = Port[Base_Types.Bits] (id = 2, name = "SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes_filter_out_MON_REQ", mode = EventOut)
 
     hamr.SW.CASE_Filter_ARes_thr_Impl_Bridge(
       id = 0,
@@ -22,7 +23,8 @@ object CASE_Filter_ARes extends App {
       dispatchTriggers = None(),
 
       filter_in = filter_in,
-      filter_out = filter_out
+      filter_out_MON_GEO = filter_out_MON_GEO,
+      filter_out_MON_REQ = filter_out_MON_REQ
     )
   }
 
@@ -33,9 +35,13 @@ object CASE_Filter_ARes extends App {
   val filter_in_id: Art.PortId = CASE_Filter_AResBridge.filter_in.id
   var filter_in_port: Option[DataContent] = noData
 
-  // filter_out: Out EventDataPort Base_Types.Bits
-  val filter_out_id: Art.PortId = CASE_Filter_AResBridge.filter_out.id
-  var filter_out_port: Option[DataContent] = noData
+  // filter_out_MON_GEO: Out EventDataPort Base_Types.Bits
+  val filter_out_MON_GEO_id: Art.PortId = CASE_Filter_AResBridge.filter_out_MON_GEO.id
+  var filter_out_MON_GEO_port: Option[DataContent] = noData
+
+  // filter_out_MON_REQ: Out EventDataPort Base_Types.Bits
+  val filter_out_MON_REQ_id: Art.PortId = CASE_Filter_AResBridge.filter_out_MON_REQ.id
+  var filter_out_MON_REQ_port: Option[DataContent] = noData
 
   def dispatchStatus(bridgeId: Art.BridgeId): DispatchStatus = {
     return TimeTriggered()
@@ -56,8 +62,10 @@ object CASE_Filter_ARes extends App {
   }
 
   def putValue(portId: Art.PortId, data: DataContent): Unit = {
-    if(portId == filter_out_id) {
-      filter_out_port = Some(data)
+    if(portId == filter_out_MON_GEO_id) {
+      filter_out_MON_GEO_port = Some(data)
+    } else if(portId == filter_out_MON_REQ_id) {
+      filter_out_MON_REQ_port = Some(data)
     } else {
       halt(s"Unexpected: CASE_Filter_ARes.putValue called with: ${portId}")
     }
@@ -66,9 +74,14 @@ object CASE_Filter_ARes extends App {
   def sendOutput(eventPortIds: ISZ[Art.PortId], dataPortIds: ISZ[Art.PortId]): Unit = {
     // ignore params
 
-    if(filter_out_port.nonEmpty) {
-      CASE_Filter_ARes_thr_Impl_seL4Nix.filter_out_Send(filter_out_port.get)
-      filter_out_port = noData
+    if(filter_out_MON_GEO_port.nonEmpty) {
+      CASE_Filter_ARes_thr_Impl_seL4Nix.filter_out_MON_GEO_Send(filter_out_MON_GEO_port.get)
+      filter_out_MON_GEO_port = noData
+    }
+
+    if(filter_out_MON_REQ_port.nonEmpty) {
+      CASE_Filter_ARes_thr_Impl_seL4Nix.filter_out_MON_REQ_Send(filter_out_MON_REQ_port.get)
+      filter_out_MON_REQ_port = noData
     }
   }
 

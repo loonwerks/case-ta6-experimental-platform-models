@@ -1,0 +1,56 @@
+#ifndef SIREUM_H_hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api
+#define SIREUM_H_hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <types.h>
+
+// hamr.SW.WaypointPlanManagerService_thr_Impl_Bridge.Api
+
+#define hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_id_(this) ((this)->id)
+#define hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_AutomationResponse_Id_(this) ((this)->AutomationResponse_Id)
+#define hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_AirVehicleState_Id_(this) ((this)->AirVehicleState_Id)
+#define hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_MissionCommand_Id_(this) ((this)->MissionCommand_Id)
+#define hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_ReturnHome_Id_(this) ((this)->ReturnHome_Id)
+
+B hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api__eq(hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api this, hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api other);
+inline B hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api__ne(hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api this, hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api other) {
+  return !hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api__eq(this, other);
+};
+void hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_string_(STACK_FRAME String result, hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api this);
+void hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_cprint(hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api this, B isOut);
+
+inline B hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api__is(STACK_FRAME void* this) {
+  return ((hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api) this)->type == Thamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api;
+}
+
+inline hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api__as(STACK_FRAME void *this) {
+  if (hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api__is(CALLER this)) return (hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api) this;
+  fprintf(stderr, "Invalid case from %s to hamr.SW.WaypointPlanManagerService_thr_Impl_Bridge.Api.", TYPE_string_(this));
+  sfAbortImpl(CALLER "");
+  abort();
+}
+
+void hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_apply(STACK_FRAME hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api this, Z id, Z AutomationResponse_Id, Z AirVehicleState_Id, Z MissionCommand_Id, Z ReturnHome_Id);
+
+Unit hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_logInfo_(STACK_FRAME hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api this, String msg);
+
+Unit hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_logDebug_(STACK_FRAME hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api this, String msg);
+
+Unit hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_logError_(STACK_FRAME hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api this, String msg);
+
+void hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_getAutomationResponse_(STACK_FRAME Option_30119F result, hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api this);
+
+void hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_getAirVehicleState_(STACK_FRAME Option_30119F result, hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api this);
+
+Unit hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_sendMissionCommand_(STACK_FRAME hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api this, IS_C4F575 value);
+
+void hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api_getReturnHome_(STACK_FRAME Option_C622DB result, hamr_SW_WaypointPlanManagerService_thr_Impl_Bridge_Api this);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif

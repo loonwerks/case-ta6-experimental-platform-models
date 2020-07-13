@@ -1,0 +1,1 @@
+../../../../hamr/src/c/ext-c/adapters/SW_Impl_Instance_UXAS_UxAS/UxAS_thr_Impl_adapter.h

@@ -20,18 +20,33 @@ class SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes_Test extends BridgeTestSuite[CA
   }
 
   // getter for out EventDataPort
-  def get_filter_out(): Option[Base_Types.Bits] = {
-    val value: Option[Base_Types.Bits] = get_filter_out_payload() match {
+  def get_filter_out_MON_GEO(): Option[Base_Types.Bits] = {
+    val value: Option[Base_Types.Bits] = get_filter_out_MON_GEO_payload() match {
       case Some(Base_Types.Bits_Payload(v)) => Some(v)
-      case Some(v) => fail(s"Unexpected payload on port filter_out.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
+      case Some(v) => fail(s"Unexpected payload on port filter_out_MON_GEO.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
       case _ => None[Base_Types.Bits]()
     }
     return value
   }
 
   // payload getter for out EventDataPort
-  def get_filter_out_payload(): Option[Base_Types.Bits_Payload] = {
-    return ArtNative_Ext.observeOutPortValue(bridge.api.filter_out_Id).asInstanceOf[Option[Base_Types.Bits_Payload]]
+  def get_filter_out_MON_GEO_payload(): Option[Base_Types.Bits_Payload] = {
+    return ArtNative_Ext.observeOutPortValue(bridge.api.filter_out_MON_GEO_Id).asInstanceOf[Option[Base_Types.Bits_Payload]]
+  }
+
+  // getter for out EventDataPort
+  def get_filter_out_MON_REQ(): Option[Base_Types.Bits] = {
+    val value: Option[Base_Types.Bits] = get_filter_out_MON_REQ_payload() match {
+      case Some(Base_Types.Bits_Payload(v)) => Some(v)
+      case Some(v) => fail(s"Unexpected payload on port filter_out_MON_REQ.  Expecting 'Base_Types.Bits_Payload' but received ${v}")
+      case _ => None[Base_Types.Bits]()
+    }
+    return value
+  }
+
+  // payload getter for out EventDataPort
+  def get_filter_out_MON_REQ_payload(): Option[Base_Types.Bits_Payload] = {
+    return ArtNative_Ext.observeOutPortValue(bridge.api.filter_out_MON_REQ_Id).asInstanceOf[Option[Base_Types.Bits_Payload]]
   }
 
   def getComponent(): CASE_Filter_ARes_thr_Impl_Impl = {

@@ -9,14 +9,14 @@ extern "C" {
 
 // Option[IS[Z, B]]
 
-#include <type-org_sireum_None_3026C5.h>
 #include <type-org_sireum_Some_8D03B1.h>
+#include <type-org_sireum_None_3026C5.h>
 
 typedef union Option_30119F *Option_30119F;
 union Option_30119F {
   TYPE type;
-  struct None_3026C5 None_3026C5;
   struct Some_8D03B1 Some_8D03B1;
+  struct None_3026C5 None_3026C5;
 };
 
 #define DeclNewOption_30119F(x) union Option_30119F x = { 0 }

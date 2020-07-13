@@ -100,7 +100,7 @@ DeclareCAmkESComponent(CASE_Monitor_Req_thr_Impl
 )
 
 DeclareCAmkESComponent(CASE_Filter_ARes_thr_Impl
-  SOURCES components/CASE_Filter_ARes_thr_Impl/src/sb_CASE_Filter_ARes_thr_Impl.c types/src/sb_queue_union_art_DataContent_1.c types/src/sb_queue_union_art_DataContent_1.c
+  SOURCES components/CASE_Filter_ARes_thr_Impl/src/sb_CASE_Filter_ARes_thr_Impl.c types/src/sb_queue_union_art_DataContent_1.c types/src/sb_queue_union_art_DataContent_1.c types/src/sb_queue_union_art_DataContent_1.c
   INCLUDES components/CASE_Filter_ARes_thr_Impl/includes/ types/includes
   LIBS SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes
 )

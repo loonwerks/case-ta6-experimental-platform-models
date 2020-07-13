@@ -15,12 +15,14 @@ import hamr._
   val dispatchTriggers: Option[ISZ[Art.PortId]],
 
   filter_in: Port[Base_Types.Bits],
-  filter_out: Port[Base_Types.Bits]
+  filter_out_MON_GEO: Port[Base_Types.Bits],
+  filter_out_MON_REQ: Port[Base_Types.Bits]
   ) extends Bridge {
 
   val ports : Bridge.Ports = Bridge.Ports(
     all = ISZ(filter_in,
-              filter_out),
+              filter_out_MON_GEO,
+              filter_out_MON_REQ),
 
     dataIns = ISZ(),
 
@@ -28,14 +30,16 @@ import hamr._
 
     eventIns = ISZ(filter_in),
 
-    eventOuts = ISZ(filter_out)
+    eventOuts = ISZ(filter_out_MON_GEO,
+                    filter_out_MON_REQ)
   )
 
   val api : CASE_Filter_ARes_thr_Impl_Bridge.Api =
     CASE_Filter_ARes_thr_Impl_Bridge.Api(
       id,
       filter_in.id,
-      filter_out.id
+      filter_out_MON_GEO.id,
+      filter_out_MON_REQ.id
     )
 
   val entryPoints : Bridge.EntryPoints =
@@ -43,7 +47,8 @@ import hamr._
       id,
 
       filter_in.id,
-      filter_out.id,
+      filter_out_MON_GEO.id,
+      filter_out_MON_REQ.id,
 
       dispatchTriggers,
 
@@ -56,7 +61,8 @@ object CASE_Filter_ARes_thr_Impl_Bridge {
   @record class Api(
     id : Art.BridgeId,
     filter_in_Id : Art.PortId,
-    filter_out_Id : Art.PortId) {
+    filter_out_MON_GEO_Id : Art.PortId,
+    filter_out_MON_REQ_Id : Art.PortId) {
 
     def getfilter_in() : Option[Base_Types.Bits] = {
       val value : Option[Base_Types.Bits] = Art.getValue(filter_in_Id) match {
@@ -69,8 +75,12 @@ object CASE_Filter_ARes_thr_Impl_Bridge {
       return value
     }
 
-    def sendfilter_out(value : Base_Types.Bits) : Unit = {
-      Art.putValue(filter_out_Id, Base_Types.Bits_Payload(value))
+    def sendfilter_out_MON_GEO(value : Base_Types.Bits) : Unit = {
+      Art.putValue(filter_out_MON_GEO_Id, Base_Types.Bits_Payload(value))
+    }
+
+    def sendfilter_out_MON_REQ(value : Base_Types.Bits) : Unit = {
+      Art.putValue(filter_out_MON_REQ_Id, Base_Types.Bits_Payload(value))
     }
 
 
@@ -91,7 +101,8 @@ object CASE_Filter_ARes_thr_Impl_Bridge {
     CASE_Filter_ARes_thr_Impl_BridgeId : Art.BridgeId,
 
     filter_in_Id : Art.PortId,
-    filter_out_Id : Art.PortId,
+    filter_out_MON_GEO_Id : Art.PortId,
+    filter_out_MON_REQ_Id : Art.PortId,
 
     dispatchTriggers : Option[ISZ[Art.PortId]],
 
@@ -103,7 +114,8 @@ object CASE_Filter_ARes_thr_Impl_Bridge {
 
     val dataOutPortIds: ISZ[Art.PortId] = ISZ()
 
-    val eventOutPortIds: ISZ[Art.PortId] = ISZ(filter_out_Id)
+    val eventOutPortIds: ISZ[Art.PortId] = ISZ(filter_out_MON_GEO_Id,
+                                               filter_out_MON_REQ_Id)
 
     def compute(): Unit = {
       Art.receiveInput(eventInPortIds, dataInPortIds)

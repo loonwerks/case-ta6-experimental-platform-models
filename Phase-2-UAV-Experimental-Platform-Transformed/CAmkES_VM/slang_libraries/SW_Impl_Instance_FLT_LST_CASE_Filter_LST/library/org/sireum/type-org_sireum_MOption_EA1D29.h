@@ -9,14 +9,14 @@ extern "C" {
 
 // MOption[art.Bridge]
 
-#include <type-org_sireum_MSome_D3D128.h>
 #include <type-org_sireum_MNone_2A2E1D.h>
+#include <type-org_sireum_MSome_D3D128.h>
 
 typedef union MOption_EA1D29 *MOption_EA1D29;
 union MOption_EA1D29 {
   TYPE type;
-  struct MSome_D3D128 MSome_D3D128;
   struct MNone_2A2E1D MNone_2A2E1D;
+  struct MSome_D3D128 MSome_D3D128;
 };
 
 #define DeclNewMOption_EA1D29(x) union MOption_EA1D29 x = { 0 }

@@ -8,5 +8,7 @@ object CASE_Filter_ARes_thr_Impl_seL4Nix_Ext {
 
   def filter_in_Receive(): Option[DataContent] = halt("stub")
 
-  def filter_out_Send(d: DataContent): Unit = halt("stub")
+  def filter_out_MON_GEO_Send(d: DataContent): Unit = halt("stub")
+
+  def filter_out_MON_REQ_Send(d: DataContent): Unit = halt("stub")
 }

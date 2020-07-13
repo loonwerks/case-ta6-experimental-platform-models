@@ -1,5 +1,5 @@
 property set CM_Property_Set is
-	Stack_Size: constant Size => 524288 Bytes; -- 16777216 Bytes;
+	Stack_Size: constant Size => 16777216 Bytes;
 	
 	RadioDriver_Attestation_Domain: constant aadlinteger => 2;
 	UARTDriver_Domain: constant aadlinteger => 3;

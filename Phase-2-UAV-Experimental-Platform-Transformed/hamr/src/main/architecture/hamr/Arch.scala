@@ -208,7 +208,8 @@ object Arch {
   }
   val SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes : hamr.SW.CASE_Filter_ARes_thr_Impl_Bridge = {
     val filter_in = Port[Base_Types.Bits] (id = 43, name = "SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes_filter_in", mode = EventIn)
-    val filter_out = Port[Base_Types.Bits] (id = 44, name = "SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes_filter_out", mode = EventOut)
+    val filter_out_MON_GEO = Port[Base_Types.Bits] (id = 44, name = "SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes_filter_out_MON_GEO", mode = EventOut)
+    val filter_out_MON_REQ = Port[Base_Types.Bits] (id = 45, name = "SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes_filter_out_MON_REQ", mode = EventOut)
 
     hamr.SW.CASE_Filter_ARes_thr_Impl_Bridge(
       id = 11,
@@ -217,15 +218,16 @@ object Arch {
       dispatchTriggers = None(),
 
       filter_in = filter_in,
-      filter_out = filter_out
+      filter_out_MON_GEO = filter_out_MON_GEO,
+      filter_out_MON_REQ = filter_out_MON_REQ
     )
   }
   val SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo : hamr.SW.CASE_Monitor_Geo_thr_Impl_Bridge = {
-    val keep_in_zones = Port[Base_Types.Bits] (id = 45, name = "SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_keep_in_zones", mode = DataIn)
-    val keep_out_zones = Port[Base_Types.Bits] (id = 46, name = "SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_keep_out_zones", mode = DataIn)
-    val observed = Port[Base_Types.Bits] (id = 47, name = "SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_observed", mode = EventIn)
-    val output = Port[Base_Types.Bits] (id = 48, name = "SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_output", mode = EventOut)
-    val alert = Port[art.Empty] (id = 49, name = "SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_alert", mode = EventOut)
+    val keep_in_zones = Port[Base_Types.Bits] (id = 46, name = "SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_keep_in_zones", mode = DataIn)
+    val keep_out_zones = Port[Base_Types.Bits] (id = 47, name = "SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_keep_out_zones", mode = DataIn)
+    val observed = Port[Base_Types.Bits] (id = 48, name = "SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_observed", mode = EventIn)
+    val output = Port[Base_Types.Bits] (id = 49, name = "SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_output", mode = EventOut)
+    val alert = Port[art.Empty] (id = 50, name = "SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo_alert", mode = EventOut)
 
     hamr.SW.CASE_Monitor_Geo_thr_Impl_Bridge(
       id = 12,
@@ -265,8 +267,8 @@ object Arch {
                          Connection(from = SW_Impl_Instance_FLT_AReq_CASE_Filter_AReq.filter_out_MON_REQ, to = SW_Impl_Instance_MON_REQ_CASE_Monitor_Req.reference_1),
                          Connection(from = SW_Impl_Instance_FLT_OR_CASE_Filter_OR.filter_out, to = SW_Impl_Instance_UXAS_UxAS.OperatingRegion),
                          Connection(from = SW_Impl_Instance_FLT_LST_CASE_Filter_LST.filter_out, to = SW_Impl_Instance_UXAS_UxAS.LineSearchTask),
-                         Connection(from = SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes.filter_out, to = SW_Impl_Instance_MON_REQ_CASE_Monitor_Req.observed),
-                         Connection(from = SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes.filter_out, to = SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo.observed),
+                         Connection(from = SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes.filter_out_MON_GEO, to = SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo.observed),
+                         Connection(from = SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes.filter_out_MON_REQ, to = SW_Impl_Instance_MON_REQ_CASE_Monitor_Req.observed),
                          Connection(from = SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo.output, to = SW_Impl_Instance_WPM_WaypointPlanManagerService.AutomationResponse),
                          Connection(from = SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo.alert, to = SW_Impl_Instance_WPM_WaypointPlanManagerService.ReturnHome))
     )
