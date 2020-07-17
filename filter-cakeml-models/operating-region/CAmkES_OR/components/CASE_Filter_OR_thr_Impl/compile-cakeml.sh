@@ -6,7 +6,7 @@ set -e
 
 export SCRIPT_HOME=$( cd "$( dirname "$0" )" &> /dev/null && pwd )
 cd $SCRIPT_HOME
-export BASE_NAME=operating_region_filter
+export BASE_NAME=sb_CASE_Filter_OR_thr_Impl
 cd ${SCRIPT_HOME}/src
 # ODROID is arm7
 # cake32 --target=arm7 --heap_size=4 --stack_size=4 < ${SCRIPT_HOME}/src/${BASE_NAME}.cml > ${SCRIPT_HOME}/src/${BASE_NAME}.S

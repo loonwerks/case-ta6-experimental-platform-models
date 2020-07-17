@@ -31,7 +31,7 @@ Unit hamr_SW_OR_UxAS_thr_Impl_Impl_timeTriggered_(
     DeclNewString(_msg);
     String msg = (String)&_msg;
 
-    String__append(SF msg, string("\n\tsend operatingRegion ("));
+    String__append(SF msg, string("\n\treceive operatingRegion ("));
     Z_string_(SF msg, numBits / 8);
     String__append(SF msg, string(" bytes)"));
     api_logInfo__hamr_SW_OR_UxAS_thr_Impl_Impl(SF this, msg);

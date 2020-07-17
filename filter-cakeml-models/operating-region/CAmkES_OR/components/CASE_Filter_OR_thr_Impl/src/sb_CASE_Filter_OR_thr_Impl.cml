@@ -47,6 +47,7 @@ fun take_drop n list =
 val w8zero = Word8.fromInt 0;
 
 val emptybuf = Word8Array.array 0 w8zero;
+val singlebuf = Word8Array.array 1 (Word8.fromInt 0);
 
 fun clear_buf buffer =
  let val len = Word8Array.length buffer
@@ -1327,10 +1328,10 @@ fun getInput() =
 
 fun callFFI fname istr obuf =
  if fname = "get_filter_in" then  (* get input, store it in obuf *)
-   #(api_get_filter_in_in) istr obuf
+   #(api_get_filter_in) istr obuf
  else
  if fname = "put_filter_out" then
-   #(api_send_filter_out_out) istr obuf
+   #(api_send_filter_out) istr obuf
  else
    raise FFI "unknown FFI request"
 
@@ -1369,29 +1370,36 @@ structure Control =
 struct
 
   val empty_byte_array = Word8Array.array 0 (Word8.fromInt 0);  
+
+  fun pacer_emit() = 
+      (#(sb_pacer_notification_emit) "" Utils.singlebuf;
+       Word8Array.sub Utils.singlebuf 0 <> Word8.fromInt 0);
+      
+  fun pacer_wait() =
+      (#(sb_pacer_notification_wait) "" Utils.singlebuf;
+       Word8Array.sub Utils.singlebuf 0 <> Word8.fromInt 0);
+
+  fun receiveInput() = (#(api_receiveInput) "" Utils.emptybuf);
   
-  fun self_pacer_tick_emit() = (
-    #(sb_self_pacer_tick_emit) "" empty_byte_array
-  );
+  fun sendOutput() = (#(api_sendOutput) "" Utils.emptybuf);
 
-  fun self_pacer_tock_wait() = (
-    #(sb_self_pacer_tock_wait) "" empty_byte_array
-  );
-
-  fun receiveInput() = (#(api_receiveInput) "" empty_byte_array);
+  fun loop () =
+    if pacer_wait() then (
+      receiveInput();
+      OR_Filter.filter_step();
+      sendOutput();
+      pacer_emit();
+      loop()
+    )
+    else
+      loop();
   
-  fun sendOutput() = (#(api_sendOutput) "" empty_byte_array);
-
-  fun run () = (
-    self_pacer_tick_emit();
-    self_pacer_tock_wait();
-    receiveInput();
-    OR_Filter.filter_step();
-    sendOutput();
-    run()
+  fun start () = (
+    pacer_emit();
+    loop()
   );
 
 end;
 
-val _ = Control.run();
+val _ = Control.start();
 

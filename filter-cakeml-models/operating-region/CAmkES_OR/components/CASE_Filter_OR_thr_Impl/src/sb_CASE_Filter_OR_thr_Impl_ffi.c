@@ -58,7 +58,7 @@ void dumpBuffer(STACK_FRAME size_t numBits, U8* buffer) {
   init(SF_LAST);
   DeclNewString(_str);
   String str = (String)&_str;
-  String__append(SF str, string("\n\t["));
+  String__append(SF str, string("["));
   size_t end = ((numBits / 8) > 80) ? 80 : (numBits / 8);
   for (int i = 0 ; i < end ; ++i) {
     U8_string_(SF str, buffer[i]);
@@ -118,8 +118,8 @@ void ffiapi_logError(unsigned char *parameter, long parameterSizeBytes, unsigned
   hamr_SW_OR_CASE_Filter_OR_thr_Impl_Bridge_Api_logError_(SF hamr_SW_OR_CASE_Filter_OR_thr_Impl_Impl_api_(this), str);
 } 
 
-void ffiapi_get_filter_in_in(unsigned char *parameter, long parameterSizeBytes, unsigned char *output, long outputSizeBytes) {
-  DeclNewStackFrame(NULL, "sb_CASE_Filter_OR_thr_Impl_ffi.c", "", "ffiapi_get_filter_in_in", 0);
+void ffiapi_get_filter_in(unsigned char *parameter, long parameterSizeBytes, unsigned char *output, long outputSizeBytes) {
+  DeclNewStackFrame(NULL, "sb_CASE_Filter_OR_thr_Impl_ffi.c", "", "ffiapi_get_filter_in", 0);
 
   init(SF_LAST);
   size_t numBits = 0;
@@ -128,36 +128,20 @@ void ffiapi_get_filter_in_in(unsigned char *parameter, long parameterSizeBytes, 
   dumpBuffer(SF numBits, output);
 }
 
-void ffiapi_send_filter_out_out(unsigned char *parameter, long parameterSizeBytes, unsigned char *output, long outputSizeBytes) {
-  DeclNewStackFrame(NULL, "sb_CASE_Filter_OR_thr_Impl_ffi.c", "", "ffiapi_send_filter_out_out", 0);
+void ffiapi_send_filter_out(unsigned char *parameter, long parameterSizeBytes, unsigned char *output, long outputSizeBytes) {
+  DeclNewStackFrame(NULL, "sb_CASE_Filter_OR_thr_Impl_ffi.c", "", "ffiapi_send_filter_out", 0);
 
   init(SF_LAST);
   api_send_filter_out__hamr_SW_OR_CASE_Filter_OR_thr_Impl_Impl(SF this, parameterSizeBytes*8, (U8 *)parameter);
-  dumpBuffer(SF parameterSizeBytes * 8, parameter);
 }
 
-void ffisb_self_pacer_tick_emit(unsigned char *parameter, long parameterSizeBytes, unsigned char *output, long outputSizeBytes) {
-  sb_self_pacer_tick_emit();
-  output[0] = 1;
-}
-
-void ffisb_self_pacer_tock_wait(unsigned char *parameter, long parameterSizeBytes, unsigned char *output, long outputSizeBytes) {
+void ffisb_pacer_notification_wait(unsigned char *parameter, long parameterSizeBytes, unsigned char *output, long outputSizeBytes) {
   sb_self_pacer_tock_wait();
   output[0] = 1;
 }
 
-/**
- * Required by the FFI framework
- */
+void ffisb_pacer_notification_emit(unsigned char *parameter, long parameterSizeBytes, unsigned char *output, long outputSizeBytes) {
+  sb_self_pacer_tick_emit();
+  output[0] = 1;
+}
 
-// void ffiwrite (unsigned char *parameter, long parameterSizeBytes, unsigned char *output, long outputSizeBytes){
-// }
-
-// void cml_exit(int arg) {
-//   #ifdef DEBUG_FFI
-//   {
-//     fprintf(stderr,"GCNum: %d, GCTime(us): %ld\n",numGC,microsecs);
-//   }
-//   #endif
-//   exit(arg);
-// }

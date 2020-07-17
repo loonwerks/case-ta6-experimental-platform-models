@@ -75,13 +75,13 @@ endif(WITH_LOC)
 
 
 add_library(SlangTypeLibrary STATIC
-        runtime/lib.h
-        runtime/misc.h
-        runtime/stackframe.c
-        runtime/type.c
-        runtime/type.h
-        runtime/misc.c
         runtime/stackframe.h
+        runtime/lib.h
+        runtime/type.h
+        runtime/type.c
+        runtime/stackframe.c
+        runtime/misc.c
+        runtime/misc.h
         runtime/ztype.h
         runtime/type-composite.h
         runtime/types.h
