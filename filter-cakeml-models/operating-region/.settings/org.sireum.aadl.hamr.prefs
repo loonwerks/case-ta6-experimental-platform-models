@@ -1,0 +1,11 @@
+base.package.name=
+bit.width=32
+c.src.directory=
+camkes.aux.src.dir=
+camkes.output.directory=/home/vagrant/Documents/case-ta6-experimental-platform-models/filter-cakeml-models/operating-region/CAmkES_OR
+eclipse.preferences.version=1
+exclude.slang.impl=true
+max.sequence.size=1
+max.string.size=256
+platform=seL4
+slang.output.directory=/home/vagrant/Documents/case-ta6-experimental-platform-models/filter-cakeml-models/operating-region/hamr

@@ -1,0 +1,38 @@
+// This file will be regenerated, do not edit
+
+import <std_connector.camkes>;
+import "components/UxAS_thr_Impl/UxAS_thr_Impl.camkes";
+import "components/CASE_AttestationGate_thr_Impl/CASE_AttestationGate_thr_Impl.camkes";
+import "components/CASE_Filter_OR_thr_Impl/CASE_Filter_OR_thr_Impl.camkes";
+
+assembly {
+  composition {
+    component UxAS_thr_Impl UxAS;
+    component CASE_AttestationGate_thr_Impl CASE_AttestationGate;
+    component CASE_Filter_OR_thr_Impl CASE_Filter_OR;
+
+    connection seL4Notification conn1(from CASE_AttestationGate.sb_OperatingRegion_out_1_notification, to CASE_Filter_OR.sb_filter_in_notification);
+    connection seL4SharedData conn2(from CASE_AttestationGate.sb_OperatingRegion_out_queue_1, to CASE_Filter_OR.sb_filter_in_queue);
+    connection seL4Notification conn3(from CASE_Filter_OR.sb_filter_out_1_notification, to UxAS.sb_OperatingRegion_notification);
+    connection seL4SharedData conn4(from CASE_Filter_OR.sb_filter_out_queue_1, to UxAS.sb_OperatingRegion_queue);
+    connection seL4Notification conn5(from UxAS.sb_self_pacer_tick, to UxAS.sb_self_pacer_tock);
+    connection seL4Notification conn6(from CASE_AttestationGate.sb_self_pacer_tick, to CASE_AttestationGate.sb_self_pacer_tock);
+    connection seL4Notification conn7(from CASE_Filter_OR.sb_self_pacer_tick, to CASE_Filter_OR.sb_self_pacer_tock);
+  }
+
+  configuration {
+    UxAS._stack_size = 524288;
+    CASE_AttestationGate._stack_size = 524288;
+    CASE_Filter_OR._stack_size = 524288;
+    conn2.size = 4096;
+    CASE_AttestationGate.sb_OperatingRegion_out_queue_1_access = "W";
+    CASE_Filter_OR.sb_filter_in_queue_access = "R";
+    conn4.size = 4096;
+    CASE_Filter_OR.sb_filter_out_queue_1_access = "W";
+    UxAS.sb_OperatingRegion_queue_access = "R";
+    UxAS._domain = 9;
+    CASE_AttestationGate._domain = 5;
+    CASE_Filter_OR._domain = 8;
+
+  }
+}

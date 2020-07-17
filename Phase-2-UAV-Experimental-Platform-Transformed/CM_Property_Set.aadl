@@ -5,6 +5,7 @@ property set CM_Property_Set is
 	UARTDriver_Domain: constant aadlinteger => 3;
 	CASE_AttestationGate_Domain: constant aadlinteger => 5;
 	CASE_Filter_LST_Domain: constant aadlinteger => 7;
+	CASE_Filter_OR_Domain: constant aadlinteger => 8;
 	UxAS_Domain: constant aadlinteger => 9;
 	FlyZonesDatabase_Domain: constant aadlinteger => 10;
 	CASE_Monitor_Req_Domain: constant aadlinteger => 11;

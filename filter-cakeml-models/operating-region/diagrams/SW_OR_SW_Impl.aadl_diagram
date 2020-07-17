@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="ASCII"?>
+<diagram:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:diagram="http://osate.org/diagram" formatVersion="7">
+  <element uuid="50c14ed3-0dbe-4fd2-8ace-327231a221e2" manual="true">
+    <element uuid="2a43ef74-658e-4d08-92b4-5a26bfba8e73" manual="true">
+      <element uuid="7c2599c4-4f1f-4c66-b95c-ed1c60a8f15b" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>c19</seg>
+      </bo>
+    </element>
+    <element uuid="c18dc7f0-e50d-411b-95f6-e6cb194d2914" manual="true">
+      <element uuid="2cdfb605-b8f6-4f81-b7ef-7fd0a4bb53f2" manual="true">
+        <bo>
+          <seg>tag</seg>
+          <seg>unidirectional</seg>
+        </bo>
+      </element>
+      <bo>
+        <seg>connection</seg>
+        <seg>c24</seg>
+      </bo>
+    </element>
+    <element uuid="950b33ae-b616-484c-9573-39f100c7157e" manual="true">
+      <element uuid="3cad1cd4-ffc7-4e2c-b130-351060c08fa8" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>operatingregion_out</seg>
+        </bo>
+        <position x="271.0" y="10.0"/>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>am_gate</seg>
+      </bo>
+      <position x="12.0" y="93.0"/>
+      <size width="426.0" height="60.0"/>
+    </element>
+    <element uuid="dcf94dcc-f243-4b20-aeb1-f35b52829faa" manual="true">
+      <element uuid="1bd06c05-e7af-4260-84d6-166a79936017" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>filter_in</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <element uuid="fa0b095f-a861-4825-a6d1-b3a8cb72981c" manual="true" dockArea="right">
+        <bo>
+          <seg>feature</seg>
+          <seg>filter_out</seg>
+        </bo>
+        <position x="183.0" y="10.0"/>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>flt_or</seg>
+      </bo>
+      <position x="458.0" y="93.0"/>
+      <size width="256.0" height="60.0"/>
+    </element>
+    <element uuid="5fc05cd6-0bb3-4a33-9b4a-c7d918cf98cf" manual="true">
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>proc</seg>
+      </bo>
+      <position x="12.0" y="38.0"/>
+      <size width="88.0" height="35.0"/>
+    </element>
+    <element uuid="a090eee5-d63e-4d3d-a3a9-47928cd2a253" manual="true">
+      <element uuid="b2e06ecc-bd41-45ca-b027-63c5df2a4140" manual="true" dockArea="left">
+        <bo>
+          <seg>feature</seg>
+          <seg>operatingregion</seg>
+        </bo>
+        <position y="10.0"/>
+      </element>
+      <bo>
+        <seg>subcomponent</seg>
+        <seg>uxas</seg>
+      </bo>
+      <position x="734.0" y="93.0"/>
+      <size width="346.0" height="60.0"/>
+    </element>
+    <bo>
+      <seg>classifier</seg>
+      <seg>sw.impl</seg>
+    </bo>
+    <position x="12.0" y="12.0"/>
+    <size width="1092.0" height="165.0"/>
+  </element>
+  <config type="structure" connectionPrimaryLabelsVisible="false">
+    <enabledAadlProperties/>
+    <context>
+      <seg>classifier</seg>
+      <seg>sw_or::sw.impl</seg>
+    </context>
+  </config>
+</diagram:Diagram>

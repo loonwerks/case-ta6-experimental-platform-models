@@ -1,0 +1,2 @@
+ISZ[B]=2048;
+ISZ[String]=1

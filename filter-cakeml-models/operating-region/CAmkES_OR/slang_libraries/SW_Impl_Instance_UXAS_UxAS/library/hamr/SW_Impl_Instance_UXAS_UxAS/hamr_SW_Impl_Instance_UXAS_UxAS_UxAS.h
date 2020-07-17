@@ -1,0 +1,59 @@
+#ifndef SIREUM_H_hamr_SW_Impl_Instance_UXAS_UxAS_UxAS
+#define SIREUM_H_hamr_SW_Impl_Instance_UXAS_UxAS_UxAS
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <types.h>
+
+void hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_init(STACK_FRAME_ONLY);
+
+hamr_SW_OR_UxAS_thr_Impl_Bridge hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_UxASBridge(STACK_FRAME_ONLY);
+art_Bridge_EntryPoints hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_entryPoints(STACK_FRAME_ONLY);
+Option_8E9F45 hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_noData(STACK_FRAME_ONLY);
+Z hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_OperatingRegion_id(STACK_FRAME_ONLY);
+Option_8E9F45 hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_OperatingRegion_port(STACK_FRAME_ONLY);
+void hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_OperatingRegion_port_a(STACK_FRAME Option_8E9F45 p_OperatingRegion_port);
+
+Unit hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_main_printDataContent(STACK_FRAME art_DataContent a);
+
+Z hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_main(STACK_FRAME IS_948B60 args);
+
+Unit hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_initialiseArchitecture(STACK_FRAME_ONLY);
+
+Unit hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_initialiseEntryPoint(STACK_FRAME_ONLY);
+
+Unit hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_computeEntryPoint(STACK_FRAME_ONLY);
+
+Unit hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_finaliseEntryPoint(STACK_FRAME_ONLY);
+
+Unit hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_run(STACK_FRAME_ONLY);
+
+Unit hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_logInfo(STACK_FRAME String title, String msg);
+
+Unit hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_sendOutput(STACK_FRAME IS_82ABD8 eventPortIds, IS_82ABD8 dataPortIds);
+
+Unit hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_receiveInput(STACK_FRAME IS_82ABD8 eventPortIds, IS_82ABD8 dataPortIds);
+
+Unit hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_logDebug(STACK_FRAME String title, String msg);
+
+Unit hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_logError(STACK_FRAME String title, String msg);
+
+void hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_getValue(STACK_FRAME Option_8E9F45 result, Z portId);
+
+void hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_init_UxASBridge(STACK_FRAME_ONLY);
+
+void hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_init_entryPoints(STACK_FRAME_ONLY);
+
+void hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_init_noData(STACK_FRAME_ONLY);
+
+void hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_init_OperatingRegion_id(STACK_FRAME_ONLY);
+
+void hamr_SW_Impl_Instance_UXAS_UxAS_UxAS_init_OperatingRegion_port(STACK_FRAME_ONLY);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
