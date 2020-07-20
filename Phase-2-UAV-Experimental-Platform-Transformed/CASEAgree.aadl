@@ -58,7 +58,7 @@ annex agree {**
 		(forall viewangle in msg.ViewAngleList, WELL_FORMED_VIEWANGLE(viewangle));
 		
 	fun WELL_FORMED_AUTOMATION_RESPONSE(msg : CMASI::AutomationResponse.i) : bool = 
-		false;
+		(forall missioncommand in msg.MissionCommandList, forall waypoint in missioncommand.WaypointList, WELL_FORMED_WAYPOINT(waypoint));
 		
 	fun WELL_FORMED_POINT(point : CMASI::Location3D.i) : bool =
 		point.Latitude >= LATITUDE_MIN and point.Latitude <= LATITUDE_MAX and
@@ -68,6 +68,11 @@ annex agree {**
 	fun WELL_FORMED_VIEWANGLE(viewangle : CMASI::Wedge.i) : bool =
     	viewangle.AzimuthCenterline >= AZIMUTH_CENTERLINE_MIN and viewangle.AzimuthCenterline <= AZIMUTH_CENTERLINE_MAX and
     	viewangle.VerticalCenterline >= VERTICAL_CENTERLINE_MIN and viewangle.VerticalCenterline <= VERTICAL_CENTERLINE_MAX;
+
+	fun WELL_FORMED_WAYPOINT(point : CMASI::Waypoint.i) : bool =
+		point.Latitude >= LATITUDE_MIN and point.Latitude <= LATITUDE_MAX and
+		point.Longitude >= LONGITUDE_MIN and point.Longitude <= LONGITUDE_MAX and
+		point.Altitude >= ALTITUDE_MIN and point.Altitude <= ALTITUDE_MAX;
          
 **};
 
