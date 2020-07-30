@@ -16,7 +16,7 @@ if [ -n "$COMSPEC" -a -x "$COMSPEC" ]; then
   PATH_SEP=";"
 fi
 
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_FC_UART_UARTDriver"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_FC_UART_UARTDriver"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/Drivers${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_FC_UART_UARTDriver" \
@@ -26,22 +26,19 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 5 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=5;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=5" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_FC_UART_UARTDriver.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_FC_UART_UARTDriver.UARTDriver" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/UARTDriver_Impl_Impl/UARTDriver_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/UARTDriver_Impl_Impl/UARTDriver_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/UARTDriver_Impl_Impl/UARTDriver_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_FC_UART_UARTDriver/UARTDriver_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_FC_UART_UARTDriver/UARTDriver_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_RADIO_RadioDriver_Attestation"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_RADIO_RadioDriver_Attestation"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_RADIO_RadioDriver_Attestation" \
@@ -51,7 +48,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 7 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=7;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=7" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_RADIO_RadioDriver_Attestation.cmake" \
@@ -63,10 +60,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_FlyZones_FlyZonesDatabase"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_FlyZones_FlyZonesDatabase"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_FlyZones_FlyZonesDatabase" \
@@ -76,7 +70,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 2 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=2;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=2" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_FlyZones_FlyZonesDatabase.cmake" \
@@ -88,10 +82,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_UXAS_UxAS"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_UXAS_UxAS"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_UXAS_UxAS" \
@@ -101,7 +92,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 5 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=5;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=5" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_UXAS_UxAS.cmake" \
@@ -113,10 +104,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_WPM_WaypointPlanManagerService"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_WPM_WaypointPlanManagerService"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_WPM_WaypointPlanManagerService" \
@@ -126,7 +114,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 4 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=4;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=4" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_WPM_WaypointPlanManagerService.cmake" \
@@ -138,10 +126,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_AM_CASE_AttestationManager"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_AM_CASE_AttestationManager"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_AM_CASE_AttestationManager" \
@@ -151,7 +136,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 3 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=3;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=3" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_AM_CASE_AttestationManager.cmake" \
@@ -163,10 +148,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_AM_Gate_CASE_AttestationGate"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_AM_Gate_CASE_AttestationGate"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_AM_Gate_CASE_AttestationGate" \
@@ -176,7 +158,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 7 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=7;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=7" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_AM_Gate_CASE_AttestationGate.cmake" \
@@ -188,10 +170,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_FLT_AReq_CASE_Filter_AReq"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_FLT_AReq_CASE_Filter_AReq"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_FLT_AReq_CASE_Filter_AReq" \
@@ -201,7 +180,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 3 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=3;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=3" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_FLT_AReq_CASE_Filter_AReq.cmake" \
@@ -213,10 +192,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_FLT_OR_CASE_Filter_OR"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_FLT_OR_CASE_Filter_OR"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_FLT_OR_CASE_Filter_OR" \
@@ -226,22 +202,19 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 2 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=2;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=2" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_FLT_OR_CASE_Filter_OR.cmake" \
   --forward "art.ArtNative=hamr.SW_Impl_Instance_FLT_OR_CASE_Filter_OR.CASE_Filter_OR" \
-  --stack-size "16777216" \
+  --stack-size "524288" \
   --stable-type-id \
   --exts "${SCRIPT_HOME}/../src/c/ext-c/ext.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/ext.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Filter_OR_thr_Impl_Impl/CASE_Filter_OR_thr_Impl_Impl_api.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Filter_OR_thr_Impl_Impl/CASE_Filter_OR_thr_Impl_Impl_api.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/CASE_Filter_OR_thr_Impl_Impl/CASE_Filter_OR_thr_Impl_Impl.c${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_FLT_OR_CASE_Filter_OR/CASE_Filter_OR_thr_Impl_adapter.h${PATH_SEP}${SCRIPT_HOME}/../src/c/ext-c/adapters/SW_Impl_Instance_FLT_OR_CASE_Filter_OR/CASE_Filter_OR_thr_Impl_adapter.c" \
   --exclude-build "hamr.Drivers.UARTDriver_Impl_Impl,hamr.SW.RadioDriver_Attestation_thr_Impl_Impl,hamr.SW.FlyZonesDatabase_thr_Impl_Impl,hamr.SW.UxAS_thr_Impl_Impl,hamr.SW.WaypointPlanManagerService_thr_Impl_Impl,hamr.SW.CASE_AttestationManager_thr_Impl_Impl,hamr.SW.CASE_AttestationGate_thr_Impl_Impl,hamr.SW.CASE_Filter_AReq_thr_Impl_Impl,hamr.SW.CASE_Filter_OR_thr_Impl_Impl,hamr.SW.CASE_Filter_LST_thr_Impl_Impl,hamr.SW.CASE_Monitor_Req_thr_Impl_Impl,hamr.SW.CASE_Filter_ARes_thr_Impl_Impl,hamr.SW.CASE_Monitor_Geo_thr_Impl_Impl" \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_FLT_LST_CASE_Filter_LST"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_FLT_LST_CASE_Filter_LST"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_FLT_LST_CASE_Filter_LST" \
@@ -251,7 +224,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 2 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=2;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=2" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_FLT_LST_CASE_Filter_LST.cmake" \
@@ -263,10 +236,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_MON_REQ_CASE_Monitor_Req"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_MON_REQ_CASE_Monitor_Req"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_MON_REQ_CASE_Monitor_Req" \
@@ -276,7 +246,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 3 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=3;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=3" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_MON_REQ_CASE_Monitor_Req.cmake" \
@@ -288,10 +258,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes" \
@@ -301,7 +268,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 2 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=2;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=2" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes.cmake" \
@@ -313,10 +280,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/bridge${PATH_SEP}${SCRIPT_HOME}/../src/main/component${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW${PATH_SEP}${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo" \
@@ -326,7 +290,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 5 \
   --sequence "MS[Z,art.Bridge]=1;MS[Z,MOption[art.Bridge]]=1;IS[Z,art.UPort]=5;IS[Z,art.UConnection]=1;IS[Z,B]=262144" \
   --constants "art.Art.maxComponents=1;art.Art.maxPorts=5" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SW_Impl_Instance_MON_GEO_CASE_Monitor_Geo.cmake" \
@@ -338,10 +302,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --lib-only \
   --verbose
 
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE
-
-OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES_VM/slang_libraries/SlangTypeLibrary"
+OUTPUT_DIR="${SCRIPT_HOME}/../../CAmkES/slang_libraries/SlangTypeLibrary"
 
 ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --sourcepath "${SCRIPT_HOME}/../src/main/art${PATH_SEP}${SCRIPT_HOME}/../src/main/data${PATH_SEP}${SCRIPT_HOME}/../src/main/seL4Nix/hamr/SlangTypeLibrary" \
@@ -351,7 +312,7 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --fingerprint 3 \
   --bits 32 \
   --string-size 256 \
-  --sequence-size 1024 \
+  --sequence-size 1 \
   --sequence "IS[Z,B]=262144" \
   --cmake-includes "+${SCRIPT_HOME}/settings_SlangTypeLibrary.cmake" \
   --forward "art.ArtNative=hamr.SlangTypeLibrary.SlangTypeLibrary" \
@@ -359,6 +320,3 @@ ${SIREUM_HOME}/bin/sireum slang transpilers c \
   --stable-type-id \
   --lib-only \
   --verbose
-
-FILE=${OUTPUT_DIR}/CMakeLists.txt
-echo -e "\n\nadd_definitions(-DCAMKES)" >> $FILE

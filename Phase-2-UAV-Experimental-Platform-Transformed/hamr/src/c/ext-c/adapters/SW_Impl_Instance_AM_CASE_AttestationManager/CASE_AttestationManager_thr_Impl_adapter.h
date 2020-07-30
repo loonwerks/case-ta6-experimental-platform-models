@@ -3,10 +3,12 @@
 
 #include <all.h>
 
-Unit hamr_SW_CASE_AttestationManager_thr_Impl_adapter_initialiseArchitecture();
+Unit hamr_SW_CASE_AttestationManager_thr_Impl_adapter_initialiseArchitecture(STACK_FRAME_ONLY);
 
-Unit hamr_SW_CASE_AttestationManager_thr_Impl_adapter_initialiseEntryPoint();
+Unit hamr_SW_CASE_AttestationManager_thr_Impl_adapter_initialiseEntryPoint(STACK_FRAME_ONLY);
 
-Unit hamr_SW_CASE_AttestationManager_thr_Impl_adapter_computeEntryPoint();
+Unit hamr_SW_CASE_AttestationManager_thr_Impl_adapter_computeEntryPoint(STACK_FRAME_ONLY);
+
+art_Bridge_EntryPoints hamr_SW_CASE_AttestationManager_thr_Impl_adapter_entryPoints(STACK_FRAME_ONLY);
 
 #endif

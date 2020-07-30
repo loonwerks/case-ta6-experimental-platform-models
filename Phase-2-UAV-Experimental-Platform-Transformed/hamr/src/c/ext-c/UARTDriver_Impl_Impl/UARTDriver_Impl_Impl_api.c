@@ -3,12 +3,16 @@
 // This file was auto-generated.  Do not edit
 
 bool api_get_recv_data__hamr_Drivers_UARTDriver_Impl_Impl(
+  STACK_FRAME
   hamr_Drivers_UARTDriver_Impl_Impl this,
   size_t *numBits,
   uint8_t *byteArray){
+  DeclNewStackFrame(caller, "UARTDriver_Impl_Impl_api.c", "", "api_get_recv_data__hamr_Drivers_UARTDriver_Impl_Impl", 0);
+
   // Option_30119F = Option[IS[Z, B]]
   // Some_8D03B1 = Some[IS[Z, B]]
   DeclNewOption_30119F(t_0);
+
   hamr_Drivers_UARTDriver_Impl_Bridge_Api_getrecv_data_(
     SF
     (Option_30119F) &t_0,
@@ -24,12 +28,16 @@ bool api_get_recv_data__hamr_Drivers_UARTDriver_Impl_Impl(
 }
 
 bool api_get_MissionCommand__hamr_Drivers_UARTDriver_Impl_Impl(
+  STACK_FRAME
   hamr_Drivers_UARTDriver_Impl_Impl this,
   size_t *numBits,
   uint8_t *byteArray){
+  DeclNewStackFrame(caller, "UARTDriver_Impl_Impl_api.c", "", "api_get_MissionCommand__hamr_Drivers_UARTDriver_Impl_Impl", 0);
+
   // Option_30119F = Option[IS[Z, B]]
   // Some_8D03B1 = Some[IS[Z, B]]
   DeclNewOption_30119F(t_0);
+
   hamr_Drivers_UARTDriver_Impl_Bridge_Api_getMissionCommand_(
     SF
     (Option_30119F) &t_0,
@@ -45,12 +53,14 @@ bool api_get_MissionCommand__hamr_Drivers_UARTDriver_Impl_Impl(
 }
 
 void api_send_send_data__hamr_Drivers_UARTDriver_Impl_Impl(
+  STACK_FRAME
   hamr_Drivers_UARTDriver_Impl_Impl this,
   size_t numBits,
   uint8_t *byteArray) {
+  DeclNewStackFrame(caller, "UARTDriver_Impl_Impl_api.c", "", "api_send_send_data__hamr_Drivers_UARTDriver_Impl_Impl", 0);
 
-  sfAssert((Z) numBits >= 0, "numBits must be non-negative for IS[Z, B].");
-  sfAssert((Z) numBits <= MaxIS_C4F575, "numBits too large for IS[Z, B].");
+  sfAssert(SF (Z) numBits >= 0, "numBits must be non-negative for IS[Z, B].");
+  sfAssert(SF (Z) numBits <= MaxIS_C4F575, "numBits too large for IS[Z, B].");
 
   DeclNewIS_C4F575(t_0);
 
@@ -60,17 +70,20 @@ void api_send_send_data__hamr_Drivers_UARTDriver_Impl_Impl(
   }
 
   hamr_Drivers_UARTDriver_Impl_Bridge_Api_sendsend_data_(
+    SF
     hamr_Drivers_UARTDriver_Impl_Impl_api_(this),
     &t_0);
 }
 
 void api_send_AirVehicleState_WPM__hamr_Drivers_UARTDriver_Impl_Impl(
+  STACK_FRAME
   hamr_Drivers_UARTDriver_Impl_Impl this,
   size_t numBits,
   uint8_t *byteArray) {
+  DeclNewStackFrame(caller, "UARTDriver_Impl_Impl_api.c", "", "api_send_AirVehicleState_WPM__hamr_Drivers_UARTDriver_Impl_Impl", 0);
 
-  sfAssert((Z) numBits >= 0, "numBits must be non-negative for IS[Z, B].");
-  sfAssert((Z) numBits <= MaxIS_C4F575, "numBits too large for IS[Z, B].");
+  sfAssert(SF (Z) numBits >= 0, "numBits must be non-negative for IS[Z, B].");
+  sfAssert(SF (Z) numBits <= MaxIS_C4F575, "numBits too large for IS[Z, B].");
 
   DeclNewIS_C4F575(t_0);
 
@@ -80,17 +93,20 @@ void api_send_AirVehicleState_WPM__hamr_Drivers_UARTDriver_Impl_Impl(
   }
 
   hamr_Drivers_UARTDriver_Impl_Bridge_Api_sendAirVehicleState_WPM_(
+    SF
     hamr_Drivers_UARTDriver_Impl_Impl_api_(this),
     &t_0);
 }
 
 void api_send_AirVehicleState_UXAS__hamr_Drivers_UARTDriver_Impl_Impl(
+  STACK_FRAME
   hamr_Drivers_UARTDriver_Impl_Impl this,
   size_t numBits,
   uint8_t *byteArray) {
+  DeclNewStackFrame(caller, "UARTDriver_Impl_Impl_api.c", "", "api_send_AirVehicleState_UXAS__hamr_Drivers_UARTDriver_Impl_Impl", 0);
 
-  sfAssert((Z) numBits >= 0, "numBits must be non-negative for IS[Z, B].");
-  sfAssert((Z) numBits <= MaxIS_C4F575, "numBits too large for IS[Z, B].");
+  sfAssert(SF (Z) numBits >= 0, "numBits must be non-negative for IS[Z, B].");
+  sfAssert(SF (Z) numBits <= MaxIS_C4F575, "numBits too large for IS[Z, B].");
 
   DeclNewIS_C4F575(t_0);
 
@@ -100,13 +116,17 @@ void api_send_AirVehicleState_UXAS__hamr_Drivers_UARTDriver_Impl_Impl(
   }
 
   hamr_Drivers_UARTDriver_Impl_Bridge_Api_sendAirVehicleState_UXAS_(
+    SF
     hamr_Drivers_UARTDriver_Impl_Impl_api_(this),
     &t_0);
 }
 
 void api_logInfo__hamr_Drivers_UARTDriver_Impl_Impl(
+  STACK_FRAME
   hamr_Drivers_UARTDriver_Impl_Impl this,
   String str) {
+  DeclNewStackFrame(caller, "UARTDriver_Impl_Impl_api.c", "", "api_logInfo__hamr_Drivers_UARTDriver_Impl_Impl", 0);
+
   hamr_Drivers_UARTDriver_Impl_Bridge_Api_logInfo_(
     SF
     hamr_Drivers_UARTDriver_Impl_Impl_api_(this),
@@ -114,8 +134,11 @@ void api_logInfo__hamr_Drivers_UARTDriver_Impl_Impl(
 }
 
 void api_logDebug__hamr_Drivers_UARTDriver_Impl_Impl(
+  STACK_FRAME
   hamr_Drivers_UARTDriver_Impl_Impl this,
   String str) {
+  DeclNewStackFrame(caller, "UARTDriver_Impl_Impl_api.c", "", "api_logDebug__hamr_Drivers_UARTDriver_Impl_Impl", 0);
+
   hamr_Drivers_UARTDriver_Impl_Bridge_Api_logDebug_(
     SF
     hamr_Drivers_UARTDriver_Impl_Impl_api_(this),
@@ -123,8 +146,11 @@ void api_logDebug__hamr_Drivers_UARTDriver_Impl_Impl(
 }
 
 void api_logError__hamr_Drivers_UARTDriver_Impl_Impl(
+  STACK_FRAME
   hamr_Drivers_UARTDriver_Impl_Impl this,
   String str) {
+  DeclNewStackFrame(caller, "UARTDriver_Impl_Impl_api.c", "", "api_logError__hamr_Drivers_UARTDriver_Impl_Impl", 0);
+
   hamr_Drivers_UARTDriver_Impl_Bridge_Api_logError_(
     SF
     hamr_Drivers_UARTDriver_Impl_Impl_api_(this),

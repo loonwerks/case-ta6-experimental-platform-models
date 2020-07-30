@@ -1,13 +1,25 @@
 #include <CASE_AttestationManager_thr_Impl_adapter.h>
 
-Unit hamr_SW_CASE_AttestationManager_thr_Impl_adapter_initialiseArchitecture() {
+Unit hamr_SW_CASE_AttestationManager_thr_Impl_adapter_initialiseArchitecture(STACK_FRAME_ONLY) {
+  DeclNewStackFrame(caller, "CASE_AttestationManager_thr_Impl_adapter.c", "", "hamr_SW_CASE_AttestationManager_thr_Impl_adapter_initialiseArchitecture", 0);
+
   hamr_SW_Impl_Instance_AM_CASE_AttestationManager_CASE_AttestationManager_initialiseArchitecture(SF_LAST);
 }
 
-Unit hamr_SW_CASE_AttestationManager_thr_Impl_adapter_initialiseEntryPoint() {
+Unit hamr_SW_CASE_AttestationManager_thr_Impl_adapter_initialiseEntryPoint(STACK_FRAME_ONLY) {
+  DeclNewStackFrame(caller, "CASE_AttestationManager_thr_Impl_adapter.c", "", "hamr_SW_CASE_AttestationManager_thr_Impl_adapter_initialiseEntryPoint", 0);
+
   hamr_SW_Impl_Instance_AM_CASE_AttestationManager_CASE_AttestationManager_initialiseEntryPoint(SF_LAST);
 }
 
-Unit hamr_SW_CASE_AttestationManager_thr_Impl_adapter_computeEntryPoint() {
+Unit hamr_SW_CASE_AttestationManager_thr_Impl_adapter_computeEntryPoint(STACK_FRAME_ONLY) {
+  DeclNewStackFrame(caller, "CASE_AttestationManager_thr_Impl_adapter.c", "", "hamr_SW_CASE_AttestationManager_thr_Impl_adapter_computeEntryPoint", 0);
+
   hamr_SW_Impl_Instance_AM_CASE_AttestationManager_CASE_AttestationManager_computeEntryPoint(SF_LAST);
+}
+
+art_Bridge_EntryPoints hamr_SW_CASE_AttestationManager_thr_Impl_adapter_entryPoints(STACK_FRAME_ONLY) {
+  DeclNewStackFrame(caller, "CASE_AttestationManager_thr_Impl_adapter.c", "", "hamr_SW_CASE_AttestationManager_thr_Impl_adapter_entryPoints", 0);
+
+  return hamr_SW_Impl_Instance_AM_CASE_AttestationManager_CASE_AttestationManager_entryPoints(SF_LAST);
 }

@@ -44,7 +44,7 @@ public
 			LineSearchTask: out event data port CMASI::AddressAttributedMessage.i;
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::RadioDriver_Attestation_Domain;
-			HAMR::Component_Type => VIRTUAL_MACHINE;
+--			HAMR::Component_Type => VIRTUAL_MACHINE;
 	end RadioDriver_Attestation;
 	
 	process implementation RadioDriver_Attestation.Impl
@@ -217,6 +217,7 @@ public
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
+			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
 			guarantee Req_Filter_OR "Well-formed Operating Region message" : CASEAgree::WELL_FORMED_OPERATING_REGION(filter_out);
 		**};
@@ -315,7 +316,7 @@ public
             AutomationResponse : out event data port CMASI::AutomationResponse.i;
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::UxAS_Domain;
-			HAMR::Component_Type => VIRTUAL_MACHINE;
+--			HAMR::Component_Type => VIRTUAL_MACHINE;
 	end UxAS;
 	
 	process implementation UxAS.Impl

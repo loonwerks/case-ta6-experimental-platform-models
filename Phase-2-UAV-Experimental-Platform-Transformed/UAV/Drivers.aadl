@@ -43,6 +43,7 @@ public
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
 			Compute_Execution_Time => 6ms .. 6ms;
+			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
 			assume Req001_UARTDriver "Assumes recv_data only gets well formed CASE_UART_Msg.Impl types" : 
 					        CASEAgree::WellformedCASE_UART_Msg(recv_data);
