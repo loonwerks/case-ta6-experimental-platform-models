@@ -1,0 +1,1 @@
+../../../../hamr/src/c/ext-c/adapters/SW_Impl_Instance_FLT_ARes_CASE_Filter_ARes/CASE_Filter_ARes_thr_Impl_adapter.h

@@ -1,0 +1,22 @@
+#ifndef SIREUM_H_hamr_SW_WaypointPlanManagerService_thr_Impl_seL4Nix
+#define SIREUM_H_hamr_SW_WaypointPlanManagerService_thr_Impl_seL4Nix
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include <types.h>
+
+Unit hamr_SW_WaypointPlanManagerService_thr_Impl_seL4Nix_MissionCommand_Send(STACK_FRAME art_DataContent d);
+
+void hamr_SW_WaypointPlanManagerService_thr_Impl_seL4Nix_AutomationResponse_Receive(STACK_FRAME Option_8E9F45 result);
+
+void hamr_SW_WaypointPlanManagerService_thr_Impl_seL4Nix_AirVehicleState_Receive(STACK_FRAME Option_8E9F45 result);
+
+void hamr_SW_WaypointPlanManagerService_thr_Impl_seL4Nix_ReturnHome_Receive(STACK_FRAME Option_8E9F45 result);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif
