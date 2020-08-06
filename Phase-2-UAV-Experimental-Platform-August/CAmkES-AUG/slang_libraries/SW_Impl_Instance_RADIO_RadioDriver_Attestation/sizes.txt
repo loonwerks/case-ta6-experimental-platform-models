@@ -1,0 +1,9 @@
+ISZ[B]=262144;
+ISZ[String]=6;
+ISZ[Z]=6;
+ISZ[art.UConnection]=1;
+ISZ[art.UPort]=6;
+MSZ[IS[Z, Z]]=6;
+MSZ[MOption[art.Bridge]]=1;
+MSZ[Option[art.UPort]]=6;
+MSZ[art.Bridge]=1

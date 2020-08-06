@@ -1,0 +1,1 @@
+../../../../hamr/src/c/ext-c/adapters/SW_Impl_Instance_AM_Gate_CASE_AttestationGate/CASE_AttestationGate_thr_Impl_adapter.c

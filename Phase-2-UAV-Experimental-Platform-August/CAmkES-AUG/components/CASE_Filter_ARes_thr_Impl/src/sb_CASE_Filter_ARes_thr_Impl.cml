@@ -1,0 +1,1404 @@
+(* ========================================================================== *)
+(* This is a template file that gets instantiated when generating a           *)
+(* contig-based filter. The following patterns found in the file are replaced *)
+(* with port-specific information:                                            *)
+(*                                                                            *)
+(*     BUFSIZE                                                                *)
+(*     CALL-FFI-DECL                                                          *)
+(*     GET-FILTER-IN                                                          *)
+(*     PORT-CONTIG-TYPE                                                       *)
+(*     PUT-FILTER-OUT                                                         *)
+(*                                                                            *)
+(* (Patterns are actually bracketed by <<...>>)                               *)
+(* ========================================================================== *)
+
+
+structure Utils =
+struct
+
+exception ERR string string;
+
+fun insert x list = if List.member x list then list else x::list;
+
+fun union l1 l2 =
+ case l1
+  of [] =>  l2
+   | h::t => insert h (union t l2);
+
+fun rev_itlist f list acc =
+ case list
+  of [] => acc
+   | h::t => rev_itlist f t (f h acc);
+
+fun itlist f list b =
+ case list
+  of [] => b
+   | h::t => f h (itlist f t b);
+
+fun upto lo hi = if lo > hi then [] else lo::upto(lo+1) hi;
+
+fun first pred list =
+ case list
+  of [] => raise ERR "first" ""
+   | h::t => if pred h then h else first pred t;
+
+fun quote s = String.concat ["\"",s,"\""];
+
+fun ordstring s =
+ let val slist = List.map (Int.toString o Char.ord) (String.explode s)
+ in String.concat ["[",String.concatWith "," slist,"]\n"]
+ end
+
+fun tdrop n s =
+ if n <= String.size s
+  then Some(String.substring s 0 n,String.extract s n None)
+  else None;
+
+fun take_drop n list =
+ if n <= List.length list
+  then Some(List.take list n,List.drop list n)
+  else None;
+
+val w8zero = Word8.fromInt 0;
+
+val emptybuf = Word8Array.array 0 w8zero;
+val singlebuf = Word8Array.array 1 (Word8.fromInt 0);
+
+fun clear_buf buffer =
+ let val len = Word8Array.length buffer
+     fun zero i = Word8Array.update buffer i w8zero
+     fun loop j = if j < len then (zero j; loop (j+1)) else ()
+ in
+    loop 0
+ end;
+
+fun buf2string buf = Word8Array.substring buf 0 (Word8Array.length buf);
+
+end
+
+structure Contig =
+struct
+
+datatype lval
+  = VarName string
+  | RecdProj lval string
+  | ArraySub lval exp
+and exp
+  = Loc lval
+  | IntLit int
+  | ConstName string
+  | Add exp exp
+  | Mult exp exp
+;
+
+datatype bexp
+  = BoolLit bool
+  | BLoc lval
+  | Bnot bexp
+  | Bor  bexp bexp
+  | Band bexp bexp
+  | Beq  exp exp
+  | Blt  exp exp
+  | Bgt  exp exp
+  | Ble  exp exp
+  | Bge  exp exp
+  | DleA Double.double exp
+  | DleB exp Double.double
+;
+
+datatype atom
+  = Bool
+  | Char
+  | Float
+  | Double
+  | Signed int
+  | Unsigned int
+  | Enum string
+  | Blob
+  | Scanned;
+
+datatype contig
+  = Void
+  | Basic atom
+  | Declared string
+  | Raw exp
+  | Assert bexp
+  | Scanner (string -> (string * string) option)
+  | Recd ((string * contig) list)
+  | Array contig exp
+  | Union ((bexp * contig) list)
+
+datatype ptree
+  = LEAF atom string
+  | RECD ((string * ptree) list)
+  | ARRAY (ptree list)
+;
+
+datatype ('a,'b) verdict = PASS 'a | FAIL 'b;
+
+fun lval_to_string lval =
+ case lval
+  of VarName s => s
+   | RecdProj lval s => lval_to_string lval^"."^s
+   | ArraySub lval (IntLit i) => lval_to_string lval^"["^Int.toString i^"]"
+
+(*---------------------------------------------------------------------------*)
+(* Support for lval-map                                                      *)
+(*---------------------------------------------------------------------------*)
+
+fun lval_compare x y =
+ case (x,y)
+  of (VarName s1, VarName s2) => String.compare s1 s2
+   | (VarName _, _) => Less
+   | (RecdProj a b, VarName _) => Greater
+   | (RecdProj e1 s1,RecdProj e2 s2) =>
+       (case lval_compare e1 e2
+         of Equal => String.compare s1 s2
+	  | other => other)
+   | (RecdProj a b,_) => Less
+   | (ArraySub a b, ArraySub c d) =>
+       (case lval_compare a c
+         of Equal => exp_compare b d
+	  | other => other)
+   | (ArraySub a b, _) => Greater
+and
+ exp_compare x y =
+ case (x,y)
+  of (Loc lv1, Loc lv2) => lval_compare lv1 lv2
+   | (Loc lv1, _) => Less
+   | (IntLit _, Loc _) => Greater
+   | (IntLit i, IntLit j) => Int.compare i j
+   | (IntLit i, other) => Less
+   | (ConstName _, Loc _) => Greater
+   | (ConstName _, IntLit _) => Greater
+   | (ConstName s1, ConstName s2) => String.compare s1 s2
+   | (ConstName s, _) => Less
+   | (Add a b, Mult c d) => Less
+   | (Add a b, Add c d) =>
+       (case exp_compare a c
+         of Equal => exp_compare b d
+	  | other => other)
+   | (Add a b, _) => Greater
+   | (Mult a b, Mult c d) =>
+       (case exp_compare a c
+         of Equal => exp_compare b d
+	  | other => other)
+   | (Mult a b, _) => Greater
+;
+
+fun lvals_of e =
+ case e
+  of Loc lval => [lval]
+   | Add e1 e2 => Utils.union (lvals_of e1) (lvals_of e2)
+   | Mult e1 e2 => Utils.union (lvals_of e1) (lvals_of e2)
+   | otherwise => []
+;
+
+fun lvals_of_bexp bexp =
+ case bexp
+  of BoolLit _ => []
+   | BLoc lval => [lval]
+   | Bnot b => lvals_of_bexp b
+   | Bor b1 b2 => Utils.union (lvals_of_bexp b1) (lvals_of_bexp b2)
+   | Band b1 b2 => Utils.union (lvals_of_bexp b1) (lvals_of_bexp b2)
+   | Beq  e1 e2 => Utils.union (lvals_of e1) (lvals_of e2)
+   | Blt  e1 e2 => Utils.union (lvals_of e1) (lvals_of e2)
+   | Bgt  e1 e2 => Utils.union (lvals_of e1) (lvals_of e2)
+   | Ble  e1 e2 => Utils.union (lvals_of e1) (lvals_of e2)
+   | Bge  e1 e2 => Utils.union (lvals_of e1) (lvals_of e2)
+   | DleA r e => lvals_of e
+   | DleB e r => lvals_of e
+;
+
+fun lval_append p lval =
+ case lval
+  of VarName s => RecdProj p s
+   | RecdProj q s => RecdProj (lval_append p q) s
+   | ArraySub q dim => ArraySub (lval_append p q) dim
+;
+
+fun path_prefixes lval =
+ case lval
+  of VarName _ => [lval]
+   | RecdProj p s => lval :: path_prefixes p
+   | ArraySub (VarName _) d => [lval]
+   | ArraySub (RecdProj p s) dim => lval :: path_prefixes p
+   | ArraySub arr dim => lval :: path_prefixes arr
+;
+
+fun resolve_lval lvalMap path lval =
+ let val prefixes = path_prefixes path
+     val prospects = List.map (flip lval_append lval) prefixes @ [lval]
+ in Utils.first (fn p => Option.isSome (Map.lookup lvalMap p)) prospects
+ end
+ handle _ => raise Utils.ERR "resolve_lval" "unsuccessful"
+;
+
+fun resolveExp lvalMap p exp =
+ case exp
+  of Loc lval   => Loc(resolve_lval lvalMap p lval)
+   | Add  e1 e2 => Add(resolveExp lvalMap p e1) (resolveExp lvalMap p e2)
+   | Mult e1 e2 => Mult(resolveExp lvalMap p e1) (resolveExp lvalMap p e2)
+   | otherwise  => exp
+
+fun resolveBexp lvalMap p bexp =
+ case bexp
+  of BoolLit _  => bexp
+   | BLoc lval  => BLoc(resolve_lval lvalMap p lval)
+   | Bnot b     => Bnot(resolveBexp lvalMap p b)
+   | Bor b1 b2  => Bor(resolveBexp lvalMap p b1) (resolveBexp lvalMap p b2)
+   | Band b1 b2 => Band(resolveBexp lvalMap p b1) (resolveBexp lvalMap p b2)
+   | Beq e1 e2  => Beq(resolveExp lvalMap p e1) (resolveExp lvalMap p e2)
+   | Blt e1 e2  => Blt(resolveExp lvalMap p e1) (resolveExp lvalMap p e2)
+   | Bgt e1 e2  => Bgt(resolveExp lvalMap p e1) (resolveExp lvalMap p e2)
+   | Ble e1 e2  => Ble(resolveExp lvalMap p e1) (resolveExp lvalMap p e2)
+   | Bge e1 e2  => Bge(resolveExp lvalMap p e1) (resolveExp lvalMap p e2)
+   | DleA r e   => DleA r (resolveExp lvalMap p e)
+   | DleB e r   => DleB (resolveExp lvalMap p e) r
+;
+
+fun evalExp env =
+ let val (envDelta,lvalMap,valFn) = env
+   fun evalE exp =
+    case exp
+     of Loc lval =>
+          (case Map.lookup lvalMap lval
+            of Some p => valFn (fst p) (snd p)
+             | None => raise Utils.ERR "evalExp" "Lval binding failure")
+      | IntLit i => i
+      | ConstName s =>
+          (case Alist.lookup envDelta s
+            of Some i => i
+             | None => raise Utils.ERR "evalExp"
+                 ("unable to find value for constant named "^Utils.quote s))
+      | Add e1 e2 => evalE e1 + evalE e2
+      | Mult e1 e2 => evalE e1 * evalE e2
+ in
+   evalE
+ end
+;
+
+fun evalBexp env bexp =
+ let val (envDelta,lvalMap,valFn,dvalFn) = env
+    val evalE = evalExp (envDelta,lvalMap,valFn)
+    fun evalB bexp =
+    case bexp
+     of BoolLit b => b
+      | BLoc lval =>
+         (case Map.lookup lvalMap lval
+           of Some (Bool,s) => if valFn Bool s = 0 then False else True
+            | Some other => raise Utils.ERR "evalBexp" "expected Bool location"
+            | None => raise Utils.ERR "evalBexp" "Lval binding failure")
+      | Bnot b     => not (evalB b)
+      | Bor  b1 b2 => (evalB b1 orelse evalB b2)
+      | Band b1 b2 => (evalB b1 andalso evalB b2)
+      | Beq e1 e2 => (evalE e1 = evalE e2)
+      | Blt e1 e2 => (evalE e1 < evalE e2)
+      | Bgt e1 e2 => (evalE e1 > evalE e2)
+      | Ble e1 e2 => (evalE e1 <= evalE e2)
+      | Bge e1 e2 => (evalE e1 >= evalE e2)
+      | DleA r (Loc lval) =>
+         (case Map.lookup lvalMap lval
+            of Some (Double,s) => Double.<= r (dvalFn s)
+             | Some (Float,s)  => Double.<= r (dvalFn s)
+             | None => raise Utils.ERR "evalBexp" "DleA: lval binding failure")
+      | DleB (Loc lval) r =>
+         (case Map.lookup lvalMap lval
+           of Some (Double,s) => Double.<= (dvalFn s) r
+            | Some (Float,s)  => Double.<= (dvalFn s) r
+            | None => raise Utils.ERR "evalBexp" "DleB: lval binding failure")
+      | otherwise  => raise Utils.ERR "evalBexp" "expected an lval expression in comparison"
+ in
+  evalB bexp
+ end;
+
+fun parseFn env path contig state =
+ let val (eConsts,eDecls,atomicWidths,valFn,dvalFn) = env
+     val (stk,s,widthValMap) = state
+ in
+ case contig
+  of Void => None
+   | Basic a =>
+       let val awidth = atomicWidths a
+       in case Utils.tdrop awidth s
+         of None => None
+          | Some (segment,rst) =>
+             Some(LEAF a segment::stk,rst,
+                  Map.insert widthValMap path (a,segment))
+       end
+   | Declared name =>
+      (case Alist.lookup eDecls name
+        of None => None
+         | Some contig' => parseFn env path contig' state)
+   | Raw exp =>
+       let val exp' = resolveExp widthValMap path exp
+           val width = evalExp (eConsts,widthValMap,valFn) exp'
+       in
+         case Utils.tdrop width s
+         of None => None
+          | Some (segment,rst) =>
+              Some(LEAF Blob segment::stk,rst,
+                   Map.insert widthValMap path (Blob,segment))
+       end
+   | Assert bexp =>
+       let val bexp' = resolveBexp widthValMap path bexp
+           val tval = evalBexp (eConsts,widthValMap,valFn,dvalFn) bexp'
+       in
+         if tval then Some state else None
+       end
+   | Scanner scanFn =>
+      (case scanFn s
+        of None => raise Utils.ERR "parseFn" "Scanner failed"
+         | Some(segment,rst) =>
+              Some(LEAF Scanned segment::stk,rst,
+                   Map.insert widthValMap path (Scanned,segment)))
+   | Recd fields =>
+       let fun fieldFn fld stOpt =
+             (case stOpt
+               of None => None
+                | Some st =>
+              case fld
+               of (fName,c) => parseFn env (RecdProj path fName) c st)
+          fun is_assert atm =
+             (case atm
+               of Assert _ => True
+                | otherwise => False)
+          val fields' = List.filter (not o is_assert o snd) fields
+       in case Utils.rev_itlist fieldFn fields (Some state)
+           of None => None
+            | Some (stk',s',widthValMap') =>
+          case Utils.take_drop (List.length fields') stk'
+           of None => None
+            | Some(elts,stk'') =>
+               Some(RECD (List.zip (List.map fst fields', List.rev elts))::stk'',
+                    s', widthValMap')
+       end
+   | Array c exp =>
+       let val exp' = resolveExp widthValMap path exp
+           val dim = evalExp (eConsts,widthValMap,valFn) exp'
+           fun indexFn i stOpt =
+	     (case stOpt
+               of None => None
+                | Some state => parseFn env (ArraySub path (IntLit i)) c state)
+       in case Utils.rev_itlist indexFn (Utils.upto 0 (dim - 1)) (Some state)
+           of None => None
+            | Some (stk',s',widthValMap') =>
+          case Utils.take_drop dim stk'
+           of None => None
+            | Some(elts,stk'')
+          => Some(ARRAY (List.rev elts)::stk'', s', widthValMap')
+       end
+   | Union choices =>
+       let fun choiceFn(bexp,c) =
+             let val bexp' = resolveBexp widthValMap path bexp
+             in evalBexp (eConsts,widthValMap,valFn,dvalFn) bexp'
+             end
+       in case List.filter choiceFn choices
+           of [(_,c)] => parseFn env path c state
+            | otherwise => raise Utils.ERR "parseFn" "Union: expected exactly one successful choice"
+       end
+ end
+;
+
+fun predFn env state =
+ let val (worklist,s,theta) = state
+     val (eConsts,eDecls,atomicWidths,valFn,dvalFn) = env
+ in
+ case worklist
+  of [] => PASS (s,theta)
+   | (path,Void)::t => FAIL state
+   | (path,Basic a)::t =>
+       (case Utils.tdrop (atomicWidths a) s
+         of None => FAIL state
+          | Some (segment,rst) =>
+              predFn env (t,rst,Map.insert theta path (a,segment)))
+   | (path,Declared name)::t =>
+       (case Alist.lookup eDecls name
+         of None => FAIL state
+          | Some contig' => predFn env ((path,contig')::t,s,theta))
+   | (path,Raw exp)::t =>
+       let val exp' = resolveExp theta path exp
+           val width = evalExp (eConsts,theta,valFn) exp'
+       in case Utils.tdrop width s
+           of None => FAIL state
+            | Some (segment,rst) =>
+              predFn env (t,rst,Map.insert theta path (Blob,segment))
+       end
+   | (path,Assert bexp)::t =>
+       let val bexp' = resolveBexp theta path bexp
+       in if evalBexp (eConsts,theta,valFn,dvalFn) bexp'
+            then predFn env (t,s,theta)
+            else let val lvs = lvals_of_bexp bexp'
+                     val bindings = List.map (fn lval => (lval, Map.lookup theta lval)) lvs
+                     fun print_binding (lval,sOpt) =
+                         let val s = (case sOpt
+                                       of None => "<no binding!!>"
+                                        | Some (a,s') => Utils.ordstring s')
+                         in print (String.concat [lval_to_string lval, " :  ", s, "\n"])
+                         end
+                 in
+                    print ("Failing Assert at path "^lval_to_string path^"\n\n");
+                    print ("Relevant lvals and their bindings: \n");
+                    List.app print_binding bindings;
+                    FAIL state
+                 end
+       end
+   | (path,Scanner scanFn)::t =>
+      (case scanFn s
+        of None => FAIL state
+         | Some(segment,rst) =>
+           predFn env (t,rst, Map.insert theta path (Scanned,segment)))
+   | (path,Recd fields)::t =>
+       let fun fieldFn pair =
+            let val (fName,c) = pair in (RecdProj path fName,c) end
+       in predFn env (List.map fieldFn fields @ t,s,theta)
+       end
+   | (path,Array c exp)::t =>
+       let val exp' = resolveExp theta path exp
+           val dim = evalExp (eConsts,theta,valFn) exp'
+           fun indexFn i = (ArraySub path (IntLit i),c)
+       in predFn env (List.map indexFn (Utils.upto 0 (dim - 1)) @ t,s,theta)
+       end
+   | (path,Union choices)::t =>
+       let fun choiceFn pair =
+             let val (bexp,c) = pair
+                 val bexp' = resolveBexp theta path bexp
+             in evalBexp (eConsts,theta,valFn,dvalFn) bexp'
+             end
+       in case List.filter choiceFn choices
+           of [(_,c)] => predFn env ((path,c)::t,s,theta)
+            | otherwise => FAIL state
+       end
+ end
+;
+
+fun mk_empty_lvalMap() = Map.fromList lval_compare [];
+
+fun parse env contig s =
+ case parseFn env (VarName"root") contig ([],s,mk_empty_lvalMap())
+  of Some ([ptree],remaining,lvMap) => (ptree,remaining,lvMap)
+   | Some otherwise => raise Utils.ERR "parse" "expected stack of size 1"
+   | None => raise Utils.ERR "parse" ""
+;
+
+fun wellformed env contig s =
+ case predFn env ([(VarName"root",contig)],s,mk_empty_lvalMap())
+  of PASS _ => True
+   | FAIL _ => False;
+
+fun add_enum_decl pair env =
+ let val (s,bindings) = pair
+     val (eConsts,eDecls,atomicWidths,valFn,dvalFn) = env
+     fun stick pair = let val (name,i) = pair in (s^"'"^name,i) end
+     val bindings' = List.map stick bindings
+ in
+   (bindings' @ eConsts,
+    (s,Basic(Enum s)):: eDecls,
+    atomicWidths,valFn,dvalFn)
+ end
+
+fun add_contig_decl pair env =
+ let val (eConsts,eDecls,aW,vFn,dvFn) = env
+ in (eConsts,pair::eDecls,aW,vFn,dvFn)
+ end
+
+(*---------------------------------------------------------------------------*)
+(* Support for the Scanner constructor. The end delimiter is left on the     *)
+(* string.                                                                   *)
+(*---------------------------------------------------------------------------*)
+
+fun scanTo delim string =
+ let val top = String.size string
+     fun seek j =
+       if j >= top then None else
+       if String.sub string j = delim then Some j
+       else seek (j+1)
+ in
+   case seek 0
+    of None => None
+     | Some n => Utils.tdrop (n+1) string
+ end;
+
+val scanCstring = scanTo (Char.chr 0);
+
+val epsilon_contig = Recd [];
+
+fun intervalExp fName pair =
+ let val (i,j) = pair
+ in Band (Ble (IntLit i) (Loc(VarName fName)))
+         (Ble (Loc(VarName fName)) (IntLit j))
+  end
+
+fun const_intervalExp fName pair =
+ let val (s1,s2) = pair
+ in Band (Ble (ConstName s1) (Loc(VarName fName)))
+         (Ble (Loc(VarName fName)) (ConstName s2))
+  end
+
+fun varloc s = Loc(VarName s);
+
+fun expBounded c (e1,e2) = Recd [
+   ("val", c),
+   ("check-val", Assert (Band (Ble e1 (varloc "val")) (Ble (varloc "val") e2)))
+ ]
+
+fun doubleintervalExp fName pair =
+ let val (d1,d2) = pair
+ in Band (DleA d1 (varloc fName)) (DleB (varloc fName) d2)
+ end
+
+
+end  (* Contig *)
+
+structure UXAS =
+struct
+
+(*---------------------------------------------------------------------------*)
+(* uxAS constants                                                            *)
+(*---------------------------------------------------------------------------*)
+
+val uxasCMASISeriesID = 4849604199710720000;
+val uxasCMASISeriesVersion = 3;
+
+(*---------------------------------------------------------------------------*)
+(* uxAS message types                                                        *)
+(*---------------------------------------------------------------------------*)
+
+val uxasABSTRACTGEOMETRY = 1
+val uxasKEYVALUEPAIR = 2
+val uxasLOCATION3D = 3
+val uxasPAYLOADACTION = 4
+val uxasPAYLOADCONFIGURATION = 5
+val uxasPAYLOADSTATE = 6
+val uxasVEHICLEACTION = 7
+val uxasTASK = 8
+val uxasSEARCHTASK = 9
+val uxasABSTRACTZONE = 10
+val uxasENTITYCONFIGURATION = 11
+val uxasFLIGHTPROFILE = 12
+val uxasAIRVEHICLECONFIGURATION = 13
+val uxasENTITYSTATE = 14
+val uxasAIRVEHICLESTATE = 15
+val uxasWEDGE = 16
+val uxasAREASEARCHTASK = 17
+val uxasCAMERAACTION = 18
+val uxasCAMERACONFIGURATION = 19
+val uxasGIMBALLEDPAYLOADSTATE = 20
+val uxasCAMERASTATE = 21
+val uxasCIRCLE = 22
+val uxasGIMBALANGLEACTION = 23
+val uxasGIMBALCONFIGURATION = 24
+val uxasGIMBALSCANACTION = 25
+val uxasGIMBALSTAREACTION = 26
+val uxasGIMBALSTATE = 27
+val uxasGOTOWAYPOINTACTION = 28
+val uxasKEEPINZONE = 29
+val uxasKEEPOUTZONE = 30
+val uxasLINESEARCHTASK = 31
+val uxasNAVIGATIONACTION = 32
+val uxasLOITERACTION = 33
+val uxasLOITERTASK = 34
+val uxasWAYPOINT = 35
+val uxasMISSIONCOMMAND = 36
+val uxasMUSTFLYTASK = 37
+val uxasOPERATORSIGNAL = 38
+val uxasOPERATINGREGION = 39
+val uxasAUTOMATIONREQUEST = 40
+val uxasPOINTSEARCHTASK = 41
+val uxasPOLYGON = 42
+val uxasRECTANGLE = 43
+val uxasREMOVETASKS = 44
+val uxasSERVICESTATUS = 45
+val uxasSESSIONSTATUS = 46
+val uxasVEHICLEACTIONCOMMAND = 47
+val uxasVIDEOSTREAMACTION = 48
+val uxasVIDEOSTREAMCONFIGURATION = 49
+val uxasVIDEOSTREAMSTATE = 50
+val uxasAUTOMATIONRESPONSE = 51
+val uxasREMOVEZONES = 52
+val uxasREMOVEENTITIES = 53
+val uxasFLIGHTDIRECTORACTION = 54
+val uxasWEATHERREPORT = 55
+val uxasFOLLOWPATHCOMMAND = 56
+val uxasPATHWAYPOINT = 57
+val uxasSTOPMOVEMENTACTION = 58
+val uxasWAYPOINTTRANSFER = 59
+val uxasPAYLOADSTOWACTION = 60
+;
+
+val uxas_constants_map =
+[("CMASISeriesID",uxasCMASISeriesID),
+ ("CMASISeriesVersion",uxasCMASISeriesVersion),
+ ("ABSTRACTGEOMETRY",uxasABSTRACTGEOMETRY),
+ ("KEYVALUEPAIR",uxasKEYVALUEPAIR),
+ ("LOCATION3D",uxasLOCATION3D),
+ ("PAYLOADACTION",uxasPAYLOADACTION),
+ ("PAYLOADCONFIGURATION",uxasPAYLOADCONFIGURATION),
+ ("PAYLOADSTATE",uxasPAYLOADSTATE),
+ ("VEHICLEACTION",uxasVEHICLEACTION),
+ ("TASK",uxasTASK),
+ ("SEARCHTASK",uxasSEARCHTASK),
+ ("ABSTRACTZONE",uxasABSTRACTZONE),
+ ("ENTITYCONFIGURATION",uxasENTITYCONFIGURATION),
+ ("FLIGHTPROFILE",uxasFLIGHTPROFILE),
+ ("AIRVEHICLECONFIGURATION",uxasAIRVEHICLECONFIGURATION),
+ ("ENTITYSTATE",uxasENTITYSTATE),
+ ("AIRVEHICLESTATE",uxasAIRVEHICLESTATE),
+ ("WEDGE",uxasWEDGE),
+ ("AREASEARCHTASK",uxasAREASEARCHTASK),
+ ("CAMERAACTION",uxasCAMERAACTION),
+ ("CAMERACONFIGURATION",uxasCAMERACONFIGURATION),
+ ("GIMBALLEDPAYLOADSTATE",uxasGIMBALLEDPAYLOADSTATE),
+ ("CAMERASTATE",uxasCAMERASTATE),
+ ("CIRCLE",uxasCIRCLE),
+ ("GIMBALANGLEACTION",uxasGIMBALANGLEACTION),
+ ("GIMBALCONFIGURATION",uxasGIMBALCONFIGURATION),
+ ("GIMBALSCANACTION",uxasGIMBALSCANACTION),
+ ("GIMBALSTAREACTION",uxasGIMBALSTAREACTION),
+ ("GIMBALSTATE",uxasGIMBALSTATE),
+ ("GOTOWAYPOINTACTION",uxasGOTOWAYPOINTACTION),
+ ("KEEPINZONE",uxasKEEPINZONE),
+ ("KEEPOUTZONE",uxasKEEPOUTZONE),
+ ("LINESEARCHTASK",uxasLINESEARCHTASK),
+ ("NAVIGATIONACTION",uxasNAVIGATIONACTION),
+ ("LOITERACTION",uxasLOITERACTION),
+ ("LOITERTASK",uxasLOITERTASK),
+ ("WAYPOINT",uxasWAYPOINT),
+ ("MISSIONCOMMAND",uxasMISSIONCOMMAND),
+ ("MUSTFLYTASK",uxasMUSTFLYTASK),
+ ("OPERATORSIGNAL",uxasOPERATORSIGNAL),
+ ("OPERATINGREGION",uxasOPERATINGREGION),
+ ("AUTOMATIONREQUEST",uxasAUTOMATIONREQUEST),
+ ("POINTSEARCHTASK",uxasPOINTSEARCHTASK),
+ ("POLYGON",uxasPOLYGON),
+ ("RECTANGLE",uxasRECTANGLE),
+ ("REMOVETASKS",uxasREMOVETASKS),
+ ("SERVICESTATUS",uxasSERVICESTATUS),
+ ("SESSIONSTATUS",uxasSESSIONSTATUS),
+ ("VEHICLEACTIONCOMMAND",uxasVEHICLEACTIONCOMMAND),
+ ("VIDEOSTREAMACTION",uxasVIDEOSTREAMACTION),
+ ("VIDEOSTREAMCONFIGURATION",uxasVIDEOSTREAMCONFIGURATION),
+ ("VIDEOSTREAMSTATE",uxasVIDEOSTREAMSTATE),
+ ("AUTOMATIONRESPONSE",uxasAUTOMATIONRESPONSE),
+ ("REMOVEZONES",uxasREMOVEZONES),
+ ("REMOVEENTITIES",uxasREMOVEENTITIES),
+ ("FLIGHTDIRECTORACTION",uxasFLIGHTDIRECTORACTION),
+ ("WEATHERREPORT",uxasWEATHERREPORT),
+ ("FOLLOWPATHCOMMAND",uxasFOLLOWPATHCOMMAND),
+ ("PATHWAYPOINT",uxasPATHWAYPOINT),
+ ("STOPMOVEMENTACTION",uxasSTOPMOVEMENTACTION),
+ ("WAYPOINTTRANSFER",uxasWAYPOINTTRANSFER),
+ ("PAYLOADSTOWACTION",uxasPAYLOADSTOWACTION)
+];
+
+
+
+(*---------------------------------------------------------------------------*)
+(* Number encodings                                                          *)
+(*---------------------------------------------------------------------------*)
+
+fun uvalFn s =   (* MSB *)
+ let val len = String.size s
+     fun loop i acc =
+       if i < len then
+          loop (i+1) (acc * 256 + Char.ord(String.sub s i))
+       else acc
+ in loop 0 0
+ end;
+
+fun n2i n w = (* twos comp *)
+ let val top = exp 2 (w * 8)
+ in if n < (top div 2) then n else Int.~(top - n)
+ end
+
+fun ivalFn s = n2i (uvalFn s) (String.size s);
+
+fun valFn a s =
+ case a
+  of Contig.Bool => uvalFn s
+   | Contig.Char => uvalFn s
+   | Contig.Enum e => uvalFn s
+   | Contig.Signed w => ivalFn s
+   | Contig.Unsigned w => uvalFn s
+   | otherwise => raise Utils.ERR "valFn" "unexpected input"
+
+
+fun char2byte c = Word8.fromInt(Char.ord c);
+
+fun dvalFn s =
+ let val n = String.size s
+     (* val () = print ("dvalFn: string size = "^Int.toString n^"\n") *)
+ in
+ if n = 8 then
+   let val b1 = char2byte(String.sub s 0)
+       val b2 = char2byte(String.sub s 1)
+       val b3 = char2byte(String.sub s 2)
+       val b4 = char2byte(String.sub s 3)
+       val b5 = char2byte(String.sub s 4)
+       val b6 = char2byte(String.sub s 5)
+       val b7 = char2byte(String.sub s 6)
+       val b8 = char2byte(String.sub s 7)
+       val dval = Word64.concatAll b8 b7 b6 b5 b4 b3 b2 b1
+       (* val () = print ("dvalFn: value = "^Double.toString dval^"\n") *)
+   in
+     dval
+   end
+ else
+ if n = 4 then
+   let val buf = Word8Array.array 8 (Word8.fromInt 0)
+       val () = #(float2double) s buf
+       val a = Word8Array.sub buf 0;
+       val b = Word8Array.sub buf 1;
+       val c = Word8Array.sub buf 2;
+       val d = Word8Array.sub buf 3;
+       val e = Word8Array.sub buf 4;
+       val f = Word8Array.sub buf 5;
+       val g = Word8Array.sub buf 6;
+       val h = Word8Array.sub buf 7;
+       val dval = Word64.concatAll a b c d e f g h
+       (* val () = print ("dvalFn: value = "^Double.toString dval^"\n") *)
+    in
+       dval
+    end
+ else
+  raise Utils.ERR "dvalFn" "expected a float (4 bytes) or a double (8 bytes)"
+ end;
+
+fun atomic_widths atm =
+ case atm
+  of Contig.Bool       => 1
+   | Contig.Char       => 1
+   | Contig.Signed i   => i
+   | Contig.Unsigned i => i
+   | Contig.Float      => 4
+   | Contig.Double     => 8
+   | Contig.Enum _     => 4
+   | otherwise => raise Utils.ERR "atomic_widths" "Raw/Scanner do not have a fixed width"
+;
+
+val bool = Contig.Basic(Contig.Bool);
+val u8  = Contig.Basic(Contig.Unsigned 1);
+val u16 = Contig.Basic(Contig.Unsigned 2);
+val u32 = Contig.Basic(Contig.Unsigned 4);
+val u64 = Contig.Basic(Contig.Unsigned 8);
+val i16 = Contig.Basic(Contig.Signed 2);
+val i32 = Contig.Basic(Contig.Signed 4);
+val i64 = Contig.Basic(Contig.Signed 8);
+val f32 = Contig.Basic Contig.Float;
+val f64 = Contig.Basic Contig.Double;
+val real32 = Contig.Basic Contig.Float;
+val real64 = Contig.Basic Contig.Double;
+
+fun bounded c ivl = Contig.Recd [
+  ("val", c),
+  ("check", Contig.Assert (Contig.intervalExp "val" ivl))
+ ];
+
+
+fun enumList elts = List.zip (elts, Utils.upto 0 (List.length elts - 1));
+
+(*---------------------------------------------------------------------------*)
+(* Arrays in uxAS messages are preceded by a length field.                   *)
+(*---------------------------------------------------------------------------*)
+
+fun uxasArray contig = Contig.Recd [
+  ("len", u16),
+  ("elts", Contig.Array contig (Contig.Loc (Contig.VarName"len")))
+ ];
+
+(*---------------------------------------------------------------------------*)
+(* Enforce a given bound on array size                                       *)
+(*---------------------------------------------------------------------------*)
+
+fun uxasBoundedArray contig bound = Contig.Recd [
+  ("len", u16),
+  ("len-check", Contig.Assert
+                  (Contig.Ble (Contig.Loc(Contig.VarName "len"))
+                              (Contig.IntLit bound))),
+  ("elts", Contig.Array contig (Contig.Loc (Contig.VarName"len")))
+ ];
+
+(*---------------------------------------------------------------------------*)
+(* Option type                                                               *)
+(*---------------------------------------------------------------------------*)
+
+fun uxasOption contig = Contig.Recd
+ [("present", bool),
+  ("contents", Contig.Union [
+     (Contig.BLoc (Contig.VarName "present"), contig),
+     (Contig.Bnot(Contig.BLoc (Contig.VarName "present")),
+      Contig.epsilon_contig)
+     ])
+ ];
+
+(*---------------------------------------------------------------------------*)
+(* An AADL event data port message has a byte prefixed, which = "True" if    *)
+(* an event has indeed happened. This pattern tends to get used in filters   *)
+(* where isEvent is conjoined with the predicate on the message contents.    *)
+(* If isEvent is false, the contents aren't examined by predFn.              *)
+(*---------------------------------------------------------------------------*)
+
+fun eventData contig = Contig.Recd
+  [("isEvent", Contig.Basic Contig.Bool),
+   ("check-isEvent", Contig.Assert (Contig.BLoc (Contig.VarName "isEvent"))),
+   ("contents", contig)
+ ];
+
+(*---------------------------------------------------------------------------*)
+(* Wrapper for a contig, with message type specified. Notice that we only    *)
+(* check the message type. A more stringent check would also check the       *)
+(* seriesID and seriesVersion, as follows.                                   *)
+(*                                                                           *)
+(*  ("check-mesg-numbers", Assert                                            *)
+(*   (Band(Beq(Loc(VarName "seriesID"),ConstName "CMASISeriesID"),           *)
+(*    Band(Beq(Loc(VarName "mesgType"),ConstName mesgtyName),                *)
+(*         Beq(Loc(VarName "seriesVersion"),ConstName "CMASISeriesVersion")) *)
+(*---------------------------------------------------------------------------*)
+
+fun uxasMesg mesgtyName contig = Contig.Recd [
+   ("seriesID", i64),
+   ("mesgType", u32),
+   ("check-mesg-type",
+    Contig.Assert (Contig.Beq (Contig.Loc(Contig.VarName "mesgType"))
+                  (Contig.ConstName mesgtyName))),
+   ("seriesVersion", u16),
+   ("mesg",  contig)
+ ];
+
+fun mesgOption name = uxasOption o uxasMesg name;
+
+(*---------------------------------------------------------------------------*)
+(* uxAS strings. The short version is good for random message generation.    *)
+(*---------------------------------------------------------------------------*)
+
+val fullString = uxasArray (Contig.Basic Contig.Char);
+
+val shortString = uxasBoundedArray (Contig.Basic Contig.Char) 26;
+
+(*---------------------------------------------------------------------------*)
+(* The following gives a layer of indirection: by changing the "String"      *)
+(* binding in the Decls part of the environment, all mentions of String will *)
+(* resolve to the new binding. An example of where this is useful is in mesg *)
+(* generation, where a random fullString would in general be so big that it  *)
+(* would be clumsy to deal with. In that case, we can change the binding of  *)
+(* String in Decls to ShortString and then all String mentions will be to    *)
+(* short strings, and then a randomly generated string field would be <= 26  *)
+(* in length.                                                                *)
+(*---------------------------------------------------------------------------*)
+
+
+val uxasString = Contig.Declared "String";
+
+(*---------------------------------------------------------------------------*)
+(* pairs of varying-length strings                                           *)
+(*---------------------------------------------------------------------------*)
+
+val keyValuePair = Contig.Recd
+    [("key",   uxasString),
+     ("value", uxasString)
+  ];
+
+(*---------------------------------------------------------------------------*)
+(* Enumerations                                                              *)
+(*---------------------------------------------------------------------------*)
+
+val altitude_type = ("AltitudeType", enumList ["AGL","MSL"]);
+val speed_type    = ("SpeedType",    enumList ["AirSpeed","GroundSpeed"]);
+val turn_type     = ("TurnType",     enumList ["TurnShort", "FlyOver"]);
+
+val wavelength_band =
+ ("WavelengthBand", enumList ["AllAny","EO","LWIR","SWIR","MWIR","Other"]);
+
+val navigation_mode =
+ ("NavigationMode",
+  enumList ["Waypoint", "Loiter", "FlightDirector",
+            "TargetTrack", "FollowLeader", "LostComm"]);
+
+val command_status_type =
+ ("CommandStatusType",
+  enumList ["Pending", "Approved", "InProcess", "Executed", "Cancelled"]);
+
+val uxasAltitudeType   = Contig.Declared "AltitudeType"
+val uxasWavelengthBand = Contig.Declared "WavelengthBand"
+val uxasNavigationMode = Contig.Declared "NavigationMode"
+val uxasSpeedType      = Contig.Declared "SpeedType"
+val uxasTurnType       = Contig.Declared "TurnType"
+val uxasCommandStatusType = Contig.Declared "CommandStatusType";
+
+(*---------------------------------------------------------------------------*)
+(* Basic uxAS environment plus enumerations.                                 *)
+(*---------------------------------------------------------------------------*)
+
+val uxasEnv =
+ let val init = (uxas_constants_map,
+                 [("String",fullString),("KeyValuePair", keyValuePair)],
+                 atomic_widths,valFn,dvalFn)
+ in Utils.itlist Contig.add_enum_decl
+         [altitude_type, wavelength_band, navigation_mode,
+          speed_type, turn_type, command_status_type]
+         init
+ end
+;
+
+(* CASE Phase II model constants
+	-- Message constants
+	const OPERATING_REGION_ID_MIN : int = 0;
+	const OPERATING_REGION_ID_MAX : int = 500;
+	const KEEP_IN_ZONE_ID_MIN : int = 0;
+	const KEEP_IN_ZONE_ID_MAX : int = 500;
+	const KEEP_OUT_ZONE_ID_MIN : int = 0;
+	const KEEP_OUT_ZONE_ID_MAX : int = 500;
+	const TASK_ID_MIN : int = 0;
+	const TASK_ID_MAX : int = 500;
+	const ENTITY_ID_MIN : int = 0;
+	const ENTITY_ID_MAX : int = 500;
+	const ALTITUDE_MIN : real = 0.0;
+	const ALTITUDE_MAX : real = 15000.0;
+	const LATITUDE_MIN : real = -90.0;
+	const LATITUDE_MAX : real = 90.0;
+	const LONGITUDE_MIN : real = -180.0;
+	const LONGITUDE_MAX : real = -180.0;
+	const AZIMUTH_CENTERLINE_MIN : real = -180.0;
+	const AZIMUTH_CENTERLINE_MAX : real = 180.0;
+	const VERTICAL_CENTERLINE_MIN : real = -180.0;
+	const VERTICAL_CENTERLINE_MAX : real = 180.0;
+*)
+
+val case_consts = [
+  ("OPERATING_REGION_ID_MIN", 0),
+  ("OPERATING_REGION_ID_MAX", 500),
+  ("KEEP_IN_ZONE_ID_MIN", 0),
+  ("KEEP_IN_ZONE_ID_MAX", 500),
+  ("KEEP_OUT_ZONE_ID_MIN",0),
+  ("KEEP_OUT_ZONE_ID_MAX",500),
+  ("TASK_ID_MIN",0),
+  ("TASK_ID_MAX",2000),
+  ("ENTITY_ID_MIN", 0),
+  ("ENTITY_ID_MAX",500)
+ ];
+
+val caseEnv =
+ let val (consts,decls,widths,valFn,dvalFn) = uxasEnv
+ in (case_consts @ consts,decls,widths,valFn,dvalFn)
+ end
+;
+
+(*---------------------------------------------------------------------------*)
+(* Laboriously construct some Double constants in order to avoid             *)
+(* Double.fromString.                                                        *)
+(*---------------------------------------------------------------------------*)
+
+val ints0BE = [0, 0, 0, 0, 0, 0, 0, 0];
+val ints90BE = [64, 86, 128, 0, 0, 0, 0, 0]
+val ints180BE = [64, 102, 128, 0, 0, 0, 0, 0]
+val ints15000BE = [64, 205, 76, 0, 0, 0, 0, 0]
+
+val s0 = String.implode (List.map Char.chr ints0BE)
+val s90 = String.implode (List.map Char.chr ints90BE)
+val s180 = String.implode (List.map Char.chr ints180BE)
+val s15K = String.implode (List.map Char.chr ints15000BE)
+
+val double_zero = dvalFn s0
+val pos90 = dvalFn s90
+val pos180 = dvalFn s180;
+val pos15K = dvalFn s15K;
+
+val neg90 = Double.~(pos90)
+val neg180 = Double.~(pos180);
+
+val constAZIMUTH_CENTERLINE_MIN = neg180;
+val constAZIMUTH_CENTERLINE_MAX = pos180;
+val constVERTICAL_CENTERLINE_MIN = neg180;
+val constVERTICAL_CENTERLINE_MAX = pos180;
+
+fun assert x = Contig.Assert x;
+fun band x y = Contig.Band x y;
+fun loc x    = Contig.Loc x;
+val varloc   = Contig.varloc;
+
+
+(*---------------------------------------------------------------------------*)
+(* Messages                                                                  *)
+(*---------------------------------------------------------------------------*)
+
+val kizoneElt =
+  Contig.expBounded u64
+     (Contig.ConstName "KEEP_IN_ZONE_ID_MIN",
+      Contig.ConstName "KEEP_IN_ZONE_ID_MAX");
+
+val kozoneElt =
+  Contig.expBounded u64
+     (Contig.ConstName"KEEP_OUT_ZONE_ID_MIN",
+      Contig.ConstName"KEEP_OUT_ZONE_ID_MAX");
+
+val operating_region = Contig.Recd [
+  ("ID", Contig.expBounded i64
+             (Contig.ConstName"OPERATING_REGION_ID_MIN",
+              Contig.ConstName"OPERATING_REGION_ID_MAX")),
+  ("keep_in_areas",  uxasBoundedArray kizoneElt 32),
+  ("keep_out_areas", uxasBoundedArray kozoneElt 32)
+  ];
+
+val automation_request = Contig.Recd [
+  ("EntityList",        uxasBoundedArray i64 16),
+  ("TaskList",          uxasBoundedArray i64 32),
+  ("TaskRelationShips", uxasString),
+  ("OperatingRegion",   i64),
+  ("RedoAllTasks",      bool)
+  ];
+
+(*---------------------------------------------------------------------------*)
+(* fun WELL_FORMED_AUTOMATION_REQUEST(msg:CMASI::AutomationRequest.i):bool = *)
+(*  (forall e in msg.EntityList, e>=ENTITY_ID_MIN and e<=ENTITY_ID_MAX) and  *)
+(*  (forall t in msg.TaskList, t >= TASK_ID_MIN and t <= TASK_ID_MAX) and    *)
+(*   msg.OperatingRegion >= OPERATING_REGION_ID_MIN and                      *)
+(*   msg.OperatingRegion <= OPERATING_REGION_ID_MAX;                         *)
+(*---------------------------------------------------------------------------*)
+
+val checked_entity = Contig.Recd [
+   ("entity", i64),
+   ("entity-check", Contig.Assert
+      (Contig.const_intervalExp "entity" ("ENTITY_ID_MIN","ENTITY_ID_MAX")))
+ ];
+
+val checked_task = Contig.Recd [
+   ("task", i64),
+   ("task-check", Contig.Assert
+      (Contig.const_intervalExp "task" ("TASK_ID_MIN","TASK_ID_MAX")))
+ ];
+
+val checked_OR = Contig.Recd [
+   ("OperatingRegion", i64),
+   ("OperatingRegion-check", Contig.Assert
+      (Contig.const_intervalExp "OperatingRegion"
+             ("OPERATING_REGION_ID_MIN","OPERATING_REGION_ID_MAX")))
+ ];
+
+val checked_automation_request = Contig.Recd [
+  ("EntityList",        uxasBoundedArray checked_entity 16),
+  ("TaskList",          uxasBoundedArray checked_task 32),
+  ("TaskRelationShips", uxasString),
+  ("OperatingRegion",   checked_OR),
+  ("RedoAllTasks",      bool)
+  ];
+
+val automation_request = checked_automation_request;
+
+val wedge = Contig.Recd [
+  ("AzimuthCenterline",  real32),
+  ("VerticalCenterline", real32),
+  ("AzimuthExtent",      real32),
+  ("VerticalExtent",     real32)
+ ];
+
+val checked_wedge = Contig.Recd [
+  ("AzimuthCenterline",  real32),
+  ("AzimuthCenterline-check", Contig.Assert
+       (Contig.doubleintervalExp "AzimuthCenterline"
+         (constAZIMUTH_CENTERLINE_MIN,constAZIMUTH_CENTERLINE_MAX))),
+  ("VerticalCenterline", real32),
+  ("VerticalCenterline-check", Contig.Assert
+       (Contig.doubleintervalExp "VerticalCenterline"
+         (constVERTICAL_CENTERLINE_MIN,constVERTICAL_CENTERLINE_MAX))),
+  ("AzimuthExtent",      real32),
+  ("VerticalExtent",     real32)
+ ];
+
+val wedge = checked_wedge;
+
+
+val location3D = Contig.Recd [
+  ("Latitude",  real64),
+  ("Longitude", real64),
+  ("Altitude",  real32),
+  ("AltitudeType", uxasAltitudeType)
+];
+
+val checked_location3D = Contig.Recd [
+  ("Latitude",  real64),
+  ("Lat-check", assert (
+    band(Contig.DleA neg90 (varloc"Latitude"))
+        (Contig.DleB (varloc "Latitude") pos90))),
+  ("Longitude", real64),
+  ("Lon-check", assert (
+    band(Contig.DleA neg180 (varloc"Longitude"))
+        (Contig.DleB (varloc"Longitude") pos180))),
+  ("Altitude",  real32),
+  ("Altitude-check", assert (
+    band(Contig.DleA double_zero (varloc"Altitude"))
+        (Contig.DleB (varloc"Altitude") pos15K))),
+  ("AltitudeType", uxasAltitudeType),
+  ("AltitudeType-check", assert (
+    Contig.Ble (varloc"AltitudeType") (Contig.IntLit 1)))
+];
+
+val location3D = checked_location3D;
+
+(*---------------------------------------------------------------------------*)
+(* LineSearchTask message                                                    *)
+(*---------------------------------------------------------------------------*)
+
+val linesearch_task = Contig.Recd [
+  (* Task *)
+  ("TaskID",           i64),
+  ("TaskID-check",     Contig.Assert
+                          (Contig.const_intervalExp "TaskID"
+                                       ("TASK_ID_MIN","TASK_ID_MAX"))),
+  ("Label",            uxasString),
+  ("EligibleEntities", uxasBoundedArray i64 32),
+  ("RevisitRate",      real32),
+  ("Parameters",       uxasBoundedArray (mesgOption "KEYVALUEPAIR" keyValuePair) 8),
+  ("Priority",         u8),
+  ("Required",         bool),
+
+  (* SearchTask *)
+  ("DesiredWavelengthBands", uxasBoundedArray uxasWavelengthBand 8),
+  ("DwellTime",              i64),
+  ("GroundSampleDistance",   real32),
+
+  (* LineSearchTask *)
+  ("PointList",     uxasBoundedArray (mesgOption "LOCATION3D" location3D) 1024),
+  ("ViewAngleList", uxasBoundedArray (mesgOption "WEDGE" wedge) 16),
+  ("UseInertialViewAngles", bool)
+];
+
+(*---------------------------------------------------------------------------*)
+(* AutomationResponse message                                                *)
+(*---------------------------------------------------------------------------*)
+
+val vehicleAction = Contig.Recd [
+  ("AssociatedTaskList", uxasBoundedArray i64 8)
+];
+
+val vehicleActionCommand = Contig.Recd [
+  ("CommandID",         i64),
+  ("VehicleID",         i64),
+  ("VehicleActionList", uxasBoundedArray (mesgOption "VEHICLEACTION" vehicleAction) 8),
+  ("Status",            uxasCommandStatusType),
+  ("check-status",      assert (Contig.Ble(varloc"Status") (Contig.IntLit 4)))
+ ];
+
+val waypoint = Contig.Recd [
+  ("Location",            location3D),  (* Q: mesgOption this? A: Nope: extension base *)
+  ("Number",              i64),
+  ("NextWaypoint",        i64),
+  ("Speed",               real32),
+  ("SpeedType",           uxasSpeedType),
+  ("check-speed-type",    assert (Contig.Ble(varloc"SpeedType") (Contig.IntLit 1))),
+  ("ClimbRate",           real32),
+  ("TurnType",            uxasTurnType),
+  ("check-turn-type",     assert (Contig.Ble(varloc"TurnType") (Contig.IntLit 1))),
+  ("VehicleActionList",   uxasBoundedArray (mesgOption "VEHICLEACTION" vehicleAction) 8),
+  ("ContingencyWaypointA",i64),
+  ("ContingencyWaypointB",i64),
+  ("AssociatedTasks",     uxasBoundedArray i64 8)
+ ];
+
+val missionCommand = Contig.Recd [
+ ("VehicleActionCommand", vehicleActionCommand), (* Q: mesgOption this? Nope: extension base *)
+ ("WaypointList",         uxasBoundedArray (mesgOption "WAYPOINT" waypoint) 1024),
+ ("FirstWaypoint",        i64)
+];
+
+val automation_response = Contig.Recd [
+ ("MissionCommandList", uxasBoundedArray (mesgOption "MISSIONCOMMAND" missionCommand) 16),
+ ("VehicleCommandList", uxasBoundedArray (mesgOption "VEHICLEACTIONCOMMAND" vehicleActionCommand) 64),
+ ("Info",               uxasBoundedArray (mesgOption "KEYVALUEPAIR" keyValuePair) 8)
+];
+
+(*---------------------------------------------------------------------------*)
+(* AirVehicleState message                                                   *)
+(*---------------------------------------------------------------------------*)
+
+val payloadState = Contig.Recd [
+ ("PayloadID",  i64),
+ ("Parameters", uxasBoundedArray (mesgOption "KEYVALUEPAIR" keyValuePair) 8)
+];
+
+val entityState = Contig.Recd [
+  ("ID",     i64),
+  ("u",      real32),
+  ("v",      real32),
+  ("w",      real32),
+  ("udot",   real32),
+  ("vdot",   real32),
+  ("wdot",   real32),
+  ("Heading",real32),
+  ("Pitch",  real32),
+  ("Roll",   real32),
+  ("p",      real32),
+  ("q",      real32),
+  ("r",      real32),
+  ("Course", real32),
+  ("Groundspeed",      real32),
+  ("Location",         mesgOption "LOCATION3D" location3D),
+  ("EnergyAvailable",  real32),
+  ("ActualEnergyRate", real32),
+  ("PayloadStateList", uxasBoundedArray(mesgOption "PAYLOADSTATE" payloadState) 8),
+  ("CurrentWaypoint",  i64),
+  ("CurrentCommand",   i64),
+  ("Mode",             uxasNavigationMode),
+  ("AssociatedTasks",  uxasBoundedArray i64 8),
+  ("Time",             i64),
+  ("Info", uxasBoundedArray(mesgOption "KEYVALUEPAIR" keyValuePair) 32)
+];
+
+
+val airvehicle_state = Contig.Recd [
+  ("EntityState",   entityState),
+  ("Airspeed",      real32),
+  ("VerticalSpeed", real32),
+  ("WindSpeed",     real32),
+  ("WindDirection", real32)
+];
+
+(*---------------------------------------------------------------------------*)
+(* Full uxAS operating region message looks like the following               *)
+(* (Eric Mercer dug this info out):                                          *)
+(*                                                                           *)
+(*  <address> $ <attributes> $ <mesg>                                        *)
+(*                                                                           *)
+(* where                                                                     *)
+(*                                                                           *)
+(*  <address> is e.g. uxas.project.isolate.IntruderAlert,                    *)
+(*                    uxas.roadmonitor,  etc.                                *)
+(*                                                                           *)
+(*  <attributes> = <contentType>       ;; string of non "|" chars            *)
+(*               | <descriptor>        ;; ditto                              *)
+(*               | <source-group>      ;; ditto                              *)
+(*               | <source-entity-ID>  ;; ditto                              *)
+(*               | <source-service-ID> ;; ditto                              *)
+(*                                                                           *)
+(* (The vertical bars are included in the message text.)                     *)
+(*                                                                           *)
+(* Using some regexp-like notation, this is                                  *)
+(*                                                                           *)
+(*  (.* "$") (.* "|"){4} (.* "$") <mesg-object>                              *)
+(*                                                                           *)
+(* The mesg field is a mesgOption as above                                   *)
+(*---------------------------------------------------------------------------*)
+
+val attributes = Contig.Recd [
+ ("contentType",       Contig.Scanner (Contig.scanTo #"|")),
+ ("descriptor",        Contig.Scanner (Contig.scanTo #"|")),
+ ("source_group",      Contig.Scanner (Contig.scanTo #"|")),
+ ("source_entity_ID",  Contig.Scanner (Contig.scanTo #"|")),
+ ("source_service_ID", Contig.Scanner (Contig.scanTo #"$"))
+ ];
+
+fun full_mesg contig = Contig.Recd [
+  ("address",      Contig.Scanner (Contig.scanTo #"$")),
+  ("attributes",   attributes),
+  ("controlString",i32),  (* = 0x4c4d4350 = valFn "LMCP" *)
+  ("check",        assert (Contig.Beq(varloc"controlString") (Contig.IntLit 1280131920))),
+  ("mesgSize",     u32),
+  ("mesg",         contig),
+  ("checksum",     u32)
+ ];
+
+(*---------------------------------------------------------------------------*)
+(* Full messages for a few formats                                           *)
+(*---------------------------------------------------------------------------*)
+
+val fullOperatingRegionMesg =
+  full_mesg (mesgOption "OPERATINGREGION" operating_region);
+
+val fullAutomationRequestMesg =
+  full_mesg (mesgOption "AUTOMATIONREQUEST" automation_request);
+
+val fullLineSearchTaskMesg =
+  full_mesg (mesgOption "LINESEARCHTASK" linesearch_task);
+
+val fullAutomationResponseMesg =
+  full_mesg (mesgOption "AUTOMATIONRESPONSE" automation_response);
+
+val fullAirVehicleStateMesg =
+  full_mesg (mesgOption "AIRVEHICLESTATE" airvehicle_state);
+
+end (* UXAS *)
+
+
+structure API =
+struct
+
+(* Buffer size for fullAutomationResponseMesg taken from CM_Property_Set package *)
+
+val bufferSizeBytes = 32769
+
+fun logInfo s = #(api_logInfo) s Utils.emptybuf;
+
+exception FFI_RQT;
+
+fun callFFI name istr buf =
+  if name = "get_filter_in" then #(api_get_filter_in) istr buf
+   else
+  if name = "put_filter_out" then #(api_send_filter_out) istr buf
+   else
+  (logInfo ("callFFI: unknown request: "^name);
+     raise FFI_RQT)
+
+
+end  (* API *)
+
+
+structure Filter =
+struct
+
+(*---------------------------------------------------------------------------*)
+(* Declare input buffer as global variable.                                  *)
+(*---------------------------------------------------------------------------*)
+
+val filterBuf = Word8Array.array API.bufferSizeBytes Utils.w8zero;
+
+fun filter_step () =
+ let val () = Utils.clear_buf filterBuf
+     val () = API.callFFI "get_filter_in" "" filterBuf
+     val string = Utils.buf2string filterBuf
+ in
+    if Contig.wellformed UXAS.caseEnv
+            (UXAS.eventData UXAS.fullAutomationResponseMesg) string
+    then (* strip off leading event byte before sending along *)
+        let val string = Word8Array.substring filterBuf 1
+                                        (Word8Array.length filterBuf - 1)
+        in API.callFFI "put_filter_out" string Utils.emptybuf
+        end
+    else API.logInfo "Filter rejects message."
+ end
+
+end (* Filter *)
+
+
+structure Control =
+struct
+
+  fun pacer_emit() =
+      (#(sb_pacer_notification_emit) "" Utils.singlebuf;
+       Word8Array.sub Utils.singlebuf 0 <> Word8.fromInt 0);
+
+  fun pacer_wait() =
+      (#(sb_pacer_notification_wait) "" Utils.singlebuf;
+       Word8Array.sub Utils.singlebuf 0 <> Word8.fromInt 0);
+
+  fun receiveInput() = (#(api_receiveInput) "" Utils.emptybuf);
+
+  fun sendOutput() = (#(api_sendOutput) "" Utils.emptybuf);
+
+  fun loop () =
+    if pacer_wait() then (
+      receiveInput();
+      Filter.filter_step();
+      sendOutput();
+      pacer_emit();
+      loop()
+    )
+    else
+      loop();
+
+  fun start () = (
+    pacer_emit();
+    loop()
+  );
+
+end;
+
+val _ = Control.start();
