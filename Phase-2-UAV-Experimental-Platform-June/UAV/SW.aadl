@@ -83,7 +83,7 @@ public
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
 		annex agree {**
-			fun IS_TRUSTED(src_id : CMASI::Address.i) : bool = exists id in trusted_ids.value, id = src_id;
+			fun IS_TRUSTED(src_id : CMASI::Address.i) : bool = exists id in trusted_ids, id = src_id;
 			guarantee CASE_AttestationGate_policy "Only messages from trusted sources shall be forwarded" :
 				if event(AutomationRequest_in) and IS_TRUSTED(AutomationRequest_in.id) then event(AutomationRequest_out_UXAS) and event(AutomationRequest_out_MON_REQ) and not (event(OperatingRegion_out) or event(LineSearchTask_out)) and AutomationRequest_out_UXAS = AutomationRequest_in.payload.AutomationRequest and AutomationRequest_out_MON_REQ = AutomationRequest_in.payload.AutomationRequest
 				else if event(OperatingRegion_in) and IS_TRUSTED(OperatingRegion_in.id) then event(OperatingRegion_out) and not (event(AutomationRequest_out_UXAS) or event(AutomationRequest_out_MON_REQ) or event(LineSearchTask_out)) and OperatingRegion_out = OperatingRegion_in.payload.OperatingRegion

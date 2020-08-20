@@ -8,7 +8,6 @@ public
 	renames CMASI::all;
 	with Common_Data; 
 	renames Common_Data::all;
-	with CASEConsts;
 	
 annex agree {**
 		
@@ -32,7 +31,20 @@ annex agree {**
 	const AZIMUTH_CENTERLINE_MAX : real = 180.0;
 	const VERTICAL_CENTERLINE_MIN : real = -180.0;
 	const VERTICAL_CENTERLINE_MAX : real = 180.0;
-              
+
+	-- UAV maximum climb rate
+	
+    const MAX_UAV_CLIMB_RATE : real = 42.0;
+
+    -- Ground Station
+    const GS_ID : int = 500;
+
+    -- Flight Controller
+    const FCTL_ID : int = 100;
+
+    -- UAV ID
+    const UAV_ID : int = 400;
+
     fun WellformedCASE_RF_Msg(msg : CASE_RF_Msg.Impl, src : int64.i, dst : int64.i ) : bool = 
        WellformedCASE_MsgHeader(msg.header, src, dst);
        
@@ -74,6 +86,36 @@ annex agree {**
 		point.Longitude >= LONGITUDE_MIN and point.Longitude <= LONGITUDE_MAX and
 		point.Altitude >= ALTITUDE_MIN and point.Altitude <= ALTITUDE_MAX;
          
+    fun GET_MISSION_COMMAND(automationResponse: CMASI::AutomationResponse.i) : CMASI::MissionCommand.i =
+		automationResponse.MissionCommandList[0];
+
+	fun WAYPOINTS_IN_ZONE(mission : CMASI::MissionCommand.i, zone : CMASI::Polygon.i) : bool =
+		forall waypoint in mission.WaypointList, WAYPOINT_IN_ZONE_RECTANGLE(waypoint, zone);
+
+	fun WAYPOINTS_NOT_IN_ZONE(mission : CMASI::MissionCommand.i, zone : CMASI::Polygon.i) : bool =
+		forall waypoint in mission.WaypointList, not WAYPOINT_IN_ZONE_RECTANGLE(waypoint, zone);
+
+	-- Assumes rectangle that is defined by two corners so it is aligned
+	-- with the origin (not rotated in space)
+	-- Assumes that the altitude is the same in all the coordinates
+	-- Assmes zone[0] is the bottom left corner and zone[2] in the upper right corner
+	fun WAYPOINT_IN_ZONE_RECTANGLE(waypoint : CMASI::Waypoint.i, zone : CMASI::Polygon.i) : bool =
+		(waypoint.Latitude >= (zone.BoundaryPointsList[0]).Latitude)
+		and (waypoint.Latitude <= (zone.BoundaryPointsList[1]).Latitude)
+		and (waypoint.Longitude >= (zone.BoundaryPointsList[0]).Longitude)
+		and (waypoint.Longitude <= (zone.BoundaryPointsList[1]).Longitude)
+		and (waypoint.Altitude >= (zone.BoundaryPointsList[0]).Altitude);
+
+	fun DUPLICATES_IN_MISSION(mission : CMASI::MissionCommand.i) : bool =
+	    exists waypoint in mission.WaypointList, not IS_LAST_WAYPOINT(waypoint) and IS_DUPLICATE(mission, waypoint) ;
+
+	fun IS_LAST_WAYPOINT(waypoint : CMASI::Waypoint.i) : bool = waypoint.Number = waypoint.NextWaypoint;
+
+	-- Checking if there exists a waypoint with the same lat,long,alt as a given waypoint with the restriction that it
+	-- follows immediately after the given waypoint in the linked-list of waypoints.
+	fun IS_DUPLICATE(mission : CMASI::MissionCommand.i, waypoint : CMASI::Waypoint.i) : bool =
+		exists wp in mission.WaypointList, not IS_LAST_WAYPOINT(wp) and wp.Number = waypoint.NextWaypoint
+			and wp.Latitude = waypoint.Latitude and wp.Longitude = waypoint.Longitude and wp.Altitude = waypoint.Altitude;
 **};
 
 

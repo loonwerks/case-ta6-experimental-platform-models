@@ -45,10 +45,10 @@ public
 			Compute_Execution_Time => 6ms .. 6ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
-			assume Req001_UARTDriver "Assumes recv_data only gets well formed CASE_UART_Msg.Impl types" : 
-					        CASEAgree::WellformedCASE_UART_Msg(recv_data);
-			guarantee Req003_UARTDRiver "The send_data outputs only well formed CASE_UART_Msg.Impl types" : 
-			                CASEAgree::WellformedCASE_UART_Msg(send_data);
+--			assume Req001_UARTDriver "Assumes recv_data only gets well formed CASE_UART_Msg.Impl types" :
+--				event(recv_data) => CASEAgree::WellformedCASE_UART_Msg(recv_data);
+			guarantee Req003_UARTDRiver "The send_data outputs only well formed CASE_UART_Msg.Impl types" :
+				event(send_data) => CASEAgree::WellformedCASE_UART_Msg(send_data);
 		**};
 	end UARTDriver;
 

@@ -10,7 +10,6 @@ public
 	renames AGREE_PLTL::all;
 	with CM_Property_Set;
 	with HAMR;
-	with CASEConsts;
 
 	
 	------------------
@@ -44,7 +43,11 @@ public
 			LineSearchTask: out event data port CMASI::AddressAttributedMessage.i;
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::RadioDriver_Attestation_Domain;
---			HAMR::Component_Type => VIRTUAL_MACHINE;
+			HAMR::Component_Type => VIRTUAL_MACHINE;
+		annex agree {**
+			guarantee Req001_SW "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
+				 event(send_data) => CASEAgree::WellformedCASE_RF_Msg(send_data, CASEAgree::UAV_ID, CASEAgree::GS_ID);
+		**};
 	end RadioDriver_Attestation;
 	
 	process implementation RadioDriver_Attestation.Impl
@@ -124,7 +127,7 @@ public
 			Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
-			fun IS_TRUSTED(src_id : CMASI::Address.i) : bool = exists id in trusted_ids.value, id = src_id;
+			fun IS_TRUSTED(src_id : CMASI::Address.i) : bool = exists id in trusted_ids, id = src_id;
 			guarantee CASE_AttestationGate_policy "Only messages from trusted sources shall be forwarded" :
 				if event(AutomationRequest_in) and IS_TRUSTED(AutomationRequest_in.id) then event(AutomationRequest_out) and not (event(OperatingRegion_out) or event(LineSearchTask_out)) and AutomationRequest_out = AutomationRequest_in.payload.AutomationRequest
 				else if event(OperatingRegion_in) and IS_TRUSTED(OperatingRegion_in.id) then event(OperatingRegion_out) and not (event(AutomationRequest_out) or event(LineSearchTask_out)) and OperatingRegion_out = OperatingRegion_in.payload.OperatingRegion
@@ -256,6 +259,7 @@ public
 			CASE_Properties::Component_Type => FILTER;
 			CASE_Properties::Component_Spec => ("Req_Filter_AReq");
 			Dispatch_Protocol => Periodic;
+
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
@@ -454,6 +458,10 @@ public
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
+	annex agree {**
+		guarantee "Keep in zones do not change" : true -> keep_in_zones = pre(keep_in_zones);
+		guarantee "Keep out zones do not change" : true -> keep_out_zones = pre(keep_out_zones);
+	**};	
 	end FlyZonesDatabase_thr;
 
 	thread implementation FlyZonesDatabase_thr.Impl
@@ -500,11 +508,11 @@ public
 			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
 
 			-- Monitor policy (models the expected behavior in terms of the input ports)
-			property CASE_Monitor_Coord_policy = Historically(
-					event(observed) =>
-						 (WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(observed), keep_in_zones) and 
-			                	  WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(observed), keep_out_zones)
-						 and not DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(observed))));
+			property CASE_Monitor_Coord_policy =
+				Historically(event(observed) =>
+					(CASEAgree::WAYPOINTS_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_in_zones) and 
+		            CASEAgree::WAYPOINTS_NOT_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_out_zones)
+					and not CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(observed))));
 
 			-- Monitor guarantee (guarantees on the output ports in terms of the input ports and monitor policy)
 			guarantee GeofenceMonitor_alert_event "An alert is generated only when observed is invalid" :
@@ -513,35 +521,6 @@ public
 				event(output) <=> event(observed) and not event(alert);
 			guarantee GeofenceMonitor_output_data "Output is equal to observed when observed is valid" :
 				event(observed) and not event(alert) => output = observed;
-      		
-			fun GET_MISSION_COMMAND(automationResponse: CMASI::AutomationResponse.i) : CMASI::MissionCommand.i =
-			              automationResponse.MissionCommandList[0];
-			fun WAYPOINTS_IN_ZONE(mission : CMASI::MissionCommand.i, zone : CMASI::Polygon.i) : bool =
-			              forall waypoint in mission.WaypointList, WAYPOINT_IN_ZONE_RECTANGLE(waypoint, zone);
-			fun WAYPOINTS_NOT_IN_ZONE(mission : CMASI::MissionCommand.i, zone : CMASI::Polygon.i) : bool =
-			              forall waypoint in mission.WaypointList, not WAYPOINT_IN_ZONE_RECTANGLE(waypoint, zone);
-      			-- Assumes rectangle that is defined by two corners so it is aligned
-      			-- with the origin (not rotated in space)
-      			-- Assumes that the altitude is the same in all the coordinates
-      			-- Assmes zone[0] is the bottom left corner and zone[2] in the upper right corner
-			fun WAYPOINT_IN_ZONE_RECTANGLE(waypoint : CMASI::Waypoint.i, zone : CMASI::Polygon.i) : bool =
-			                  (waypoint.Latitude >= (zone.BoundaryPointsList[0]).Latitude)
-			              and (waypoint.Latitude <= (zone.BoundaryPointsList[1]).Latitude)
-			              and (waypoint.Longitude >= (zone.BoundaryPointsList[0]).Longitude)
-			              and (waypoint.Longitude <= (zone.BoundaryPointsList[1]).Longitude)
-			              and (waypoint.Altitude >= (zone.BoundaryPointsList[0]).Altitude);
-
-			fun DUPLICATES_IN_MISSION(mission : CMASI::MissionCommand.i) : bool =
-			      exists waypoint in mission.WaypointList, not IS_LAST_WAYPOINT(waypoint) and IS_DUPLICATE(mission, waypoint) ;
-
-			fun IS_LAST_WAYPOINT(waypoint : CMASI::Waypoint.i) : bool = waypoint.Number = waypoint.NextWaypoint;
-
-			-- Checking if there exists a waypoint with the same lat,long,alt as a given waypoint with the restriction that it
-			-- follows immediately after the given waypoint in the linked-list of waypoints.
-			fun IS_DUPLICATE(mission : CMASI::MissionCommand.i, waypoint : CMASI::Waypoint.i) : bool =
-			      exists wp in mission.WaypointList, not IS_LAST_WAYPOINT(wp) and wp.Number = waypoint.NextWaypoint and wp.Latitude = waypoint.Latitude and
-				 wp.Longitude = waypoint.Longitude and wp.Altitude = waypoint.Altitude;
-
 		**};
 	end CASE_Monitor_Geo_thr;
 
@@ -557,6 +536,12 @@ public
 			output: out event data port CMASI::AutomationResponse.i;
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::CASE_Monitor_Geo_Domain;
+		annex agree {**
+			guarantee Req001a_GeoMon "Once the WPM receives a return home message, it does not receive further AutomationResponse messages" :
+				Historically(Since(not event(output), event(alert)));
+			guarantee Req002_GeoMon "The set of waypoints received will not have duplicates in them" :
+				event(output) => not CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(output));
+		**};
 	end CASE_Monitor_Geo;
 	
 	process implementation CASE_Monitor_Geo.Impl
@@ -604,6 +589,14 @@ public
 			ReturnHome: in event port;
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::WaypointPlanManangerService_Domain;
+		annex agree {**
+--			assume Req001_UARTDriver "Assumes recv_data only gets well formed CASE_UART_Msg.Impl types" :
+--				event(recv_data) => CASEAgree::WellformedCASE_UART_Msg(recv_data);
+			assume Req001a_WPM "Once the WPM receives a return home message, it does not receive further AutomationResponse messages" :
+				Historically(Since(not event(AutomationResponse), event(ReturnHome)));
+			assume Req002_WPM "The set of waypoints received will not have duplicates in them" :
+				event(AutomationResponse) => not CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(AutomationResponse));
+		**};
 	end WaypointPlanManagerService;
 	
 	process implementation WaypointPlanManagerService.Impl
@@ -631,6 +624,12 @@ public
 			AirVehicleState_UXAS: out event data port CMASI::AirVehicleState.i;
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::UARTDriver_Domain;
+		annex agree {**
+--			assume Req001_UARTDriver "Assumes recv_data only gets well formed CASE_UART_Msg.Impl types" :
+--				event(recv_data) => CASEAgree::WellformedCASE_UART_Msg(recv_data);
+			guarantee Req003_UARTDRiver "The uart send_data outputs only well formed CASE_RF_Msg.Impl types" :
+				event(send_data) => CASEAgree::WellformedCASE_UART_Msg(send_data);
+		**};
 	end UARTDriver;
 	
 	process implementation UARTDriver.Impl
@@ -668,19 +667,11 @@ public
 			uart_recv: in event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
 			uart_send: out event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
 		annex agree {**
-			guarantee Req001_SW "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
-				 if (event(radio_recv) and CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEConsts::UAV_ID, CASEConsts::GS_ID)) then
-				   event(radio_send) and radio_send = radio_recv and CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEConsts::UAV_ID, CASEConsts::GS_ID)
-				 else
-				   not event(radio_send);
-			
-			guarantee Req002_SW "The uart_send outputs only well formed CASE_RF_Msg.Impl types" :
-				 if (event(uart_recv) and CASEAgree::WellformedCASE_UART_Msg(uart_recv)) then
-				   event(uart_send) and uart_send = uart_recv and CASEAgree::WellformedCASE_UART_Msg(uart_send)
-				 else
-				   not event(uart_send);
+--			guarantee Req001_SW "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
+--				 event(radio_send) => CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID);
+--			guarantee Req002_SW "The uart_send outputs only well formed CASE_RF_Msg.Impl types" :
+--				   event(uart_send) => CASEAgree::WellformedCASE_UART_Msg(uart_send);
 		**};
-
 	end SW;
 
 	system implementation SW.Impl
@@ -785,7 +776,7 @@ public
             HAMR::Default_Bit_Width => 32;
             HAMR::Default_Max_Sequence_Size => 1;
             HAMR::Max_String_Size => 256;
-            HAMR::Bit_Codec_Raw_Connections => true;
+            HAMR::Bit_Codec_Raw_Connections => true; 
 
         annex resolute {**
             check CASE_Tools

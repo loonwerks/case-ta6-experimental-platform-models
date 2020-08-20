@@ -10,7 +10,6 @@ public
 	renames AGREE_PLTL::all;
 	with CM_Property_Set;
 	with HAMR;
-	with CASEConsts;
 
 	
 	------------------
@@ -83,7 +82,7 @@ public
 			Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
-			fun IS_TRUSTED(src_id : CMASI::Address.i) : bool = exists id in trusted_ids.value, id = src_id;
+			fun IS_TRUSTED(src_id : CMASI::Address.i) : bool = exists id in trusted_ids, id = src_id;
 			guarantee CASE_AttestationGate_policy "Only messages from trusted sources shall be forwarded" :
 				if event(AutomationRequest_in) and IS_TRUSTED(AutomationRequest_in.id) then event(AutomationRequest_out) and not (event(OperatingRegion_out) or event(LineSearchTask_out)) and AutomationRequest_out = AutomationRequest_in.payload.AutomationRequest
 				else if event(OperatingRegion_in) and IS_TRUSTED(OperatingRegion_in.id) then event(OperatingRegion_out) and not (event(AutomationRequest_out) or event(LineSearchTask_out)) and OperatingRegion_out = OperatingRegion_in.payload.OperatingRegion
@@ -628,8 +627,8 @@ public
 			uart_send: out event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
 		annex agree {**
 			guarantee Req001_SW "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
-				 if (event(radio_recv) and CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEConsts::UAV_ID, CASEConsts::GS_ID)) then
-				   event(radio_send) and radio_send = radio_recv and CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEConsts::UAV_ID, CASEConsts::GS_ID)
+				 if (event(radio_recv) and CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEAgree::UAV_ID, CASEAgree::GS_ID)) then
+				   event(radio_send) and radio_send = radio_recv and CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID)
 				 else
 				   not event(radio_send);
 			

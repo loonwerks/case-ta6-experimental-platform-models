@@ -24,20 +24,22 @@ public
 			AutomationResponse: data AutomationResponse.i;
 	end LMCPObject.i;
 	
-	data Address
-	end Address;
+	data Address extends Integer_8
+		properties
+            Data_Model::Data_Representation => Array;
+            Data_Model::Dimension => (4);
+    end Address;
 	
 	data implementation Address.i
-		subcomponents
-			value: data Integer_8[4];
 	end Address.i;
 	
-	data AddressArray
+	data AddressArray extends Address
+		properties
+            Data_Model::Data_Representation => Array;
+            Data_Model::Dimension => (3);
 	end AddressArray;
 	
 	data implementation AddressArray.i
-		subcomponents
-			value: data Address.i[3];
 		properties
 			HAMR::Bit_Codec_Max_Size => CM_Property_Set::Address_Array_Bit_Codec_Max_Size;
 	end AddressArray.i;
