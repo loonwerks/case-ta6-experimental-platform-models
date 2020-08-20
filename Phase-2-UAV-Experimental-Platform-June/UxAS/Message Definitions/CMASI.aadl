@@ -33,9 +33,10 @@ public
 	data implementation Address.i
 	end Address.i;
 	
-	data AddressArray extends Address
+	data AddressArray
 		properties
             Data_Model::Data_Representation => Array;
+            Data_Model::Base_Type => (classifier (Address));
             Data_Model::Dimension => (3);
 	end AddressArray;
 	
