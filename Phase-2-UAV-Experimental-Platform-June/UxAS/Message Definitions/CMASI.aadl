@@ -24,9 +24,10 @@ public
 			AutomationResponse: data AutomationResponse.i;
 	end LMCPObject.i;
 	
-	data Address extends Integer_8
+	data Address
 		properties
             Data_Model::Data_Representation => Array;
+            Data_Model::Base_Type => (classifier (Integer_8));
             Data_Model::Dimension => (4);
     end Address;
 	
