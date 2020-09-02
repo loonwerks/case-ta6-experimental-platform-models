@@ -84,10 +84,10 @@ public
             Data_Model::Dimension => (2);    
 	end Location3DArray;
 	
-	data Polygon extends AbstractGeometry
+	data Polygon
 	end Polygon;
 	
-	data implementation Polygon.i extends AbstractGeometry.i
+	data implementation Polygon.i
 		subcomponents
 			BoundaryPointsList : data Location3DArray;
 		properties
@@ -535,7 +535,7 @@ public
 	        MaxAltitudeType: data AltitudeType.i;
 	        --A list of aircraft IDs that this zone applies to. If the list is
 	        --empty, then it is assumed that the boundary applies to all aircraft.
-	        AffectedAircraft: data Integer_64 {Data_Model::Data_Representation => Array;};
+	        AffectedAircraft: data Integer_64 {Data_Model::Data_Representation => Array; Data_Model::Dimension => (32);};
 	        --Time at which this zone becomes active. Time datum is defined by the
 	        --application, but unless otherwise specified is milliseconds since 1
 	        --Jan 1970
@@ -551,7 +551,7 @@ public
 	        --Geometry object describing the boundary. This boundary is
 	        --2-dimensional. The zone boundary is defined as an extrusion of this
 	        --boundary from MinAltitude to MaxAltitude.
-	        Boundary: data AbstractGeometry.i;
+	        Boundary: data Polygon.i;
 	end AbstractZone.i;
 
 	--A command to follow a set of ground waypoints. This is analogous to
