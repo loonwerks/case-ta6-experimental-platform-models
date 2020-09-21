@@ -1,0 +1,8 @@
+{
+	"Description": "GearCASE System Requirements",
+	"By": "Charles River Analytics & Collins",
+	"Total number of attack plans": 0,
+	"Total number of requirements": 0,
+	"Component Requirements (ordered by attack space eliminated)": 
+	]
+}

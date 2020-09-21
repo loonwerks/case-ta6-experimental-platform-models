@@ -1,0 +1,792 @@
+{
+	"Description": "GearCASE System Requirements",
+	"By": "Charles River Analytics & Collins",
+	"Total number of attack plans": 6174,
+	"Total number of requirements": 17,
+	"Component Requirements (ordered by attack space eliminated)": [
+		{
+			"id": 1,
+			"Component": "GND.PROC_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 2016,
+			"Attack Space eliminated": "4.89%"
+		},
+		{
+			"id": 2,
+			"Component": "GND.MEM_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 2016,
+			"Attack Space eliminated": "4.89%"
+		},
+		{
+			"id": 3,
+			"Component": "GND.BUS_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 1722,
+			"Attack Space eliminated": "4.18%"
+		},
+		{
+			"id": 4,
+			"Component": "RFA",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 1722,
+			"Attack Space eliminated": "4.18%"
+		},
+		{
+			"id": 5,
+			"Component": "UAV.MCMP.PROC_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 1680,
+			"Attack Space eliminated": "4.07%"
+		},
+		{
+			"id": 6,
+			"Component": "UAV.MCMP.MEM_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 1680,
+			"Attack Space eliminated": "4.07%"
+		},
+		{
+			"id": 7,
+			"Component": "UAV.FCTL_SBUS",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 1638,
+			"Attack Space eliminated": "3.97%"
+		},
+		{
+			"id": 8,
+			"Component": "GND.RADIO_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 1462,
+			"Attack Space eliminated": "3.55%"
+		},
+		{
+			"id": 9,
+			"Component": "UAV.MCMP.BUS_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 1386,
+			"Attack Space eliminated": "3.36%"
+		},
+		{
+			"id": 10,
+			"Component": "UAV.MCMP.FC_UART_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 1376,
+			"Attack Space eliminated": "3.34%"
+		},
+		{
+			"id": 11,
+			"Component": "GND.PROC_SW.RadioDriver",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 1331,
+			"Attack Space eliminated": "3.23%"
+		},
+		{
+			"id": 12,
+			"Component": "UAV.FCTL",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 1268,
+			"Attack Space eliminated": "3.08%"
+		},
+		{
+			"id": 13,
+			"Component": "UAV.MCMP.RADIO_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 1161,
+			"Attack Space eliminated": "2.82%"
+		},
+		{
+			"id": 14,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.TaskManagerService",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 956,
+			"Attack Space eliminated": "2.32%"
+		},
+		{
+			"id": 15,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.WaypointPlanManagerService",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 896,
+			"Attack Space eliminated": "2.17%"
+		},
+		{
+			"id": 16,
+			"Component": "UAV.MCMP.PROC_SW.FC_UART",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 869,
+			"Attack Space eliminated": "2.11%"
+		},
+		{
+			"id": 17,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AutomationRequestValidatorService",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 804,
+			"Attack Space eliminated": "1.95%"
+		},
+		{
+			"id": 18,
+			"Component": "UAV.MCMP.PROC_SW.RADIO",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 711,
+			"Attack Space eliminated": "1.73%"
+		},
+		{
+			"id": 19,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.PlanBuilderService",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 645,
+			"Attack Space eliminated": "1.57%"
+		},
+		{
+			"id": 20,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RoutePlannerVisibilityService",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 599,
+			"Attack Space eliminated": "1.46%"
+		},
+		{
+			"id": 21,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RouteAggregatorService",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 564,
+			"Attack Space eliminated": "1.37%"
+		},
+		{
+			"id": 22,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.CmasiLineSearchTaskService",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 551,
+			"Attack Space eliminated": "1.34%"
+		},
+		{
+			"id": 23,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.TaskManagerService",
+			"Requirement": "confidentiality_at_rest",
+			"Attack Steps Eliminated": 434,
+			"Attack Space eliminated": "1.06%"
+		},
+		{
+			"id": 24,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RoutePlannerVisibilityService",
+			"Requirement": "confidentiality_at_rest",
+			"Attack Steps Eliminated": 434,
+			"Attack Space eliminated": "1.06%"
+		},
+		{
+			"id": 25,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.PlanBuilderService",
+			"Requirement": "confidentiality_at_rest",
+			"Attack Steps Eliminated": 434,
+			"Attack Space eliminated": "1.06%"
+		},
+		{
+			"id": 26,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.WaypointPlanManagerService",
+			"Requirement": "confidentiality_at_rest",
+			"Attack Steps Eliminated": 434,
+			"Attack Space eliminated": "1.06%"
+		},
+		{
+			"id": 27,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AutomationRequestValidatorService",
+			"Requirement": "confidentiality_at_rest",
+			"Attack Steps Eliminated": 434,
+			"Attack Space eliminated": "1.06%"
+		},
+		{
+			"id": 28,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RouteAggregatorService",
+			"Requirement": "confidentiality_at_rest",
+			"Attack Steps Eliminated": 434,
+			"Attack Space eliminated": "1.06%"
+		},
+		{
+			"id": 29,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.CmasiLineSearchTaskService",
+			"Requirement": "confidentiality_at_rest",
+			"Attack Steps Eliminated": 434,
+			"Attack Space eliminated": "1.06%"
+		},
+		{
+			"id": 30,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AssignmentTreeBranchBoundService",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 422,
+			"Attack Space eliminated": "1.03%"
+		},
+		{
+			"id": 31,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.TaskManagerService",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 301,
+			"Attack Space eliminated": "0.73%"
+		},
+		{
+			"id": 32,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RoutePlannerVisibilityService",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 301,
+			"Attack Space eliminated": "0.73%"
+		},
+		{
+			"id": 33,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.PlanBuilderService",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 301,
+			"Attack Space eliminated": "0.73%"
+		},
+		{
+			"id": 34,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.WaypointPlanManagerService",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 301,
+			"Attack Space eliminated": "0.73%"
+		},
+		{
+			"id": 35,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AutomationRequestValidatorService",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 301,
+			"Attack Space eliminated": "0.73%"
+		},
+		{
+			"id": 36,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RouteAggregatorService",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 301,
+			"Attack Space eliminated": "0.73%"
+		},
+		{
+			"id": 37,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.CmasiLineSearchTaskService",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 301,
+			"Attack Space eliminated": "0.73%"
+		},
+		{
+			"id": 38,
+			"Component": "GND.BUS_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 294,
+			"Attack Space eliminated": "0.72%"
+		},
+		{
+			"id": 39,
+			"Component": "UAV.MCMP.PROC_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 294,
+			"Attack Space eliminated": "0.72%"
+		},
+		{
+			"id": 40,
+			"Component": "UAV.MCMP.FC_UART_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 294,
+			"Attack Space eliminated": "0.72%"
+		},
+		{
+			"id": 41,
+			"Component": "RFA",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 294,
+			"Attack Space eliminated": "0.72%"
+		},
+		{
+			"id": 42,
+			"Component": "GND.PROC_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 294,
+			"Attack Space eliminated": "0.72%"
+		},
+		{
+			"id": 43,
+			"Component": "GND.RADIO_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 294,
+			"Attack Space eliminated": "0.72%"
+		},
+		{
+			"id": 44,
+			"Component": "UAV.MCMP.MEM_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 294,
+			"Attack Space eliminated": "0.72%"
+		},
+		{
+			"id": 45,
+			"Component": "GND.MEM_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 294,
+			"Attack Space eliminated": "0.72%"
+		},
+		{
+			"id": 46,
+			"Component": "UAV.FCTL_SBUS",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 294,
+			"Attack Space eliminated": "0.72%"
+		},
+		{
+			"id": 47,
+			"Component": "UAV.MCMP.BUS_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 294,
+			"Attack Space eliminated": "0.72%"
+		},
+		{
+			"id": 48,
+			"Component": "UAV.MCMP.RADIO_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 294,
+			"Attack Space eliminated": "0.72%"
+		},
+		{
+			"id": 49,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.TaskManagerService",
+			"Requirement": "permit_well_formed_data",
+			"Attack Steps Eliminated": 252,
+			"Attack Space eliminated": "0.62%"
+		},
+		{
+			"id": 50,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RoutePlannerVisibilityService",
+			"Requirement": "permit_well_formed_data",
+			"Attack Steps Eliminated": 252,
+			"Attack Space eliminated": "0.62%"
+		},
+		{
+			"id": 51,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.PlanBuilderService",
+			"Requirement": "permit_well_formed_data",
+			"Attack Steps Eliminated": 252,
+			"Attack Space eliminated": "0.62%"
+		},
+		{
+			"id": 52,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.WaypointPlanManagerService",
+			"Requirement": "permit_well_formed_data",
+			"Attack Steps Eliminated": 252,
+			"Attack Space eliminated": "0.62%"
+		},
+		{
+			"id": 53,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AutomationRequestValidatorService",
+			"Requirement": "permit_well_formed_data",
+			"Attack Steps Eliminated": 252,
+			"Attack Space eliminated": "0.62%"
+		},
+		{
+			"id": 54,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RouteAggregatorService",
+			"Requirement": "permit_well_formed_data",
+			"Attack Steps Eliminated": 252,
+			"Attack Space eliminated": "0.62%"
+		},
+		{
+			"id": 55,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.CmasiLineSearchTaskService",
+			"Requirement": "permit_well_formed_data",
+			"Attack Steps Eliminated": 252,
+			"Attack Space eliminated": "0.62%"
+		},
+		{
+			"id": 56,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.TaskManagerService",
+			"Requirement": "whitelist_communications",
+			"Attack Steps Eliminated": 154,
+			"Attack Space eliminated": "0.38%"
+		},
+		{
+			"id": 57,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RoutePlannerVisibilityService",
+			"Requirement": "whitelist_communications",
+			"Attack Steps Eliminated": 154,
+			"Attack Space eliminated": "0.38%"
+		},
+		{
+			"id": 58,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.PlanBuilderService",
+			"Requirement": "whitelist_communications",
+			"Attack Steps Eliminated": 154,
+			"Attack Space eliminated": "0.38%"
+		},
+		{
+			"id": 59,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.WaypointPlanManagerService",
+			"Requirement": "whitelist_communications",
+			"Attack Steps Eliminated": 154,
+			"Attack Space eliminated": "0.38%"
+		},
+		{
+			"id": 60,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AutomationRequestValidatorService",
+			"Requirement": "whitelist_communications",
+			"Attack Steps Eliminated": 154,
+			"Attack Space eliminated": "0.38%"
+		},
+		{
+			"id": 61,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RouteAggregatorService",
+			"Requirement": "whitelist_communications",
+			"Attack Steps Eliminated": 154,
+			"Attack Space eliminated": "0.38%"
+		},
+		{
+			"id": 62,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.CmasiLineSearchTaskService",
+			"Requirement": "whitelist_communications",
+			"Attack Steps Eliminated": 154,
+			"Attack Space eliminated": "0.38%"
+		},
+		{
+			"id": 63,
+			"Component": "GND.PROC_SW.RadioDriver",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 147,
+			"Attack Space eliminated": "0.36%"
+		},
+		{
+			"id": 64,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.TaskManagerService",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 147,
+			"Attack Space eliminated": "0.36%"
+		},
+		{
+			"id": 65,
+			"Component": "UAV.MCMP.PROC_SW.RADIO",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 147,
+			"Attack Space eliminated": "0.36%"
+		},
+		{
+			"id": 66,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RoutePlannerVisibilityService",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 147,
+			"Attack Space eliminated": "0.36%"
+		},
+		{
+			"id": 67,
+			"Component": "UAV.MCMP.PROC_SW.FC_UART",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 147,
+			"Attack Space eliminated": "0.36%"
+		},
+		{
+			"id": 68,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.PlanBuilderService",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 147,
+			"Attack Space eliminated": "0.36%"
+		},
+		{
+			"id": 69,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AssignmentTreeBranchBoundService",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 147,
+			"Attack Space eliminated": "0.36%"
+		},
+		{
+			"id": 70,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.WaypointPlanManagerService",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 147,
+			"Attack Space eliminated": "0.36%"
+		},
+		{
+			"id": 71,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AutomationRequestValidatorService",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 147,
+			"Attack Space eliminated": "0.36%"
+		},
+		{
+			"id": 72,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RouteAggregatorService",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 147,
+			"Attack Space eliminated": "0.36%"
+		},
+		{
+			"id": 73,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.CmasiLineSearchTaskService",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 147,
+			"Attack Space eliminated": "0.36%"
+		},
+		{
+			"id": 74,
+			"Component": "UAV.FCTL",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 147,
+			"Attack Space eliminated": "0.36%"
+		},
+		{
+			"id": 75,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.TaskManagerService",
+			"Requirement": "memory_protections",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 76,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.TaskManagerService",
+			"Requirement": "confidentiality_in_transit",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 77,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.TaskManagerService",
+			"Requirement": "layered_protection",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 78,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RoutePlannerVisibilityService",
+			"Requirement": "memory_protections",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 79,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RoutePlannerVisibilityService",
+			"Requirement": "confidentiality_in_transit",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 80,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RoutePlannerVisibilityService",
+			"Requirement": "layered_protection",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 81,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.PlanBuilderService",
+			"Requirement": "memory_protections",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 82,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.PlanBuilderService",
+			"Requirement": "confidentiality_in_transit",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 83,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.PlanBuilderService",
+			"Requirement": "layered_protection",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 84,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.WaypointPlanManagerService",
+			"Requirement": "memory_protections",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 85,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.WaypointPlanManagerService",
+			"Requirement": "confidentiality_in_transit",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 86,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.WaypointPlanManagerService",
+			"Requirement": "layered_protection",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 87,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AutomationRequestValidatorService",
+			"Requirement": "memory_protections",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 88,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AutomationRequestValidatorService",
+			"Requirement": "confidentiality_in_transit",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 89,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AutomationRequestValidatorService",
+			"Requirement": "layered_protection",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 90,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RouteAggregatorService",
+			"Requirement": "memory_protections",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 91,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RouteAggregatorService",
+			"Requirement": "confidentiality_in_transit",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 92,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RouteAggregatorService",
+			"Requirement": "layered_protection",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 93,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.CmasiLineSearchTaskService",
+			"Requirement": "memory_protections",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 94,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.CmasiLineSearchTaskService",
+			"Requirement": "confidentiality_in_transit",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 95,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.CmasiLineSearchTaskService",
+			"Requirement": "layered_protection",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "0.31%"
+		},
+		{
+			"id": 96,
+			"Component": "GND.PROC_SW.RadioDriver",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 97,
+			"Component": "GND.PROC_SW.RadioDriver",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 98,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.TaskManagerService",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 99,
+			"Component": "UAV.MCMP.PROC_SW.RADIO",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 100,
+			"Component": "UAV.MCMP.PROC_SW.RADIO",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 101,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RoutePlannerVisibilityService",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 102,
+			"Component": "UAV.MCMP.PROC_SW.FC_UART",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 103,
+			"Component": "UAV.MCMP.PROC_SW.FC_UART",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 104,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.PlanBuilderService",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 105,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AssignmentTreeBranchBoundService",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 106,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AssignmentTreeBranchBoundService",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 107,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.WaypointPlanManagerService",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 108,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.AutomationRequestValidatorService",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 109,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.RouteAggregatorService",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 110,
+			"Component": "UAV.MCMP.PROC_SW.UXAS.CmasiLineSearchTaskService",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 111,
+			"Component": "UAV.FCTL",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		},
+		{
+			"id": 112,
+			"Component": "UAV.FCTL",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 49,
+			"Attack Space eliminated": "0.12%"
+		}
+	]
+}

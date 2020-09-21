@@ -1,0 +1,866 @@
+{
+	"tool" : "GearCASE",
+	"grammar" : "placeholder",
+	"date" : "2020-07-02-151433",
+	"hash" : "9b380e7b0c967070d4b9b4c0d221e9bfb7c0eed9c7629a9c671f0981401862bf144986a06b1b9e73f6f923280442efc780b9d457688ae1408574de231686cb42",
+	"Total Number of Attack Plans" : "637",
+	"Total Number of Attack/Atom Pairs" : "61",
+	"Attacks" : 
+	[
+		{
+			"id": "1",
+			"Attack": "other_network_exfiltration",
+			"Description": "Sensitive data may be exfiltrated through a network to an adversary controlled device.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 154,
+			"Percentage of Attack Space Eliminated": "24.18%",
+			"Requirements": ["whitelist_communications"],
+			"Attack Plan List": [128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,440,441,442,443,444,445,446,447,448,449,450,451,452,453,454,455,456,457,458,459,460,461,462,463,464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,480,481,482,483,484,485,486,487,488,489,490,491,492,493,494,495,496,497,498,499,500,501,502,503,504,505],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "2",
+			"Attack": "covert_channel",
+			"Description": "An unintended or unauthorized intra-system channel that enables two cooperating entities to transfer information in a way that violates the system's security policy but does not exceed the entities' access authorizations.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 154,
+			"Percentage of Attack Space Eliminated": "24.18%",
+			"Requirements": ["confidentiality_at_rest"],
+			"Attack Plan List": [172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,506,507,508,509,510,511,512,513,514,515,516,517,518,519,520,521,522,523,524,525,526,527,528,529,530,531,532,533,534,535,536,537,538,539,540,541,542,543,544,545,546,547,548,549,550,551,552,553,554,555,556,557,558,559,560,561,562,563,564,565,566,567,568,569,570,571],
+			"Attack Standards": {
+				"CWEs": ["CWE-514: Covert Channel","CWE-Category-417: Communication Channel Errors"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "3",
+			"Attack": "wifi_exfiltration",
+			"Description": "Sensitive data may be exfiltrated through a wifi channel.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 154,
+			"Percentage of Attack Space Eliminated": "24.18%",
+			"Requirements": ["confidentiality_at_rest"],
+			"Attack Plan List": [216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437,438,439,572,573,574,575,576,577,578,579,580,581,582,583,584,585,586,587,588,589,590,591,592,593,594,595,596,597,598,599,600,601,602,603,604,605,606,607,608,609,610,611,612,613,614,615,616,617,618,619,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637],
+			"Attack Standards": {
+				"CWEs": ["CWE-923: Improper Restriction of Communication Channel to Intended Endpoints","CWE-Category-417: Communication Channel Errors"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "4",
+			"Attack": "replay_attack",
+			"Description": "An attack that involves the capture of transmitted authentication or access control information and its subsequent retransmission with the intent of producing an unauthorized effect or gaining unauthorized access.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 91,
+			"Percentage of Attack Space Eliminated": "14.29%",
+			"Requirements": ["authenticate_communication"],
+			"Attack Plan List": [13,40,41,42,43,85,88,91,94,264,265,266,267,272,273,274,275,292,293,294,295,304,305,306,307,462,463,464,465,466,467,468,469,470,471,472,473,474,475,476,477,478,479,480,481,482,483,550,551,552,553,554,555,556,557,558,559,560,561,562,563,564,565,566,567,568,569,570,571,594,595,596,597,598,599,600,601,602,603,604,605,606,607,608,609,610,611,612,613,614,615],
+			"Attack Standards": {
+				"CWEs": ["CWE-294: Authentication Bypass By Capture-replay","CWE-Category-310: Cryptographic Issues"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "5",
+			"Attack": "command_injection",
+			"Description": "If data is not properly sanitized and checked, an adversary may be able to insert legitimated but malicious commands that they should not be able to run or access.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 91,
+			"Percentage of Attack Space Eliminated": "14.29%",
+			"Requirements": ["application_sandboxing","permit_well_formed_data"],
+			"Attack Plan List": [4,28,29,30,31,44,46,49,51,100,101,102,103,108,109,110,111,112,113,114,115,124,125,126,127,308,309,310,311,312,313,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417],
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-1005: 7PK - Input Validation and Representation","CWE-Category-1019: Validate Inputs","CWE-Category-1027: OWASP Top Ten 2017 Category A1 - Injection","CWE-Category-1034: OWASP Top Ten 2017 Category A8 - Insecure Deserialization","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-1215: Input Validation Issues","CWE-Category-1218: Memory Buffer Errors","CWE-Category-133: String Errors","CWE-Category-136: Type Errors","CWE-Category-137: Data Representation Errors","CWE-Category-189: Numeric Errors","CWE-Category-19: Data Processing Errors","CWE-Category-227: 7PK - API Abuse","CWE-Category-714: OWASP Top Ten 2007 Category A3 - Malicious File Execution","CWE-Category-864: 2011 Top 25 - Insecure Interaction Between Components","CWE-Cateogry-251: Often Misused: String Management"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "6",
+			"Attack": "protocol_weakness",
+			"Description": "Some protocols lack security measures, such as http, so the attacker is able to abuse these to manipulate the system.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 91,
+			"Percentage of Attack Space Eliminated": "14.29%",
+			"Requirements": ["layered_protection"],
+			"Attack Plan List": [2,5,6,7,8,17,18,20,22,56,57,58,59,64,65,66,67,68,69,70,71,80,81,82,83,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,238,239,240,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259],
+			"Attack Standards": {
+				"CWEs": ["CWE-287: Improper Authentication","CWE-Category-1010: Authenticate Actors","CWE-Category-1028: OWASP Top Ten 2017 Category A2 - Broken Authentication","CWE-Category-1211: Authentication Errors","CWE-Category-310: Cryptographic Issues","CWE-Category-866: 2011 Top 25 - Porous Defenses"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "7",
+			"Attack": "data_overwrites",
+			"Description": "Writing one or more patterns of data on top of the physical location of data stored on the media.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 91,
+			"Percentage of Attack Space Eliminated": "14.29%",
+			"Requirements": ["application_sandboxing","memory_protections","permit_well_formed_data"],
+			"Attack Plan List": [3,24,25,26,27,45,47,48,50,96,97,98,99,104,105,106,107,116,117,118,119,120,121,122,123,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350,351,352,353,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435,436,437,438,439],
+			"Attack Standards": {
+				"CWEs": ["CWE-787: Out-of-bounds Write","CWE-Category-1129: CISQ Quality Measures - Reliability","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-1215: Input Validation Issues","CWE-Category-1218: Memory Buffer Errors","CWE-Category-133: String Errors","CWE-Category-136: Type Errors","CWE-Category-137: Data Representation Errors","CWE-Category-189: Numeric Errors","CWE-Category-19: Data Processing Errors","CWE-Category-275: Permission Issues","CWE-Category-465: Pointer Issues"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "8",
+			"Attack": "use_stolen_credentials",
+			"Description": "Legitimate credentials are found and used by an adversary.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 91,
+			"Percentage of Attack Space Eliminated": "14.29%",
+			"Requirements": ["confidentiality_at_rest"],
+			"Attack Plan List": [1,9,10,11,12,16,19,21,23,52,53,54,55,60,61,62,63,72,73,74,75,76,77,78,79,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,194,195,196,197,198,199,200,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237],
+			"Attack Standards": {
+				"CWEs": ["CWE-522: Insufficiently Protected Credentials","CWE-Category-255: Credentials Management Errors"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "9",
+			"Attack": "man_in_the_middle",
+			"Description": "An attacker is able to sit in the middle of a connection between multiple parties and intercept communications, potentially changing messages as well.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 91,
+			"Percentage of Attack Space Eliminated": "14.29%",
+			"Requirements": ["confidentiality_in_transit"],
+			"Attack Plan List": [15,32,33,34,35,84,89,92,95,268,269,270,271,280,281,282,283,284,285,286,287,296,297,298,299,484,485,486,487,488,489,490,491,492,493,494,495,496,497,498,499,500,501,502,503,504,505,506,507,508,509,510,511,512,513,514,515,516,517,518,519,520,521,522,523,524,525,526,527,572,573,574,575,576,577,578,579,580,581,582,583,584,585,586,587,588,589,590,591,592,593],
+			"Attack Standards": {
+				"CWEs": ["CWE-300: Channel Accessible by Non-Endpoint","CWE-Category-1010: Authenticate Actors","CWE-Category-1211: Authentication Errors","CWE-Category-255: Credentials Management Errors","CWE-Category-417: Communication Channel Errors"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "10",
+			"Attack": "lack_of_authentication",
+			"Description": "A lack of verifying the identity of a user, process, or device, often as a prerequisite to allowing access to resources in an information system",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 91,
+			"Percentage of Attack Space Eliminated": "14.29%",
+			"Requirements": ["authenticate_communication"],
+			"Attack Plan List": [14,36,37,38,39,86,87,90,93,260,261,262,263,276,277,278,279,288,289,290,291,300,301,302,303,440,441,442,443,444,445,446,447,448,449,450,451,452,453,454,455,456,457,458,459,460,461,528,529,530,531,532,533,534,535,536,537,538,539,540,541,542,543,544,545,546,547,548,549,616,617,618,619,620,621,622,623,624,625,626,627,628,629,630,631,632,633,634,635,636,637],
+			"Attack Standards": {
+				"CWEs": ["CWE-304: Missing Critical Step in Authentication","CWE-Category-715: OWASP Top Ten 2007 Category A4 - Insecure Direct Object Reference"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "11",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "GND.RADIO_HW",
+			"Attack Plans Eliminated": 45,
+			"Percentage of Attack Space Eliminated": "7.06%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [5,9,24,134,135,156,157,178,179,200,201,222,223,244,245,314,315,336,337,358,359,380,381,402,403,424,425,446,447,468,469,490,491,512,513,534,535,556,557,578,579,600,601,622,623],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "12",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "UAV.MCMP.RADIO_HW",
+			"Attack Plans Eliminated": 44,
+			"Percentage of Attack Space Eliminated": "6.91%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [5,9,148,149,170,171,192,193,214,215,236,237,258,259,328,329,350,351,372,373,394,395,416,417,438,439,460,461,482,483,504,505,526,527,548,549,570,571,592,593,614,615,636,637],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "13",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "UAV.MCMP.FC_UART_HW",
+			"Attack Plans Eliminated": 44,
+			"Percentage of Attack Space Eliminated": "6.91%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [6,10,142,143,164,165,186,187,208,209,230,231,252,253,322,323,344,345,366,367,388,389,410,411,432,433,454,455,476,477,498,499,520,521,542,543,564,565,586,587,608,609,630,631],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "14",
+			"Attack": "emf_leakage",
+			"Description": "Hardware components should be properly insulated an shielded to prevent electromagnetic signals from being exposed to an adversary.",
+			"Atom": "RFA",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["prevent_emf_leakage"],
+			"Attack Plan List": [136,137,158,159,180,181,202,203,224,225,246,247,316,317,338,339,360,361,382,383,404,405,426,427,448,449,470,471,492,493,514,515,536,537,558,559,580,581,602,603,624,625],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "15",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "UAV.FCTL_SBUS",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [138,139,160,161,182,183,204,205,226,227,248,249,318,319,340,341,362,363,384,385,406,407,428,429,450,451,472,473,494,495,516,517,538,539,560,561,582,583,604,605,626,627],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "16",
+			"Attack": "emf_leakage",
+			"Description": "Hardware components should be properly insulated an shielded to prevent electromagnetic signals from being exposed to an adversary.",
+			"Atom": "GND.PROC_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["prevent_emf_leakage"],
+			"Attack Plan List": [132,133,154,155,176,177,198,199,220,221,242,243,312,313,334,335,356,357,378,379,400,401,422,423,444,445,466,467,488,489,510,511,532,533,554,555,576,577,598,599,620,621],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "17",
+			"Attack": "emf_leakage",
+			"Description": "Hardware components should be properly insulated an shielded to prevent electromagnetic signals from being exposed to an adversary.",
+			"Atom": "GND.BUS_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["prevent_emf_leakage"],
+			"Attack Plan List": [128,129,150,151,172,173,194,195,216,217,238,239,308,309,330,331,352,353,374,375,396,397,418,419,440,441,462,463,484,485,506,507,528,529,550,551,572,573,594,595,616,617],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "18",
+			"Attack": "emf_leakage",
+			"Description": "Hardware components should be properly insulated an shielded to prevent electromagnetic signals from being exposed to an adversary.",
+			"Atom": "UAV.MCMP.RADIO_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["prevent_emf_leakage"],
+			"Attack Plan List": [148,149,170,171,192,193,214,215,236,237,258,259,328,329,350,351,372,373,394,395,416,417,438,439,460,461,482,483,504,505,526,527,548,549,570,571,592,593,614,615,636,637],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "19",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "GND.MEM_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [130,131,152,153,174,175,196,197,218,219,240,241,310,311,332,333,354,355,376,377,398,399,420,421,442,443,464,465,486,487,508,509,530,531,552,553,574,575,596,597,618,619],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "20",
+			"Attack": "emf_leakage",
+			"Description": "Hardware components should be properly insulated an shielded to prevent electromagnetic signals from being exposed to an adversary.",
+			"Atom": "UAV.MCMP.FC_UART_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["prevent_emf_leakage"],
+			"Attack Plan List": [142,143,164,165,186,187,208,209,230,231,252,253,322,323,344,345,366,367,388,389,410,411,432,433,454,455,476,477,498,499,520,521,542,543,564,565,586,587,608,609,630,631],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "21",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "UAV.MCMP.MEM_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [144,145,166,167,188,189,210,211,232,233,254,255,324,325,346,347,368,369,390,391,412,413,434,435,456,457,478,479,500,501,522,523,544,545,566,567,588,589,610,611,632,633],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "22",
+			"Attack": "emf_leakage",
+			"Description": "Hardware components should be properly insulated an shielded to prevent electromagnetic signals from being exposed to an adversary.",
+			"Atom": "GND.RADIO_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["prevent_emf_leakage"],
+			"Attack Plan List": [134,135,156,157,178,179,200,201,222,223,244,245,314,315,336,337,358,359,380,381,402,403,424,425,446,447,468,469,490,491,512,513,534,535,556,557,578,579,600,601,622,623],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "23",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "UAV.MCMP.PROC_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [146,147,168,169,190,191,212,213,234,235,256,257,326,327,348,349,370,371,392,393,414,415,436,437,458,459,480,481,502,503,524,525,546,547,568,569,590,591,612,613,634,635],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "24",
+			"Attack": "emf_leakage",
+			"Description": "Hardware components should be properly insulated an shielded to prevent electromagnetic signals from being exposed to an adversary.",
+			"Atom": "GND.MEM_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["prevent_emf_leakage"],
+			"Attack Plan List": [130,131,152,153,174,175,196,197,218,219,240,241,310,311,332,333,354,355,376,377,398,399,420,421,442,443,464,465,486,487,508,509,530,531,552,553,574,575,596,597,618,619],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "25",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "UAV.MCMP.BUS_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [140,141,162,163,184,185,206,207,228,229,250,251,320,321,342,343,364,365,386,387,408,409,430,431,452,453,474,475,496,497,518,519,540,541,562,563,584,585,606,607,628,629],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "26",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "GND.BUS_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [128,129,150,151,172,173,194,195,216,217,238,239,308,309,330,331,352,353,374,375,396,397,418,419,440,441,462,463,484,485,506,507,528,529,550,551,572,573,594,595,616,617],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "27",
+			"Attack": "emf_leakage",
+			"Description": "Hardware components should be properly insulated an shielded to prevent electromagnetic signals from being exposed to an adversary.",
+			"Atom": "UAV.FCTL_SBUS",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["prevent_emf_leakage"],
+			"Attack Plan List": [138,139,160,161,182,183,204,205,226,227,248,249,318,319,340,341,362,363,384,385,406,407,428,429,450,451,472,473,494,495,516,517,538,539,560,561,582,583,604,605,626,627],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "28",
+			"Attack": "emf_leakage",
+			"Description": "Hardware components should be properly insulated an shielded to prevent electromagnetic signals from being exposed to an adversary.",
+			"Atom": "UAV.MCMP.PROC_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["prevent_emf_leakage"],
+			"Attack Plan List": [146,147,168,169,190,191,212,213,234,235,256,257,326,327,348,349,370,371,392,393,414,415,436,437,458,459,480,481,502,503,524,525,546,547,568,569,590,591,612,613,634,635],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "29",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "GND.PROC_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [132,133,154,155,176,177,198,199,220,221,242,243,312,313,334,335,356,357,378,379,400,401,422,423,444,445,466,467,488,489,510,511,532,533,554,555,576,577,598,599,620,621],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "30",
+			"Attack": "emf_leakage",
+			"Description": "Hardware components should be properly insulated an shielded to prevent electromagnetic signals from being exposed to an adversary.",
+			"Atom": "UAV.MCMP.MEM_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["prevent_emf_leakage"],
+			"Attack Plan List": [144,145,166,167,188,189,210,211,232,233,254,255,324,325,346,347,368,369,390,391,412,413,434,435,456,457,478,479,500,501,522,523,544,545,566,567,588,589,610,611,632,633],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "31",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "RFA",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [136,137,158,159,180,181,202,203,224,225,246,247,316,317,338,339,360,361,382,383,404,405,426,427,448,449,470,471,492,493,514,515,536,537,558,559,580,581,602,603,624,625],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "32",
+			"Attack": "emf_leakage",
+			"Description": "Hardware components should be properly insulated an shielded to prevent electromagnetic signals from being exposed to an adversary.",
+			"Atom": "UAV.MCMP.BUS_HW",
+			"Attack Plans Eliminated": 42,
+			"Percentage of Attack Space Eliminated": "6.59%",
+			"Requirements": ["prevent_emf_leakage"],
+			"Attack Plan List": [140,141,162,163,184,185,206,207,228,229,250,251,320,321,342,343,364,365,386,387,408,409,430,431,452,453,474,475,496,497,518,519,540,541,562,563,584,585,606,607,628,629],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "33",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "UAV.MCMP.PROC_SW.FC_UART",
+			"Attack Plans Eliminated": 36,
+			"Percentage of Attack Space Eliminated": "5.65%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [6,7,11,26,30,34,38,42,54,58,62,66,70,74,78,82,98,102,106,110,114,118,122,126,262,266,270,274,278,282,286,290,294,298,302,306],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "34",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "UAV.MCMP.PROC_SW.RADIO",
+			"Attack Plans Eliminated": 36,
+			"Percentage of Attack Space Eliminated": "5.65%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [5,8,12,27,31,35,39,43,55,59,63,67,71,75,79,83,99,103,107,111,115,119,123,127,263,267,271,275,279,283,287,291,295,299,303,307],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "35",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "UAV.FCTL",
+			"Attack Plans Eliminated": 35,
+			"Percentage of Attack Space Eliminated": "5.49%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [6,10,25,29,33,37,41,53,57,61,65,69,73,77,81,97,101,105,109,113,117,121,125,261,265,269,273,277,281,285,289,293,297,301,305],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "36",
+			"Attack": "lateral_movement",
+			"Description": "An attacker moves from one component to another in the system.",
+			"Atom": "GND.PROC_SW.RadioDriver",
+			"Attack Plans Eliminated": 35,
+			"Percentage of Attack Space Eliminated": "5.49%",
+			"Requirements": ["application_sandboxing"],
+			"Attack Plan List": [5,9,24,28,32,36,40,52,56,60,64,68,72,76,80,96,100,104,108,112,116,120,124,260,264,268,272,276,280,284,288,292,296,300,304],
+			"Attack Standards": {
+				"CWEs": [],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "37",
+			"Attack": "shutdown_through_dos",
+			"Description": "The prevention of authorized access to resources or the delaying of time-critical operations. (Time-critical may be milliseconds or it may be hours, depending upon the service provided.)",
+			"Atom": "UAV.MCMP.PROC_SW.FC_UART",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [62,66,106,110,274,278,282],
+			"Attack Standards": {
+				"CWEs": ["CWE-400: Uncontrolled Resource Consumption","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-Category-399: Resource Management Errors","CWE-Category-411: Resource Locking Problems","CWE-Category-438: Behavioral Problems","CWE-Category-557: Concurrency Issues","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "38",
+			"Attack": "algorithmic_complexity",
+			"Description": "Specifically crafted malicious inputs to an algorithm may cause it to run increasingly complex calculations, exhausting memory or processing power and causing DoS.",
+			"Atom": "UAV.MCMP.PROC_SW.RADIO",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [79,83,123,127,299,303,307],
+			"Attack Standards": {
+				"CWEs": ["CWE 407: Inefficient Algorithmic Complexity","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-1226: Complexity Issues"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "39",
+			"Attack": "shutdown_through_dos",
+			"Description": "The prevention of authorized access to resources or the delaying of time-critical operations. (Time-critical may be milliseconds or it may be hours, depending upon the service provided.)",
+			"Atom": "GND.PROC_SW.RadioDriver",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [60,64,104,108,272,276,280],
+			"Attack Standards": {
+				"CWEs": ["CWE-400: Uncontrolled Resource Consumption","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-Category-399: Resource Management Errors","CWE-Category-411: Resource Locking Problems","CWE-Category-438: Behavioral Problems","CWE-Category-557: Concurrency Issues","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "40",
+			"Attack": "storage_overload",
+			"Description": "Trying to store information on a device past its capacity can cause a denial of service.",
+			"Atom": "UAV.FCTL",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [53,57,97,101,261,265,269],
+			"Attack Standards": {
+				"CWEs": ["CWE-682: Incorrect Calculation"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "41",
+			"Attack": "algorithmic_complexity",
+			"Description": "Specifically crafted malicious inputs to an algorithm may cause it to run increasingly complex calculations, exhausting memory or processing power and causing DoS.",
+			"Atom": "UAV.MCMP.PROC_SW.FC_UART",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [78,82,122,126,298,302,306],
+			"Attack Standards": {
+				"CWEs": ["CWE 407: Inefficient Algorithmic Complexity","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-1226: Complexity Issues"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "42",
+			"Attack": "change_system_configuration",
+			"Description": "Altering the documented set of specifications for an information system, or a configuration item within a system, that has been formally reviewed and agreed on at a given pointin time.",
+			"Atom": "GND.PROC_SW.RadioDriver",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["immutable_data"],
+			"Attack Plan List": [5,9,24,28,32,36,40],
+			"Attack Standards": {
+				"CWEs": ["CWE-642: External Control of Critical State Data"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "43",
+			"Attack": "change_system_configuration",
+			"Description": "Altering the documented set of specifications for an information system, or a configuration item within a system, that has been formally reviewed and agreed on at a given pointin time.",
+			"Atom": "UAV.MCMP.PROC_SW.RADIO",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["immutable_data"],
+			"Attack Plan List": [8,12,27,31,35,39,43],
+			"Attack Standards": {
+				"CWEs": ["CWE-642: External Control of Critical State Data"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "44",
+			"Attack": "shutdown_through_dos",
+			"Description": "The prevention of authorized access to resources or the delaying of time-critical operations. (Time-critical may be milliseconds or it may be hours, depending upon the service provided.)",
+			"Atom": "UAV.MCMP.PROC_SW.RADIO",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [63,67,107,111,275,279,283],
+			"Attack Standards": {
+				"CWEs": ["CWE-400: Uncontrolled Resource Consumption","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-Category-399: Resource Management Errors","CWE-Category-411: Resource Locking Problems","CWE-Category-438: Behavioral Problems","CWE-Category-557: Concurrency Issues","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "45",
+			"Attack": "shutdown_through_normal_channels",
+			"Description": "A malicious adversary who has compromised a system may be able to shut the system down using normal shutdown mechanisms, causing a DoS state.",
+			"Atom": "GND.PROC_SW.RadioDriver",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["authenticate_communication"],
+			"Attack Plan List": [68,72,112,116,284,288,292],
+			"Attack Standards": {
+				"CWEs": ["CWE-664: Improper Control of a Resource Through its Lifetime","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-Category-399: Resource Management Errors","CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "46",
+			"Attack": "algorithmic_complexity",
+			"Description": "Specifically crafted malicious inputs to an algorithm may cause it to run increasingly complex calculations, exhausting memory or processing power and causing DoS.",
+			"Atom": "UAV.FCTL",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [77,81,121,125,297,301,305],
+			"Attack Standards": {
+				"CWEs": ["CWE 407: Inefficient Algorithmic Complexity","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-1226: Complexity Issues"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "47",
+			"Attack": "change_system_configuration",
+			"Description": "Altering the documented set of specifications for an information system, or a configuration item within a system, that has been formally reviewed and agreed on at a given pointin time.",
+			"Atom": "UAV.FCTL",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["immutable_data"],
+			"Attack Plan List": [6,10,25,29,33,37,41],
+			"Attack Standards": {
+				"CWEs": ["CWE-642: External Control of Critical State Data"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "48",
+			"Attack": "change_system_configuration",
+			"Description": "Altering the documented set of specifications for an information system, or a configuration item within a system, that has been formally reviewed and agreed on at a given pointin time.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["immutable_data"],
+			"Attack Plan List": [1,2,3,4,13,14,15],
+			"Attack Standards": {
+				"CWEs": ["CWE-642: External Control of Critical State Data"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "49",
+			"Attack": "algorithmic_complexity",
+			"Description": "Specifically crafted malicious inputs to an algorithm may cause it to run increasingly complex calculations, exhausting memory or processing power and causing DoS.",
+			"Atom": "GND.PROC_SW.RadioDriver",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [76,80,120,124,296,300,304],
+			"Attack Standards": {
+				"CWEs": ["CWE 407: Inefficient Algorithmic Complexity","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-1226: Complexity Issues"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "50",
+			"Attack": "shutdown_through_normal_channels",
+			"Description": "A malicious adversary who has compromised a system may be able to shut the system down using normal shutdown mechanisms, causing a DoS state.",
+			"Atom": "UAV.MCMP.PROC_SW.RADIO",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["authenticate_communication"],
+			"Attack Plan List": [71,75,115,119,287,291,295],
+			"Attack Standards": {
+				"CWEs": ["CWE-664: Improper Control of a Resource Through its Lifetime","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-Category-399: Resource Management Errors","CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "51",
+			"Attack": "shutdown_through_normal_channels",
+			"Description": "A malicious adversary who has compromised a system may be able to shut the system down using normal shutdown mechanisms, causing a DoS state.",
+			"Atom": "UAV.FCTL",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["authenticate_communication"],
+			"Attack Plan List": [69,73,113,117,285,289,293],
+			"Attack Standards": {
+				"CWEs": ["CWE-664: Improper Control of a Resource Through its Lifetime","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-Category-399: Resource Management Errors","CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "52",
+			"Attack": "shutdown_through_dos",
+			"Description": "The prevention of authorized access to resources or the delaying of time-critical operations. (Time-critical may be milliseconds or it may be hours, depending upon the service provided.)",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [22,23,50,51,93,94,95],
+			"Attack Standards": {
+				"CWEs": ["CWE-400: Uncontrolled Resource Consumption","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-Category-399: Resource Management Errors","CWE-Category-411: Resource Locking Problems","CWE-Category-438: Behavioral Problems","CWE-Category-557: Concurrency Issues","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "53",
+			"Attack": "storage_overload",
+			"Description": "Trying to store information on a device past its capacity can cause a denial of service.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [20,21,48,49,90,91,92],
+			"Attack Standards": {
+				"CWEs": ["CWE-682: Incorrect Calculation"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "54",
+			"Attack": "shutdown_through_normal_channels",
+			"Description": "A malicious adversary who has compromised a system may be able to shut the system down using normal shutdown mechanisms, causing a DoS state.",
+			"Atom": "UAV.MCMP.PROC_SW.FC_UART",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["authenticate_communication"],
+			"Attack Plan List": [70,74,114,118,286,290,294],
+			"Attack Standards": {
+				"CWEs": ["CWE-664: Improper Control of a Resource Through its Lifetime","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-Category-399: Resource Management Errors","CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "55",
+			"Attack": "algorithmic_complexity",
+			"Description": "Specifically crafted malicious inputs to an algorithm may cause it to run increasingly complex calculations, exhausting memory or processing power and causing DoS.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [18,19,46,47,87,88,89],
+			"Attack Standards": {
+				"CWEs": ["CWE 407: Inefficient Algorithmic Complexity","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-1226: Complexity Issues"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "56",
+			"Attack": "shutdown_through_normal_channels",
+			"Description": "A malicious adversary who has compromised a system may be able to shut the system down using normal shutdown mechanisms, causing a DoS state.",
+			"Atom": "UAV.MCMP.PROC_SW.UXAS",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["authenticate_communication"],
+			"Attack Plan List": [16,17,44,45,84,85,86],
+			"Attack Standards": {
+				"CWEs": ["CWE-664: Improper Control of a Resource Through its Lifetime","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-Category-399: Resource Management Errors","CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "57",
+			"Attack": "storage_overload",
+			"Description": "Trying to store information on a device past its capacity can cause a denial of service.",
+			"Atom": "UAV.MCMP.PROC_SW.FC_UART",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [54,58,98,102,262,266,270],
+			"Attack Standards": {
+				"CWEs": ["CWE-682: Incorrect Calculation"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "58",
+			"Attack": "shutdown_through_dos",
+			"Description": "The prevention of authorized access to resources or the delaying of time-critical operations. (Time-critical may be milliseconds or it may be hours, depending upon the service provided.)",
+			"Atom": "UAV.FCTL",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [61,65,105,109,273,277,281],
+			"Attack Standards": {
+				"CWEs": ["CWE-400: Uncontrolled Resource Consumption","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-Category-399: Resource Management Errors","CWE-Category-411: Resource Locking Problems","CWE-Category-438: Behavioral Problems","CWE-Category-557: Concurrency Issues","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "59",
+			"Attack": "storage_overload",
+			"Description": "Trying to store information on a device past its capacity can cause a denial of service.",
+			"Atom": "UAV.MCMP.PROC_SW.RADIO",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [55,59,99,103,263,267,271],
+			"Attack Standards": {
+				"CWEs": ["CWE-682: Incorrect Calculation"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "60",
+			"Attack": "change_system_configuration",
+			"Description": "Altering the documented set of specifications for an information system, or a configuration item within a system, that has been formally reviewed and agreed on at a given pointin time.",
+			"Atom": "UAV.MCMP.PROC_SW.FC_UART",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["immutable_data"],
+			"Attack Plan List": [7,11,26,30,34,38,42],
+			"Attack Standards": {
+				"CWEs": ["CWE-642: External Control of Critical State Data"],
+				"CVEs": []
+			}
+		},
+		{
+			"id": "61",
+			"Attack": "storage_overload",
+			"Description": "Trying to store information on a device past its capacity can cause a denial of service.",
+			"Atom": "GND.PROC_SW.RadioDriver",
+			"Attack Plans Eliminated": 7,
+			"Percentage of Attack Space Eliminated": "1.1%",
+			"Requirements": ["limit_resource_use"],
+			"Attack Plan List": [52,56,96,100,260,264,268],
+			"Attack Standards": {
+				"CWEs": ["CWE-682: Incorrect Calculation"],
+				"CVEs": []
+			}
+		}
+	]
+
+}

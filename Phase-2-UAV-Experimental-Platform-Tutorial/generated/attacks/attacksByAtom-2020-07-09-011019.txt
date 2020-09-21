@@ -1,0 +1,202 @@
+{
+	"tool" : "GearCASE",
+	"grammar" : "placeholder",
+	"date" : "2020-07-09-011019",
+	"hash" : "ee05a01b195238a018396c5f776e4b9d47bcd453c13cf4d4ab8c3d753ef5fa64a3bb275dc5a2faab806bdc248f922d465505203f04b7539f400a579414eb110e",
+	"Total Number of Attack Plans": 1190,
+	"Total Number of Attack/Atom Pairs": 96,
+	"Atoms": [
+		{
+			"Atom": "PROC_SW.UxAS.AutomationRequestValidatorService",
+			"Attack Plans Eliminated": 642,
+			"Percentage of Attack Space Eliminated": "53.94957983193277%",
+			"Attack List": ["replay_attack","data_overwrites","storage_overload","shutdown_through_dos","protocol_weakness","wifi_exfiltration","use_stolen_credentials","algorithmic_complexity","other_network_exfiltration","command_injection","lateral_movement","man_in_the_middle","change_system_configuration","lack_of_authentication","shutdown_through_normal_channels","covert_channel"],
+			"Requirements": ["authenticate_communication","application_sandboxing","memory_protections","permit_well_formed_data","limit_resource_use","limit_resource_use","layered_protection","confidentiality_at_rest","confidentiality_at_rest","limit_resource_use","whitelist_communications","application_sandboxing","permit_well_formed_data","application_sandboxing","confidentiality_in_transit","immutable_data","authenticate_communication","authenticate_communication","confidentiality_at_rest"],
+			"Attack Plan List": [53,151,152,153,154,155,156,157,158,159,160,351,357,363,369,691,692,693,694,695,696,697,698,699,700,751,752,753,754,755,756,757,758,759,760,811,812,813,814,815,816,817,818,819,820,831,832,833,834,835,836,837,838,839,840,1051,1052,1053,1054,1055,1056,1057,1058,1059,1060,1071,1072,1073,1074,1075,1076,1077,1078,1079,1080,1171,1172,1173,1174,1175,1176,1177,1178,1179,1180,7,71,72,73,74,75,76,77,78,79,80,171,175,179,183,371,372,373,374,375,376,377,378,379,380,431,432,433,434,435,436,437,438,439,440,451,452,453,454,455,456,457,458,459,460,511,512,513,514,515,516,517,518,519,520,911,912,913,914,915,916,917,918,919,920,931,932,933,934,935,936,937,938,939,940,971,972,973,974,975,976,977,978,979,980,59,61,177,240,260,353,355,424,444,724,744,764,63,65,181,280,300,359,361,464,484,784,804,824,1,9,10,11,12,13,14,15,16,17,18,57,67,207,208,209,210,211,212,213,214,215,216,247,248,249,250,251,252,253,254,255,256,267,268,269,270,271,272,273,274,275,276,307,308,309,310,311,312,313,314,315,316,531,532,533,534,535,536,537,538,539,540,571,572,573,574,575,576,577,578,579,580,611,612,613,614,615,616,617,618,619,620,551,552,553,554,555,556,557,558,559,560,891,892,893,894,895,896,897,898,899,900,1011,1012,1013,1014,1015,1016,1017,1018,1019,1020,1031,1032,1033,1034,1035,1036,1037,1038,1039,1040,3,29,30,31,32,33,34,35,36,37,38,55,69,187,188,189,190,191,192,193,194,195,196,227,228,229,230,231,232,233,234,235,236,287,288,289,290,291,292,293,294,295,296,327,328,329,330,331,332,333,334,335,336,591,592,593,594,595,596,597,598,599,600,631,632,633,634,635,636,637,638,639,640,173,200,220,347,349,384,404,664,684,704,951,952,953,954,955,956,957,958,959,960,1091,1092,1093,1094,1095,1096,1097,1098,1099,1100,1111,1112,1113,1114,1115,1116,1117,1118,1119,1120,5,91,92,93,94,95,96,97,98,99,100,185,391,392,393,394,395,396,397,398,399,400,411,412,413,414,415,416,417,418,419,420,471,472,473,474,475,476,477,478,479,480,491,492,493,494,495,496,497,498,499,500,991,992,993,994,995,996,997,998,999,1000,19,20,22,27,28,39,40,42,47,48,81,82,84,89,90,104,124,144,164,320,340,504,524,844,864,884,51,131,132,133,134,135,136,137,138,139,140,365,671,672,673,674,675,676,677,678,679,680,731,732,733,734,735,736,737,738,739,740,791,792,793,794,795,796,797,798,799,800,851,852,853,854,855,856,857,858,859,860,1151,1152,1153,1154,1155,1156,1157,1158,1159,1160,49,111,112,113,114,115,116,117,118,119,120,367,651,652,653,654,655,656,657,658,659,660,711,712,713,714,715,716,717,718,719,720,771,772,773,774,775,776,777,778,779,780,871,872,873,874,875,876,877,878,879,880,1131,1132,1133,1134,1135,1136,1137,1138,1139,1140],
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-866: 2011 Top 25 - Porous Defenses","CWE-Category-227: 7PK - API Abuse","CWE-Category-275: Permission Issues","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service","CWE-Category-310: Cryptographic Issues","CWE-Category-1211: Authentication Errors","CWE-Category-19: Data Processing Errors","CWE-Category-399: Resource Management Errors","CWE-300: Channel Accessible by Non-Endpoint","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-Category-1129: CISQ Quality Measures - Reliability","CWE-Category-255: Credentials Management Errors","CWE-200: Information Exposure","CWE-Category-1019: Validate Inputs","CWE-Category-136: Type Errors","CWE-Category-715: OWASP Top Ten 2007 Category A4 - Insecure Direct Object Reference","CWE-514: Covert Channel","CWE-642: External Control of Critical State Data","CWE 407: Inefficient Algorithmic Complexity","CWE-Category-398: Code Quality","CWE-Category-864: 2011 Top 25 - Insecure Interaction Between Components","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-1034: OWASP Top Ten 2017 Category A8 - Insecure Deserialization","CWE-787: Out-of-bounds Write","CWE-Category-1005: 7PK - Input Validation and Representation","CWE-Category-133: String Errors","CWE-Category-714: OWASP Top Ten 2007 Category A3 - Malicious File Execution","CWE-Category-1226: Complexity Issues","CWE-Category-189: Numeric Errors","CWE-Category-417: Communication Channel Errors","CWE-Category-557: Concurrency Issues","CWE-522: Insufficiently Protected Credentials","CWE-Category-1027: OWASP Top Ten 2017 Category A1 - Injection","CWE-Category-465: Pointer Issues","CWE-Cateogry-251: Often Misused: String Management","CWE-Category-1010: Authenticate Actors","CWE-Category-1215: Input Validation Issues","CWE-664: Improper Control of a Resource Through its Lifetime","CWE-Category-411: Resource Locking Problems","CWE-Category-438: Behavioral Problems","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-1218: Memory Buffer Errors","CWE-682: Incorrect Calculation","CWE-923: Improper Restriction of Communication Channel to Intended Endpoints","CWE-304: Missing Critical Step in Authentication","CWE-294: Authentication Bypass By Capture-replay","CWE-Category-137: Data Representation Errors","CWE-400: Uncontrolled Resource Consumption","CWE-287: Improper Authentication","CWE-Category-1028: OWASP Top Ten 2017 Category A2 - Broken Authentication"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "PROC_SW.UxAS.TaskManagerService",
+			"Attack Plans Eliminated": 630,
+			"Percentage of Attack Space Eliminated": "52.94117647058824%",
+			"Attack List": ["man_in_the_middle","other_network_exfiltration","algorithmic_complexity","data_overwrites","lack_of_authentication","storage_overload","command_injection","covert_channel","protocol_weakness","lateral_movement","change_system_configuration","replay_attack","shutdown_through_dos","use_stolen_credentials","shutdown_through_normal_channels","wifi_exfiltration"],
+			"Requirements": ["confidentiality_in_transit","whitelist_communications","limit_resource_use","application_sandboxing","memory_protections","permit_well_formed_data","authenticate_communication","limit_resource_use","application_sandboxing","permit_well_formed_data","confidentiality_at_rest","layered_protection","application_sandboxing","immutable_data","authenticate_communication","limit_resource_use","confidentiality_at_rest","authenticate_communication","confidentiality_at_rest"],
+			"Attack Plan List": [52,141,142,143,144,145,146,147,148,149,150,348,356,360,366,681,682,683,684,685,686,687,688,689,690,741,742,743,744,745,746,747,748,749,750,801,802,803,804,805,806,807,808,809,810,861,862,863,864,865,866,867,868,869,870,1021,1022,1023,1024,1025,1026,1027,1028,1029,1030,1121,1122,1123,1124,1125,1126,1127,1128,1129,1130,1161,1162,1163,1164,1165,1166,1167,1168,1169,1170,581,582,583,584,585,586,587,588,589,590,601,602,603,604,605,606,607,608,609,610,941,942,943,944,945,946,947,948,949,950,961,962,963,964,965,966,967,968,969,970,1081,1082,1083,1084,1085,1086,1087,1088,1089,1090,1101,1102,1103,1104,1105,1106,1107,1108,1109,1110,56,58,172,174,194,214,350,352,378,398,658,678,698,8,81,82,83,84,85,86,87,88,89,90,176,180,184,381,382,383,384,385,386,387,388,389,390,441,442,443,444,445,446,447,448,449,450,461,462,463,464,465,466,467,468,469,470,521,522,523,524,525,526,527,528,529,530,921,922,923,924,925,926,927,928,929,930,981,982,983,984,985,986,987,988,989,990,50,121,122,123,124,125,126,127,128,129,130,354,362,368,661,662,663,664,665,666,667,668,669,670,721,722,723,724,725,726,727,728,729,730,781,782,783,784,785,786,787,788,789,790,881,882,883,884,885,886,887,888,889,890,1041,1042,1043,1044,1045,1046,1047,1048,1049,1050,1141,1142,1143,1144,1145,1146,1147,1148,1149,1150,60,62,178,234,254,358,418,438,718,738,758,6,101,102,103,104,105,106,107,108,109,110,182,186,401,402,403,404,405,406,407,408,409,410,421,422,423,424,425,426,427,428,429,430,481,482,483,484,485,486,487,488,489,490,501,502,503,504,505,506,507,508,509,510,901,902,903,904,905,906,907,908,909,910,1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,621,622,623,624,625,626,627,628,629,630,641,642,643,644,645,646,647,648,649,650,1181,1182,1183,1184,1185,1186,1187,1188,1189,1190,2,19,20,21,22,23,24,25,26,27,28,66,68,217,218,219,220,221,222,223,224,225,226,257,258,259,260,261,262,263,264,265,266,277,278,279,280,281,282,283,284,285,286,317,318,319,320,321,322,323,324,325,326,541,542,543,544,545,546,547,548,549,550,16,36,78,98,118,138,158,274,294,314,334,458,478,498,518,778,798,818,838,858,878,4,54,161,162,163,164,165,166,167,168,169,170,364,370,701,702,703,704,705,706,707,708,709,710,761,762,763,764,765,766,767,768,769,770,821,822,823,824,825,826,827,828,829,830,841,842,843,844,845,846,847,848,849,850,1061,1062,1063,1064,1065,1066,1067,1068,1069,1070,64,39,40,41,42,43,44,45,46,47,48,70,197,198,199,200,201,202,203,204,205,206,237,238,239,240,241,242,243,244,245,246,297,298,299,300,301,302,303,304,305,306,337,338,339,340,341,342,343,344,345,346,561,562,563,564,565,566,567,568,569,570],
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-227: 7PK - API Abuse","CWE-Category-866: 2011 Top 25 - Porous Defenses","CWE-Category-275: Permission Issues","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service","CWE-Category-310: Cryptographic Issues","CWE-Category-1211: Authentication Errors","CWE-Category-19: Data Processing Errors","CWE-300: Channel Accessible by Non-Endpoint","CWE-Category-399: Resource Management Errors","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-Category-1129: CISQ Quality Measures - Reliability","CWE-Category-255: Credentials Management Errors","CWE-200: Information Exposure","CWE-Category-1019: Validate Inputs","CWE-Category-136: Type Errors","CWE-Category-715: OWASP Top Ten 2007 Category A4 - Insecure Direct Object Reference","CWE-514: Covert Channel","CWE-642: External Control of Critical State Data","CWE 407: Inefficient Algorithmic Complexity","CWE-Category-864: 2011 Top 25 - Insecure Interaction Between Components","CWE-Category-398: Code Quality","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-1034: OWASP Top Ten 2017 Category A8 - Insecure Deserialization","CWE-787: Out-of-bounds Write","CWE-Category-1005: 7PK - Input Validation and Representation","CWE-Category-133: String Errors","CWE-Category-714: OWASP Top Ten 2007 Category A3 - Malicious File Execution","CWE-Category-1226: Complexity Issues","CWE-Category-189: Numeric Errors","CWE-Category-417: Communication Channel Errors","CWE-Category-1027: OWASP Top Ten 2017 Category A1 - Injection","CWE-Category-557: Concurrency Issues","CWE-522: Insufficiently Protected Credentials","CWE-Category-465: Pointer Issues","CWE-Cateogry-251: Often Misused: String Management","CWE-Category-1010: Authenticate Actors","CWE-Category-1215: Input Validation Issues","CWE-664: Improper Control of a Resource Through its Lifetime","CWE-Category-411: Resource Locking Problems","CWE-Category-438: Behavioral Problems","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-1218: Memory Buffer Errors","CWE-682: Incorrect Calculation","CWE-923: Improper Restriction of Communication Channel to Intended Endpoints","CWE-304: Missing Critical Step in Authentication","CWE-Category-137: Data Representation Errors","CWE-294: Authentication Bypass By Capture-replay","CWE-400: Uncontrolled Resource Consumption","CWE-287: Improper Authentication","CWE-Category-1028: OWASP Top Ten 2017 Category A2 - Broken Authentication"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "RADIO_HW",
+			"Attack Plans Eliminated": 102,
+			"Percentage of Attack Space Eliminated": "8.571428571428571%",
+			"Attack List": ["lateral_movement","emf_leakage"],
+			"Requirements": ["application_sandboxing","prevent_emf_leakage"],
+			"Attack Plan List": [9,16,19,29,36,39,71,78,81,91,98,101,111,118,121,141,161,197,539,540,549,550,559,560,569,570,579,580,589,590,599,600,609,610,619,620,629,630,639,640,649,650,899,900,909,910,919,920,929,930,939,940,949,950,959,960,969,970,979,980,989,990,999,1000,1009,1010,1019,1020,1029,1030,1039,1040,1049,1050,1059,1060,1069,1070,1079,1080,1089,1090,1099,1100,1109,1110,1119,1120,1129,1130,1139,1140,1149,1150,1159,1160,1169,1170,1179,1180,1189,1190],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "BUS_HW",
+			"Attack Plans Eliminated": 99,
+			"Percentage of Attack Space Eliminated": "8.319327731092436%",
+			"Attack List": ["emf_leakage","lateral_movement"],
+			"Requirements": ["prevent_emf_leakage","application_sandboxing"],
+			"Attack Plan List": [531,532,541,542,551,552,561,562,571,572,581,582,591,592,601,602,611,612,621,622,631,632,641,642,891,892,901,902,911,912,921,922,931,932,941,942,951,952,961,962,971,972,981,982,991,992,1001,1002,1011,1012,1021,1022,1031,1032,1041,1042,1051,1052,1061,1062,1071,1072,1081,1082,1091,1092,1101,1102,1111,1112,1121,1122,1131,1132,1141,1142,1151,1152,1161,1162,1171,1172,1181,1182,9,16,19,29,36,39,71,78,81,91,98,101,121,141,161],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "FC_UART_HW",
+			"Attack Plans Eliminated": 96,
+			"Percentage of Attack Space Eliminated": "8.067226890756302%",
+			"Attack List": ["lateral_movement","emf_leakage"],
+			"Requirements": ["application_sandboxing","prevent_emf_leakage"],
+			"Attack Plan List": [9,16,19,29,36,39,71,78,81,101,121,141,533,534,543,544,553,554,563,564,573,574,583,584,593,594,603,604,613,614,623,624,633,634,643,644,893,894,903,904,913,914,923,924,933,934,943,944,953,954,963,964,973,974,983,984,993,994,1003,1004,1013,1014,1023,1024,1033,1034,1043,1044,1053,1054,1063,1064,1073,1074,1083,1084,1093,1094,1103,1104,1113,1114,1123,1124,1133,1134,1143,1144,1153,1154,1163,1164,1173,1174,1183,1184],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "PROC_HW",
+			"Attack Plans Eliminated": 84,
+			"Percentage of Attack Space Eliminated": "7.0588235294117645%",
+			"Attack List": ["emf_leakage","lateral_movement"],
+			"Requirements": ["prevent_emf_leakage","application_sandboxing"],
+			"Attack Plan List": [537,538,547,548,557,558,567,568,577,578,587,588,597,598,607,608,617,618,627,628,637,638,647,648,897,898,907,908,917,918,927,928,937,938,947,948,957,958,967,968,977,978,987,988,997,998,1007,1008,1017,1018,1027,1028,1037,1038,1047,1048,1057,1058,1067,1068,1077,1078,1087,1088,1097,1098,1107,1108,1117,1118,1127,1128,1137,1138,1147,1148,1157,1158,1167,1168,1177,1178,1187,1188],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "MEM_HW",
+			"Attack Plans Eliminated": 84,
+			"Percentage of Attack Space Eliminated": "7.0588235294117645%",
+			"Attack List": ["lateral_movement","emf_leakage"],
+			"Requirements": ["application_sandboxing","prevent_emf_leakage"],
+			"Attack Plan List": [535,536,545,546,555,556,565,566,575,576,585,586,595,596,605,606,615,616,625,626,635,636,645,646,895,896,905,906,915,916,925,926,935,936,945,946,955,956,965,966,975,976,985,986,995,996,1005,1006,1015,1016,1025,1026,1035,1036,1045,1046,1055,1056,1065,1066,1075,1076,1085,1086,1095,1096,1105,1106,1115,1116,1125,1126,1135,1136,1145,1146,1155,1156,1165,1166,1175,1176,1185,1186],
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "PROC_SW.WaypointManager",
+			"Attack Plans Eliminated": 81,
+			"Percentage of Attack Space Eliminated": "6.80672268907563%",
+			"Attack List": ["shutdown_through_normal_channels","shutdown_through_dos","storage_overload","lateral_movement","algorithmic_complexity","change_system_configuration"],
+			"Requirements": ["authenticate_communication","limit_resource_use","limit_resource_use","application_sandboxing","limit_resource_use","immutable_data"],
+			"Attack Plan List": [316,326,336,346,500,510,520,530,840,850,860,870,880,890,276,286,296,306,460,470,480,490,780,790,800,810,820,830,236,246,256,266,420,430,440,450,720,730,740,750,760,770,9,10,16,18,19,20,28,38,39,40,48,80,81,82,90,100,101,102,110,120,130,140,150,160,170,196,206,216,226,380,390,400,410,660,670,680,690,700,710],
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-642: External Control of Critical State Data","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service","CWE 407: Inefficient Algorithmic Complexity","CWE-Category-438: Behavioral Problems","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-682: Incorrect Calculation","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-399: Resource Management Errors","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-Category-1226: Complexity Issues","CWE-400: Uncontrolled Resource Consumption","CWE-664: Improper Control of a Resource Through its Lifetime"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "PROC_SW.UxAS.PlanBuilderService",
+			"Attack Plans Eliminated": 80,
+			"Percentage of Attack Space Eliminated": "6.722689075630252%",
+			"Attack List": ["storage_overload","shutdown_through_normal_channels","change_system_configuration","algorithmic_complexity","lateral_movement","shutdown_through_dos"],
+			"Requirements": ["limit_resource_use","authenticate_communication","immutable_data","limit_resource_use","application_sandboxing","limit_resource_use"],
+			"Attack Plan List": [231,242,251,262,415,426,435,446,715,726,735,746,755,766,311,322,331,342,495,506,515,526,835,846,855,866,875,886,13,24,33,44,75,86,95,106,115,126,135,146,155,166,191,202,211,222,375,386,395,406,655,666,675,686,695,706,19,20,22,27,28,39,40,42,47,48,271,282,291,302,455,466,475,486,775,786,795,806,815,826],
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-642: External Control of Critical State Data","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service","CWE 407: Inefficient Algorithmic Complexity","CWE-Category-438: Behavioral Problems","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-682: Incorrect Calculation","CWE-Category-398: Code Quality","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-399: Resource Management Errors","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-Category-1226: Complexity Issues","CWE-400: Uncontrolled Resource Consumption","CWE-664: Improper Control of a Resource Through its Lifetime"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "PROC_SW.UxAS.CmasiLineSearchTaskService",
+			"Attack Plans Eliminated": 79,
+			"Percentage of Attack Space Eliminated": "6.638655462184874%",
+			"Attack List": ["lateral_movement","algorithmic_complexity","storage_overload","shutdown_through_normal_channels","change_system_configuration","shutdown_through_dos"],
+			"Requirements": ["application_sandboxing","limit_resource_use","limit_resource_use","authenticate_communication","immutable_data","limit_resource_use"],
+			"Attack Plan List": [12,19,20,21,22,23,24,25,26,27,28,32,43,74,85,94,105,114,125,134,145,154,165,190,201,210,221,230,241,250,261,270,281,290,301,310,321,330,341,374,385,394,405,414,425,434,445,454,465,474,485,494,505,514,525,654,665,674,685,694,705,714,725,734,745,754,765,774,785,794,805,814,825,834,845,854,865,874,885],
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-642: External Control of Critical State Data","CWE 407: Inefficient Algorithmic Complexity","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service","CWE-Category-438: Behavioral Problems","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-682: Incorrect Calculation","CWE-Category-398: Code Quality","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-399: Resource Management Errors","CWE-Category-1226: Complexity Issues","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-400: Uncontrolled Resource Consumption","CWE-664: Improper Control of a Resource Through its Lifetime"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "PROC_SW.UART",
+			"Attack Plans Eliminated": 79,
+			"Percentage of Attack Space Eliminated": "6.638655462184874%",
+			"Attack List": ["shutdown_through_dos","change_system_configuration","lateral_movement","algorithmic_complexity","shutdown_through_normal_channels","storage_overload"],
+			"Requirements": ["limit_resource_use","immutable_data","application_sandboxing","limit_resource_use","authenticate_communication","limit_resource_use"],
+			"Attack Plan List": [268,278,288,298,452,462,472,482,772,782,792,802,812,822,10,20,30,40,72,82,92,102,112,122,132,142,152,162,9,16,19,29,36,39,81,101,121,188,198,208,218,228,238,248,258,308,318,328,338,372,382,392,402,412,422,432,442,492,502,512,522,652,662,672,682,692,702,712,722,732,742,752,762,832,842,852,862,872,882],
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-642: External Control of Critical State Data","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service","CWE 407: Inefficient Algorithmic Complexity","CWE-Category-438: Behavioral Problems","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-682: Incorrect Calculation","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-399: Resource Management Errors","CWE-Category-1226: Complexity Issues","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-400: Uncontrolled Resource Consumption","CWE-664: Improper Control of a Resource Through its Lifetime"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "PROC_SW.Radio",
+			"Attack Plans Eliminated": 76,
+			"Percentage of Attack Space Eliminated": "6.386554621848739%",
+			"Attack List": ["lateral_movement","algorithmic_complexity","storage_overload","shutdown_through_dos","shutdown_through_normal_channels","change_system_configuration"],
+			"Requirements": ["application_sandboxing","limit_resource_use","limit_resource_use","limit_resource_use","authenticate_communication","immutable_data"],
+			"Attack Plan List": [9,16,19,29,36,39,71,78,81,91,98,101,111,118,121,131,138,141,151,161,187,197,207,217,227,237,247,257,267,277,287,297,307,317,327,337,371,381,391,401,411,421,431,441,451,461,471,481,491,501,511,521,651,661,671,681,691,701,711,721,731,741,751,761,771,781,791,801,811,821,831,841,851,861,871,881],
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-642: External Control of Critical State Data","CWE 407: Inefficient Algorithmic Complexity","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service","CWE-Category-438: Behavioral Problems","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-682: Incorrect Calculation","CWE-Category-398: Code Quality","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-399: Resource Management Errors","CWE-Category-1226: Complexity Issues","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-400: Uncontrolled Resource Consumption","CWE-664: Improper Control of a Resource Through its Lifetime"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "PROC_SW.UxAS.RouteAggregatorService",
+			"Attack Plans Eliminated": 71,
+			"Percentage of Attack Space Eliminated": "5.966386554621849%",
+			"Attack List": ["shutdown_through_normal_channels","lateral_movement","storage_overload","algorithmic_complexity","shutdown_through_dos","change_system_configuration"],
+			"Requirements": ["authenticate_communication","application_sandboxing","limit_resource_use","limit_resource_use","limit_resource_use","immutable_data"],
+			"Attack Plan List": [312,323,332,343,496,507,516,527,836,847,856,867,876,887,14,15,25,34,45,76,87,96,107,116,127,136,147,156,167,192,203,212,223,232,243,252,263,272,283,292,303,376,387,396,407,416,427,436,447,456,467,476,487,656,667,676,687,696,707,716,727,736,747,756,767,776,787,796,807,816,827],
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-642: External Control of Critical State Data","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service","CWE 407: Inefficient Algorithmic Complexity","CWE-Category-438: Behavioral Problems","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-682: Incorrect Calculation","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-399: Resource Management Errors","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-Category-1226: Complexity Issues","CWE-400: Uncontrolled Resource Consumption","CWE-664: Improper Control of a Resource Through its Lifetime"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "PROC_SW.UxAS.WaypointPlanManagerService",
+			"Attack Plans Eliminated": 70,
+			"Percentage of Attack Space Eliminated": "5.88235294117647%",
+			"Attack List": ["shutdown_through_normal_channels","storage_overload","change_system_configuration","lateral_movement","shutdown_through_dos","algorithmic_complexity"],
+			"Requirements": ["authenticate_communication","limit_resource_use","immutable_data","application_sandboxing","limit_resource_use","limit_resource_use"],
+			"Attack Plan List": [315,325,335,345,499,509,519,529,839,849,859,869,879,889,235,245,255,265,419,429,439,449,719,729,739,749,759,769,17,27,37,47,79,89,99,109,119,129,139,149,159,169,195,205,215,225,275,285,295,305,379,389,399,409,459,469,479,489,659,669,679,689,699,709,779,789,799,809,819,829],
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-642: External Control of Critical State Data","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service","CWE 407: Inefficient Algorithmic Complexity","CWE-Category-438: Behavioral Problems","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-682: Incorrect Calculation","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-399: Resource Management Errors","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-Category-1226: Complexity Issues","CWE-400: Uncontrolled Resource Consumption","CWE-664: Improper Control of a Resource Through its Lifetime"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "PROC_SW.UxAS.AssignmentTreeBranchBoundService",
+			"Attack Plans Eliminated": 70,
+			"Percentage of Attack Space Eliminated": "5.88235294117647%",
+			"Attack List": ["algorithmic_complexity","shutdown_through_normal_channels","storage_overload","lateral_movement","change_system_configuration","shutdown_through_dos"],
+			"Requirements": ["limit_resource_use","authenticate_communication","limit_resource_use","application_sandboxing","immutable_data","limit_resource_use"],
+			"Attack Plan List": [189,199,209,219,373,383,393,403,653,663,673,683,693,703,309,319,329,339,493,503,513,523,833,843,853,863,873,883,229,239,249,259,413,423,433,443,713,723,733,743,753,763,11,21,31,41,73,83,93,103,113,123,133,143,153,163,269,279,289,299,453,463,473,483,773,783,793,803,813,823],
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-642: External Control of Critical State Data","CWE 407: Inefficient Algorithmic Complexity","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service","CWE-Category-438: Behavioral Problems","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-682: Incorrect Calculation","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-399: Resource Management Errors","CWE-Category-1226: Complexity Issues","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-400: Uncontrolled Resource Consumption","CWE-664: Improper Control of a Resource Through its Lifetime"],
+				"CVEs": []
+			}
+		},
+		{
+			"Atom": "PROC_SW.UxAS.RoutePlannerVisibilityService",
+			"Attack Plans Eliminated": 70,
+			"Percentage of Attack Space Eliminated": "5.88235294117647%",
+			"Attack List": ["shutdown_through_dos","algorithmic_complexity","storage_overload","change_system_configuration","lateral_movement","shutdown_through_normal_channels"],
+			"Requirements": ["limit_resource_use","limit_resource_use","limit_resource_use","immutable_data","application_sandboxing","authenticate_communication"],
+			"Attack Plan List": [273,284,293,304,457,468,477,488,777,788,797,808,817,828,193,204,213,224,377,388,397,408,657,668,677,688,697,708,233,244,253,264,417,428,437,448,717,728,737,748,757,768,15,26,35,46,77,88,97,108,117,128,137,148,157,168,313,324,333,344,497,508,517,528,837,848,857,868,877,888],
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-411: Resource Locking Problems","CWE-Category-557: Concurrency Issues","CWE-642: External Control of Critical State Data","CWE-Category-730: OWASP Top Ten 2004 Category A9 - Denial of Service","CWE 407: Inefficient Algorithmic Complexity","CWE-Category-438: Behavioral Problems","CWE-Category-1132: CISQ Quality Measures - Performance","CWE-Category-398: Code Quality","CWE-682: Incorrect Calculation","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-399: Resource Management Errors","CWE-Category-1226: Complexity Issues","CWE-Category-728: OWASP Top Ten 2004 Category A7- Improper Error Handling","CWE-400: Uncontrolled Resource Consumption","CWE-664: Improper Control of a Resource Through its Lifetime"],
+				"CVEs": []
+			}
+		}
+	]
+}

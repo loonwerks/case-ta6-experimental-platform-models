@@ -1,0 +1,50 @@
+{
+	"tool" : "GearCASE",
+	"grammar" : "placeholder",
+	"date" : "2020-07-07-215239",
+	"hash" : "07c1f0af1e5eda68380ff6a75b2a876a16e2b34dce7f1628a5ab827e17cebd056114287fd37283b9cb1c814e3aa4da242e657d7042b94f295d6a996058d27e55",
+com.cra.cybertabletop.core.attacks.AttackClass@2fc5a2bd:PROC_SW.UxAS,20,1
+com.cra.cybertabletop.core.attacks.AttackClass@761e9464:PROC_SW.UxAS,20,2
+com.cra.cybertabletop.core.attacks.AttackClass@5d363fb3:PROC_SW.UxAS,20,3
+com.cra.cybertabletop.core.attacks.AttackClass@452af08b:PROC_SW.UxAS,14.29,4
+com.cra.cybertabletop.core.attacks.AttackClass@2b6e8b97:PROC_SW.UxAS,14.29,5
+com.cra.cybertabletop.core.attacks.AttackClass@204bd462:PROC_SW.UxAS,14.29,6
+com.cra.cybertabletop.core.attacks.AttackClass@1ee24009:PROC_SW.UxAS,14.29,7
+com.cra.cybertabletop.core.attacks.AttackClass@55261454:PROC_SW.UxAS,14.29,8
+com.cra.cybertabletop.core.attacks.AttackClass@3eb635dd:PROC_SW.UxAS,14.29,9
+com.cra.cybertabletop.core.attacks.AttackClass@5948f57c:PROC_SW.UxAS,14.29,10
+com.cra.cybertabletop.core.attacks.AttackClass@61db2842:BUS_HW,13.14,11
+com.cra.cybertabletop.core.attacks.AttackClass@61db2842:RADIO_HW,13.43,12
+com.cra.cybertabletop.core.attacks.AttackClass@61db2842:FC_UART_HW,12.86,13
+com.cra.cybertabletop.core.attacks.AttackClass@39500dc9:FC_UART_HW,12,14
+com.cra.cybertabletop.core.attacks.AttackClass@39500dc9:MEM_HW,12,15
+com.cra.cybertabletop.core.attacks.AttackClass@39500dc9:RADIO_HW,12,16
+com.cra.cybertabletop.core.attacks.AttackClass@61db2842:PROC_HW,12,17
+com.cra.cybertabletop.core.attacks.AttackClass@39500dc9:BUS_HW,12,18
+com.cra.cybertabletop.core.attacks.AttackClass@61db2842:MEM_HW,12,19
+com.cra.cybertabletop.core.attacks.AttackClass@39500dc9:PROC_HW,12,20
+com.cra.cybertabletop.core.attacks.AttackClass@61db2842:PROC_SW.WaypointManager,10.57,21
+com.cra.cybertabletop.core.attacks.AttackClass@61db2842:PROC_SW.UART,10.57,22
+com.cra.cybertabletop.core.attacks.AttackClass@61db2842:PROC_SW.Radio,10,23
+com.cra.cybertabletop.core.attacks.AttackClass@7d8b5954:PROC_SW.UART,2,24
+com.cra.cybertabletop.core.attacks.AttackClass@729c93e5:PROC_SW.UART,2,25
+com.cra.cybertabletop.core.attacks.AttackClass@c8ab110:PROC_SW.UART,2,26
+com.cra.cybertabletop.core.attacks.AttackClass@1e36a6a2:PROC_SW.UxAS,2,27
+com.cra.cybertabletop.core.attacks.AttackClass@2cf3075d:PROC_SW.UxAS,2,28
+com.cra.cybertabletop.core.attacks.AttackClass@1e36a6a2:PROC_SW.Radio,2,29
+com.cra.cybertabletop.core.attacks.AttackClass@c8ab110:PROC_SW.UxAS,2,30
+com.cra.cybertabletop.core.attacks.AttackClass@2cf3075d:PROC_SW.WaypointManager,2,31
+com.cra.cybertabletop.core.attacks.AttackClass@1e36a6a2:PROC_SW.WaypointManager,2,32
+com.cra.cybertabletop.core.attacks.AttackClass@729c93e5:PROC_SW.WaypointManager,2,33
+com.cra.cybertabletop.core.attacks.AttackClass@7d8b5954:PROC_SW.WaypointManager,2,34
+com.cra.cybertabletop.core.attacks.AttackClass@2cf3075d:PROC_SW.Radio,2,35
+com.cra.cybertabletop.core.attacks.AttackClass@7d8b5954:PROC_SW.UxAS,2,36
+com.cra.cybertabletop.core.attacks.AttackClass@1e36a6a2:PROC_SW.UART,2,37
+com.cra.cybertabletop.core.attacks.AttackClass@729c93e5:PROC_SW.Radio,2,38
+com.cra.cybertabletop.core.attacks.AttackClass@729c93e5:PROC_SW.UxAS,2,39
+com.cra.cybertabletop.core.attacks.AttackClass@2cf3075d:PROC_SW.UART,2,40
+com.cra.cybertabletop.core.attacks.AttackClass@c8ab110:PROC_SW.WaypointManager,2,41
+com.cra.cybertabletop.core.attacks.AttackClass@7d8b5954:PROC_SW.Radio,2,42
+com.cra.cybertabletop.core.attacks.AttackClass@c8ab110:PROC_SW.Radio,2,43
+
+}

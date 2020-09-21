@@ -1,0 +1,130 @@
+{
+	"tool" : "GearCASE",
+	"grammar" : "placeholder",
+	"date" : "2020-07-07-215239",
+	"hash" : "131b5a44546887cb0cea7f08cead2783ffc113cf2d62233b3fcd254d42cc0d8365038b03bc8b9d63030126c62e0d6ce2b039d6f26b5dc1f086e33c401e40d791",
+	"Total Number of Attack Plans": 350,
+	"Total Number of Attack/Atom Pairs": 10,
+	"Attacks": {
+		"wifi_exfiltration": {
+			"Attack Standards": {
+				"CWEs": ["CWE-923: Improper Restriction of Communication Channel to Intended Endpoints","CWE-Category-417: Communication Channel Errors"],
+				"CVEs": []
+			},
+			"Atom": "PROC_SW.UxAS",
+			"Requirements": ["confidentiality_at_rest"],
+			"Attack Plans Eliminated": 70,
+			"Percentage of Attack Space Eliminated": "20%",
+			"GE Attack Mapping" : "None",
+			"Attack Plan List": [105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,201,202,203,204,205,206,207,208,209,210,211,212,213,214,215,216,217,218,219,220,261,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,277,278,279,280,281,282,283,284,285,286,287,288,289,290]
+		},
+		"covert_channel": {
+			"Attack Standards": {
+				"CWEs": ["CWE-514: Covert Channel","CWE-Category-417: Communication Channel Errors"],
+				"CVEs": []
+			},
+			"Atom": "PROC_SW.UxAS",
+			"Requirements": ["confidentiality_at_rest"],
+			"Attack Plans Eliminated": 70,
+			"Percentage of Attack Space Eliminated": "20%",
+			"GE Attack Mapping" : "None",
+			"Attack Plan List": [125,126,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,221,222,223,224,225,226,227,228,229,230,231,232,233,234,235,236,237,238,239,240,291,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,307,308,309,310,311,312,313,314,315,316,317,318,319,320]
+		},
+		"other_network_exfiltration": {
+			"Attack Standards": {
+				"CWEs": ["CWE-200: Information Exposure"],
+				"CVEs": []
+			},
+			"Atom": "PROC_SW.UxAS",
+			"Requirements": ["whitelist_communications"],
+			"Attack Plans Eliminated": 70,
+			"Percentage of Attack Space Eliminated": "20%",
+			"GE Attack Mapping" : "None",
+			"Attack Plan List": [145,146,147,148,149,150,151,152,153,154,155,156,157,158,159,160,161,162,163,164,241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,349,350]
+		},
+		"replay_attack": {
+			"Attack Standards": {
+				"CWEs": ["CWE-294: Authentication Bypass By Capture-replay","CWE-Category-310: Cryptographic Issues"],
+				"CVEs": []
+			},
+			"Atom": "PROC_SW.UxAS",
+			"Requirements": ["authenticate_communication"],
+			"Attack Plans Eliminated": 20,
+			"Percentage of Attack Space Eliminated": "5.71%",
+			"GE Attack Mapping" : "Interception_Attack",
+			"Attack Plan List": [13,28,29,30,71,72,75,78,165,166,167,180,181,182,183,184,185,192,193,194]
+		},
+		"protocol_weakness": {
+			"Attack Standards": {
+				"CWEs": ["CWE-287: Improper Authentication","CWE-Category-1010: Authenticate Actors","CWE-Category-1028: OWASP Top Ten 2017 Category A2 - Broken Authentication","CWE-Category-1211: Authentication Errors","CWE-Category-310: Cryptographic Issues","CWE-Category-866: 2011 Top 25 - Porous Defenses"],
+				"CVEs": []
+			},
+			"Atom": "PROC_SW.UxAS",
+			"Requirements": ["layered_protection"],
+			"Attack Plans Eliminated": 20,
+			"Percentage of Attack Space Eliminated": "5.71%",
+			"GE Attack Mapping" : "Fault_Injection_Attack",
+			"Attack Plan List": [2,8,9,10,15,17,19,21,45,46,47,54,55,56,60,61,62,66,67,68]
+		},
+		"man_in_the_middle": {
+			"Attack Standards": {
+				"CWEs": ["CWE-300: Channel Accessible by Non-Endpoint","CWE-Category-1010: Authenticate Actors","CWE-Category-1211: Authentication Errors","CWE-Category-255: Credentials Management Errors","CWE-Category-417: Communication Channel Errors"],
+				"CVEs": []
+			},
+			"Atom": "PROC_SW.UxAS",
+			"Requirements": ["confidentiality_in_transit"],
+			"Attack Plans Eliminated": 20,
+			"Percentage of Attack Space Eliminated": "5.71%",
+			"GE Attack Mapping" : "Interception_Attack",
+			"Attack Plan List": [12,31,32,33,70,74,76,80,171,172,173,174,175,176,189,190,191,195,196,197]
+		},
+		"use_stolen_credentials": {
+			"Attack Standards": {
+				"CWEs": ["CWE-522: Insufficiently Protected Credentials","CWE-Category-255: Credentials Management Errors"],
+				"CVEs": []
+			},
+			"Atom": "PROC_SW.UxAS",
+			"Requirements": ["confidentiality_at_rest"],
+			"Attack Plans Eliminated": 20,
+			"Percentage of Attack Space Eliminated": "5.71%",
+			"GE Attack Mapping" : "Brute_Force_Attack",
+			"Attack Plan List": [1,5,6,7,14,16,18,20,48,49,50,51,52,53,57,58,59,63,64,65]
+		},
+		"data_overwrites": {
+			"Attack Standards": {
+				"CWEs": ["CWE-787: Out-of-bounds Write","CWE-Category-1129: CISQ Quality Measures - Reliability","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-1215: Input Validation Issues","CWE-Category-1218: Memory Buffer Errors","CWE-Category-133: String Errors","CWE-Category-136: Type Errors","CWE-Category-137: Data Representation Errors","CWE-Category-189: Numeric Errors","CWE-Category-19: Data Processing Errors","CWE-Category-275: Permission Issues","CWE-Category-465: Pointer Issues"],
+				"CVEs": []
+			},
+			"Atom": "PROC_SW.UxAS",
+			"Requirements": ["application_sandboxing","memory_protections","permit_well_formed_data"],
+			"Attack Plans Eliminated": 20,
+			"Percentage of Attack Space Eliminated": "5.71%",
+			"GE Attack Mapping" : "Buffer_Attack",
+			"Attack Plan List": [4,22,23,24,37,39,42,43,84,85,86,90,91,92,93,94,95,102,103,104]
+		},
+		"lack_of_authentication": {
+			"Attack Standards": {
+				"CWEs": ["CWE-304: Missing Critical Step in Authentication","CWE-Category-715: OWASP Top Ten 2007 Category A4 - Insecure Direct Object Reference"],
+				"CVEs": []
+			},
+			"Atom": "PROC_SW.UxAS",
+			"Requirements": ["authenticate_communication"],
+			"Attack Plans Eliminated": 20,
+			"Percentage of Attack Space Eliminated": "5.71%",
+			"GE Attack Mapping" : "Identity_Spoofing_Attack",
+			"Attack Plan List": [11,34,35,36,69,73,77,79,168,169,170,177,178,179,186,187,188,198,199,200]
+		},
+		"command_injection": {
+			"Attack Standards": {
+				"CWEs": ["CWE-Category-1005: 7PK - Input Validation and Representation","CWE-Category-1019: Validate Inputs","CWE-Category-1027: OWASP Top Ten 2017 Category A1 - Injection","CWE-Category-1034: OWASP Top Ten 2017 Category A8 - Insecure Deserialization","CWE-Category-1131: CISQ Quality Measures - Security","CWE-Category-1215: Input Validation Issues","CWE-Category-1218: Memory Buffer Errors","CWE-Category-133: String Errors","CWE-Category-136: Type Errors","CWE-Category-137: Data Representation Errors","CWE-Category-189: Numeric Errors","CWE-Category-19: Data Processing Errors","CWE-Category-227: 7PK - API Abuse","CWE-Category-714: OWASP Top Ten 2007 Category A3 - Malicious File Execution","CWE-Category-864: 2011 Top 25 - Insecure Interaction Between Components","CWE-Cateogry-251: Often Misused: String Management"],
+				"CVEs": []
+			},
+			"Atom": "PROC_SW.UxAS",
+			"Requirements": ["application_sandboxing","permit_well_formed_data"],
+			"Attack Plans Eliminated": 20,
+			"Percentage of Attack Space Eliminated": "5.71%",
+			"GE Attack Mapping" : "Fault_Injection_Attack",
+			"Attack Plan List": [3,25,26,27,38,40,41,44,81,82,83,87,88,89,96,97,98,99,100,101]
+		}
+	}
+}

@@ -1,0 +1,339 @@
+{
+	"tool" : "GearCASE",
+	"implementation" : "MissionComputer_Impl_Instance",
+	"date" : 1594289509,
+	"hash" : "00000000",
+	"requirements" : 
+	[
+		{
+			"type" : "prevent_emf_leakage",
+			"text" : "Prevent emf leakage over this connection",
+			"context" : "PROC_HW"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "PROC_HW"
+		},
+		{
+			"type" : "immutable_data",
+			"text" : "PEnforce data to be immutable",
+			"context" : "PROC_SW.AttestationGate"
+		},
+		{
+			"type" : "limit_resource_use",
+			"text" : "Enforce a limit on resource usage for this component",
+			"context" : "PROC_SW.AttestationGate"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "PROC_SW.AttestationGate"
+		},
+		{
+			"type" : "authenticate_communication",
+			"text" : "Communications should be authenticated",
+			"context" : "PROC_SW.AttestationGate"
+		},
+		{
+			"type" : "immutable_data",
+			"text" : "PEnforce data to be immutable",
+			"context" : "PROC_SW.FLT_LST"
+		},
+		{
+			"type" : "confidentiality_at_rest",
+			"text" : "Enforce confidentiality on data at rest",
+			"context" : "PROC_SW.FLT_LST"
+		},
+		{
+			"type" : "limit_resource_use",
+			"text" : "Enforce a limit on resource usage for this component",
+			"context" : "PROC_SW.FLT_LST"
+		},
+		{
+			"type" : "confidentiality_in_transit",
+			"text" : "Enforce confidentiality on data in transit",
+			"context" : "PROC_SW.FLT_LST"
+		},
+		{
+			"type" : "layered_protection",
+			"text" : "Include multiple layers of security in case one layer is compromised",
+			"context" : "PROC_SW.FLT_LST"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "PROC_SW.FLT_LST"
+		},
+		{
+			"type" : "whitelist_communications",
+			"text" : "Enforce a whitelist for all communications",
+			"context" : "PROC_SW.FLT_LST"
+		},
+		{
+			"type" : "authenticate_communication",
+			"text" : "Communications should be authenticated",
+			"context" : "PROC_SW.FLT_LST"
+		},
+		{
+			"type" : "immutable_data",
+			"text" : "PEnforce data to be immutable",
+			"context" : "PROC_SW.FLT_AReq"
+		},
+		{
+			"type" : "limit_resource_use",
+			"text" : "Enforce a limit on resource usage for this component",
+			"context" : "PROC_SW.FLT_AReq"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "PROC_SW.FLT_AReq"
+		},
+		{
+			"type" : "authenticate_communication",
+			"text" : "Communications should be authenticated",
+			"context" : "PROC_SW.FLT_AReq"
+		},
+		{
+			"type" : "prevent_emf_leakage",
+			"text" : "Prevent emf leakage over this connection",
+			"context" : "MEM_HW"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "MEM_HW"
+		},
+		{
+			"type" : "prevent_emf_leakage",
+			"text" : "Prevent emf leakage over this connection",
+			"context" : "BUS_HW"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "BUS_HW"
+		},
+		{
+			"type" : "immutable_data",
+			"text" : "PEnforce data to be immutable",
+			"context" : "PROC_SW.WaypointManager"
+		},
+		{
+			"type" : "permit_well_formed_data",
+			"text" : "Messages that are not well formed should be filtered out",
+			"context" : "PROC_SW.WaypointManager"
+		},
+		{
+			"type" : "confidentiality_at_rest",
+			"text" : "Enforce confidentiality on data at rest",
+			"context" : "PROC_SW.WaypointManager"
+		},
+		{
+			"type" : "memory_protections",
+			"text" : "Implement memory protections to prevent memory violations",
+			"context" : "PROC_SW.WaypointManager"
+		},
+		{
+			"type" : "limit_resource_use",
+			"text" : "Enforce a limit on resource usage for this component",
+			"context" : "PROC_SW.WaypointManager"
+		},
+		{
+			"type" : "confidentiality_in_transit",
+			"text" : "Enforce confidentiality on data in transit",
+			"context" : "PROC_SW.WaypointManager"
+		},
+		{
+			"type" : "whitelist_communications",
+			"text" : "Enforce a whitelist for all communications",
+			"context" : "PROC_SW.WaypointManager"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "PROC_SW.WaypointManager"
+		},
+		{
+			"type" : "layered_protection",
+			"text" : "Include multiple layers of security in case one layer is compromised",
+			"context" : "PROC_SW.WaypointManager"
+		},
+		{
+			"type" : "authenticate_communication",
+			"text" : "Communications should be authenticated",
+			"context" : "PROC_SW.WaypointManager"
+		},
+		{
+			"type" : "prevent_emf_leakage",
+			"text" : "Prevent emf leakage over this connection",
+			"context" : "RADIO_HW"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "RADIO_HW"
+		},
+		{
+			"type" : "prevent_emf_leakage",
+			"text" : "Prevent emf leakage over this connection",
+			"context" : "FC_UART_HW"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "FC_UART_HW"
+		},
+		{
+			"type" : "immutable_data",
+			"text" : "PEnforce data to be immutable",
+			"context" : "PROC_SW.UxAS"
+		},
+		{
+			"type" : "permit_well_formed_data",
+			"text" : "Messages that are not well formed should be filtered out",
+			"context" : "PROC_SW.UxAS"
+		},
+		{
+			"type" : "confidentiality_at_rest",
+			"text" : "Enforce confidentiality on data at rest",
+			"context" : "PROC_SW.UxAS"
+		},
+		{
+			"type" : "memory_protections",
+			"text" : "Implement memory protections to prevent memory violations",
+			"context" : "PROC_SW.UxAS"
+		},
+		{
+			"type" : "limit_resource_use",
+			"text" : "Enforce a limit on resource usage for this component",
+			"context" : "PROC_SW.UxAS"
+		},
+		{
+			"type" : "confidentiality_in_transit",
+			"text" : "Enforce confidentiality on data in transit",
+			"context" : "PROC_SW.UxAS"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "PROC_SW.UxAS"
+		},
+		{
+			"type" : "layered_protection",
+			"text" : "Include multiple layers of security in case one layer is compromised",
+			"context" : "PROC_SW.UxAS"
+		},
+		{
+			"type" : "whitelist_communications",
+			"text" : "Enforce a whitelist for all communications",
+			"context" : "PROC_SW.UxAS"
+		},
+		{
+			"type" : "authenticate_communication",
+			"text" : "Communications should be authenticated",
+			"context" : "PROC_SW.UxAS"
+		},
+		{
+			"type" : "immutable_data",
+			"text" : "PEnforce data to be immutable",
+			"context" : "PROC_SW.Radio"
+		},
+		{
+			"type" : "limit_resource_use",
+			"text" : "Enforce a limit on resource usage for this component",
+			"context" : "PROC_SW.Radio"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "PROC_SW.Radio"
+		},
+		{
+			"type" : "authenticate_communication",
+			"text" : "Communications should be authenticated",
+			"context" : "PROC_SW.Radio"
+		},
+		{
+			"type" : "immutable_data",
+			"text" : "PEnforce data to be immutable",
+			"context" : "PROC_SW.UART"
+		},
+		{
+			"type" : "limit_resource_use",
+			"text" : "Enforce a limit on resource usage for this component",
+			"context" : "PROC_SW.UART"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "PROC_SW.UART"
+		},
+		{
+			"type" : "authenticate_communication",
+			"text" : "Communications should be authenticated",
+			"context" : "PROC_SW.UART"
+		},
+		{
+			"type" : "immutable_data",
+			"text" : "PEnforce data to be immutable",
+			"context" : "PROC_SW.AttestationMgr"
+		},
+		{
+			"type" : "limit_resource_use",
+			"text" : "Enforce a limit on resource usage for this component",
+			"context" : "PROC_SW.AttestationMgr"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "PROC_SW.AttestationMgr"
+		},
+		{
+			"type" : "authenticate_communication",
+			"text" : "Communications should be authenticated",
+			"context" : "PROC_SW.AttestationMgr"
+		},
+		{
+			"type" : "immutable_data",
+			"text" : "PEnforce data to be immutable",
+			"context" : "PROC_SW.FLT_OR"
+		},
+		{
+			"type" : "limit_resource_use",
+			"text" : "Enforce a limit on resource usage for this component",
+			"context" : "PROC_SW.FLT_OR"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "PROC_SW.FLT_OR"
+		},
+		{
+			"type" : "authenticate_communication",
+			"text" : "Communications should be authenticated",
+			"context" : "PROC_SW.FLT_OR"
+		},
+		{
+			"type" : "immutable_data",
+			"text" : "PEnforce data to be immutable",
+			"context" : "PROC_SW.Response_MON"
+		},
+		{
+			"type" : "limit_resource_use",
+			"text" : "Enforce a limit on resource usage for this component",
+			"context" : "PROC_SW.Response_MON"
+		},
+		{
+			"type" : "application_sandboxing",
+			"text" : "Applications should have sandboxing protections (e.g. memory isolation)",
+			"context" : "PROC_SW.Response_MON"
+		},
+		{
+			"type" : "authenticate_communication",
+			"text" : "Communications should be authenticated",
+			"context" : "PROC_SW.Response_MON"
+		}
+	]
+}

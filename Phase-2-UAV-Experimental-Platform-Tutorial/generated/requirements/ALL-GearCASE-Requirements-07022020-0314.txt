@@ -1,0 +1,344 @@
+{
+	"Description": "GearCASE System Requirements",
+	"By": "Charles River Analytics & Collins",
+	"Total number of attack plans": 637,
+	"Total number of requirements": 17,
+	"Component Requirements (ordered by attack space eliminated)": [
+		{
+			"id": 1,
+			"Component": "UAV.MCMP.PROC_SW.UXAS",
+			"Requirement": "confidentiality_at_rest",
+			"Attack Steps Eliminated": 399,
+			"Attack Space eliminated": "10.82%"
+		},
+		{
+			"id": 2,
+			"Component": "GND.PROC_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 210,
+			"Attack Space eliminated": "5.7%"
+		},
+		{
+			"id": 3,
+			"Component": "GND.MEM_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 210,
+			"Attack Space eliminated": "5.7%"
+		},
+		{
+			"id": 4,
+			"Component": "UAV.MCMP.PROC_SW.UXAS",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 189,
+			"Attack Space eliminated": "5.13%"
+		},
+		{
+			"id": 5,
+			"Component": "UAV.MCMP.PROC_SW.UXAS",
+			"Requirement": "permit_well_formed_data",
+			"Attack Steps Eliminated": 182,
+			"Attack Space eliminated": "4.94%"
+		},
+		{
+			"id": 6,
+			"Component": "UAV.MCMP.PROC_SW.UXAS",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 182,
+			"Attack Space eliminated": "4.94%"
+		},
+		{
+			"id": 7,
+			"Component": "GND.BUS_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 168,
+			"Attack Space eliminated": "4.56%"
+		},
+		{
+			"id": 8,
+			"Component": "UAV.MCMP.PROC_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 168,
+			"Attack Space eliminated": "4.56%"
+		},
+		{
+			"id": 9,
+			"Component": "RFA",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 168,
+			"Attack Space eliminated": "4.56%"
+		},
+		{
+			"id": 10,
+			"Component": "UAV.MCMP.MEM_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 168,
+			"Attack Space eliminated": "4.56%"
+		},
+		{
+			"id": 11,
+			"Component": "UAV.MCMP.PROC_SW.UXAS",
+			"Requirement": "whitelist_communications",
+			"Attack Steps Eliminated": 154,
+			"Attack Space eliminated": "4.18%"
+		},
+		{
+			"id": 12,
+			"Component": "GND.PROC_SW.RadioDriver",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 134,
+			"Attack Space eliminated": "3.64%"
+		},
+		{
+			"id": 13,
+			"Component": "GND.RADIO_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 129,
+			"Attack Space eliminated": "3.5%"
+		},
+		{
+			"id": 14,
+			"Component": "UAV.FCTL_SBUS",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "3.42%"
+		},
+		{
+			"id": 15,
+			"Component": "UAV.MCMP.BUS_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 126,
+			"Attack Space eliminated": "3.42%"
+		},
+		{
+			"id": 16,
+			"Component": "UAV.FCTL",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 102,
+			"Attack Space eliminated": "2.77%"
+		},
+		{
+			"id": 17,
+			"Component": "UAV.MCMP.PROC_SW.UXAS",
+			"Requirement": "memory_protections",
+			"Attack Steps Eliminated": 91,
+			"Attack Space eliminated": "2.47%"
+		},
+		{
+			"id": 18,
+			"Component": "UAV.MCMP.PROC_SW.UXAS",
+			"Requirement": "confidentiality_in_transit",
+			"Attack Steps Eliminated": 91,
+			"Attack Space eliminated": "2.47%"
+		},
+		{
+			"id": 19,
+			"Component": "UAV.MCMP.PROC_SW.UXAS",
+			"Requirement": "layered_protection",
+			"Attack Steps Eliminated": 91,
+			"Attack Space eliminated": "2.47%"
+		},
+		{
+			"id": 20,
+			"Component": "UAV.MCMP.FC_UART_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 86,
+			"Attack Space eliminated": "2.34%"
+		},
+		{
+			"id": 21,
+			"Component": "UAV.MCMP.RADIO_HW",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 86,
+			"Attack Space eliminated": "2.34%"
+		},
+		{
+			"id": 22,
+			"Component": "GND.BUS_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 42,
+			"Attack Space eliminated": "1.14%"
+		},
+		{
+			"id": 23,
+			"Component": "UAV.MCMP.PROC_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 42,
+			"Attack Space eliminated": "1.14%"
+		},
+		{
+			"id": 24,
+			"Component": "UAV.MCMP.FC_UART_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 42,
+			"Attack Space eliminated": "1.14%"
+		},
+		{
+			"id": 25,
+			"Component": "RFA",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 42,
+			"Attack Space eliminated": "1.14%"
+		},
+		{
+			"id": 26,
+			"Component": "GND.PROC_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 42,
+			"Attack Space eliminated": "1.14%"
+		},
+		{
+			"id": 27,
+			"Component": "GND.RADIO_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 42,
+			"Attack Space eliminated": "1.14%"
+		},
+		{
+			"id": 28,
+			"Component": "UAV.MCMP.MEM_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 42,
+			"Attack Space eliminated": "1.14%"
+		},
+		{
+			"id": 29,
+			"Component": "GND.MEM_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 42,
+			"Attack Space eliminated": "1.14%"
+		},
+		{
+			"id": 30,
+			"Component": "UAV.FCTL_SBUS",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 42,
+			"Attack Space eliminated": "1.14%"
+		},
+		{
+			"id": 31,
+			"Component": "UAV.MCMP.BUS_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 42,
+			"Attack Space eliminated": "1.14%"
+		},
+		{
+			"id": 32,
+			"Component": "UAV.MCMP.RADIO_HW",
+			"Requirement": "prevent_emf_leakage",
+			"Attack Steps Eliminated": 42,
+			"Attack Space eliminated": "1.14%"
+		},
+		{
+			"id": 33,
+			"Component": "UAV.MCMP.PROC_SW.RADIO",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 36,
+			"Attack Space eliminated": "0.98%"
+		},
+		{
+			"id": 34,
+			"Component": "UAV.MCMP.PROC_SW.FC_UART",
+			"Requirement": "application_sandboxing",
+			"Attack Steps Eliminated": 36,
+			"Attack Space eliminated": "0.98%"
+		},
+		{
+			"id": 35,
+			"Component": "GND.PROC_SW.RadioDriver",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 21,
+			"Attack Space eliminated": "0.57%"
+		},
+		{
+			"id": 36,
+			"Component": "UAV.MCMP.PROC_SW.UXAS",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 21,
+			"Attack Space eliminated": "0.57%"
+		},
+		{
+			"id": 37,
+			"Component": "UAV.MCMP.PROC_SW.RADIO",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 21,
+			"Attack Space eliminated": "0.57%"
+		},
+		{
+			"id": 38,
+			"Component": "UAV.MCMP.PROC_SW.FC_UART",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 21,
+			"Attack Space eliminated": "0.57%"
+		},
+		{
+			"id": 39,
+			"Component": "UAV.FCTL",
+			"Requirement": "limit_resource_use",
+			"Attack Steps Eliminated": 21,
+			"Attack Space eliminated": "0.57%"
+		},
+		{
+			"id": 40,
+			"Component": "GND.PROC_SW.RadioDriver",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 7,
+			"Attack Space eliminated": "0.19%"
+		},
+		{
+			"id": 41,
+			"Component": "GND.PROC_SW.RadioDriver",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 7,
+			"Attack Space eliminated": "0.19%"
+		},
+		{
+			"id": 42,
+			"Component": "UAV.MCMP.PROC_SW.UXAS",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 7,
+			"Attack Space eliminated": "0.19%"
+		},
+		{
+			"id": 43,
+			"Component": "UAV.MCMP.PROC_SW.RADIO",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 7,
+			"Attack Space eliminated": "0.19%"
+		},
+		{
+			"id": 44,
+			"Component": "UAV.MCMP.PROC_SW.RADIO",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 7,
+			"Attack Space eliminated": "0.19%"
+		},
+		{
+			"id": 45,
+			"Component": "UAV.MCMP.PROC_SW.FC_UART",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 7,
+			"Attack Space eliminated": "0.19%"
+		},
+		{
+			"id": 46,
+			"Component": "UAV.MCMP.PROC_SW.FC_UART",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 7,
+			"Attack Space eliminated": "0.19%"
+		},
+		{
+			"id": 47,
+			"Component": "UAV.FCTL",
+			"Requirement": "immutable_data",
+			"Attack Steps Eliminated": 7,
+			"Attack Space eliminated": "0.19%"
+		},
+		{
+			"id": 48,
+			"Component": "UAV.FCTL",
+			"Requirement": "authenticate_communication",
+			"Attack Steps Eliminated": 7,
+			"Attack Space eliminated": "0.19%"
+		}
+	]
+}

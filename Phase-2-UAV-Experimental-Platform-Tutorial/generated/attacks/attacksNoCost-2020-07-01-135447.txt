@@ -1,0 +1,12 @@
+{
+	"tool" : "GearCASE",
+	"grammar" : "placeholder",
+	"date" : "2020-07-01-135447",
+	"hash" : "c25fb979efb5a64ef0e6bfcf8a7c0bf5c8e162ae8e45e13aee213bb5aa04439864a9cbcda65cba6675fe764ff872ec6afe5fd01e832294464b2f48af2b4d752c",
+	"Total Number of Attack Plans" : "0",
+	"Total Number of Attack/Atom Pairs" : "0",
+	"Attacks" : 
+	
+	]
+
+}
