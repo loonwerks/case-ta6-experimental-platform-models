@@ -28,7 +28,7 @@ annex agree {**
 	const LATITUDE_MIN : real = -90.0;
 	const LATITUDE_MAX : real = 90.0;
 	const LONGITUDE_MIN : real = -180.0;
-	const LONGITUDE_MAX : real = -180.0;
+	const LONGITUDE_MAX : real = 180.0;
 	const AZIMUTH_CENTERLINE_MIN : real = -180.0;
 	const AZIMUTH_CENTERLINE_MAX : real = 180.0;
 	const VERTICAL_CENTERLINE_MIN : real = -180.0;
