@@ -11,8 +11,8 @@ public
 	end CASE_MsgHeader;
 	data implementation CASE_MsgHeader.Impl
 		subcomponents
-			src: data Base_Types::Integer_32;
-			dst: data Base_Types::Integer_32;
+			src: data Base_Types::Integer_64;
+			dst: data Base_Types::Integer_64;
 			trusted: data Base_Types::Boolean;
 			HMAC: data Base_Types::Boolean;
 	end CASE_MsgHeader.Impl;
