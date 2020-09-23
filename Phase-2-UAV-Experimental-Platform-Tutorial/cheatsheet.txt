@@ -1,6 +1,8 @@
 CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(AutomationResponse)
 
+
 guarantee Req_AutomationResponse_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(filter_out);
+
 
 -- Monitor policy (models the expected behavior in terms of the input ports)
 			-- AutomationResponse (observed) occurs within two scheduling cycles after AutomationRequest (AutomationRequest)
@@ -57,3 +59,20 @@ guarantee Req_AutomationResponse_Filter "Messages that are not well formed shoul
 			guarantee Req_WellFormed_Monitor_AResp "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(output);
 		**};
 
+
+prove Req_WellFormed_OperatingRegion(this.SW.UxAS, "Req_Filter_OR")
+
+
+guarantee Req_OperatingRegion_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_OPERATING_REGION(filter_out);
+
+
+prove Req_WellFormed_LineSearchTask(this.SW.UxAS, "Req_Filter_LST")
+
+
+guarantee Req_LineSearchTask_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_LINE_SEARCH_TASK(filter_out);
+
+
+prove Req_WellFormed_AutomationRequest(this.SW.UxAS, "Req_Filter_AReq")
+
+
+guarantee Req_AutomationRequest_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_REQUEST(filter_out);

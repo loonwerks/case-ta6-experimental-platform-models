@@ -120,9 +120,6 @@ public
 			prove Req_Attestation(this.SW.Radio)
 			prove Req_UxAS_Response(this.SW.UxAS)
 			prove Req_UxAS_Geofence(this.SW.UxAS)
---			prove Req_WellFormed_OperatingRegion(this.SW.UxAS, "Req_Filter_OR")
---			prove Req_WellFormed_LineSearchTask(this.SW.UxAS, "Req_Filter_LST")
---			prove Req_WellFormed_AutomationRequest(this.SW.UxAS, "Req_Filter_AReq")
 		**};
 
 	end MissionComputer.Impl;
