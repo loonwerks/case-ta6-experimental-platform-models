@@ -15,14 +15,14 @@ public
 			AutomationResponse: in event data port CMASI::AutomationResponse.i;
 			AirVehicleState: in event data port CMASI::AirVehicleState.i;
 			MissionCommand: out event data port CMASI::MissionCommand.i;
-		properties
-			Dispatch_Protocol => Sporadic;
 		annex agree {**
 			guarantee Req_WPM_Good_Mission_Command "The Waypoint Manager shall output valid mission commands" : CASEAgree::WELL_FORMED_MISSION_COMMAND(MissionCommand);
 		**};
 	end WaypointManager;
 
 	thread implementation WaypointManager.Impl
+		properties
+			Dispatch_Protocol => Sporadic;
 	end WaypointManager.Impl;
 
 	process SW
@@ -49,7 +49,7 @@ public
 		subcomponents
 			UART: thread Drivers::UARTDriver.Impl;
 			Radio: thread Drivers::RadioDriver.Impl;
-			UxAS: thread group Waterways_UxAS::Waterways.i;
+			UxAS: thread Waterways_UxAS::Waterways.i;
 			WaypointManager: thread WaypointManager.Impl;
 		connections
 			------------------
