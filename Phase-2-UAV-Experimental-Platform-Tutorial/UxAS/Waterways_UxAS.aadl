@@ -57,14 +57,14 @@ public
 --			c_AVSt_11: port AirVehicleState -> RouteAggregatorService.AirVehicleState;
 --			c_AVSt_12: port AirVehicleState -> CmasiLineSearchTaskService.AirVehicleState;
 
---			c_AReq_01: port AutomationRequest -> AutomationRequestValidatorService.AutomationRequest {CASE_Properties::Trust_Level => 100;
---				CASE_Properties::Control_Level => 100;};
+			c_AReq_01: port AutomationRequest -> AutomationRequestValidatorService.AutomationRequest;
+			-- {CASE_Properties::Trust_Level => 100; CASE_Properties::Control_Level => 100;};
 
---			c_LST_01: port LineSearchTask -> TaskManagerService.LineSearchTask {CASE_Properties::Trust_Level => 100;
---				CASE_Properties::Control_Level => 100;};
+			c_LST_01: port LineSearchTask -> TaskManagerService.LineSearchTask;
+			-- {CASE_Properties::Trust_Level => 100; CASE_Properties::Control_Level => 100;};
 
---			c_OR_01: port OperatingRegion -> AutomationRequestValidatorService.OperatingRegion {CASE_Properties::Trust_Level => 100;
---				CASE_Properties::Control_Level => 100;};
+			c_OR_01: port OperatingRegion -> AutomationRequestValidatorService.OperatingRegion;
+			-- {CASE_Properties::Trust_Level => 100; CASE_Properties::Control_Level => 100;};
 --			c_OR_02: port OperatingRegion -> RoutePlannerVisibilityService.OperatingRegion;
 
 			-------------------------------------

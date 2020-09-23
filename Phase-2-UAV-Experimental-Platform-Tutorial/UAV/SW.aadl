@@ -33,13 +33,13 @@ public
 			radio_send: out event data port CASE_Model_Transformations::CASE_RF_Msg.Impl;
 
 		annex agree {**
-			assume Req001_SW "The radio receives well-formed messages" : 
+			assume "The radio receives well-formed messages" : 
 							CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEAgree::GS_ID, CASEAgree::UAV_ID);
-			assume Req002_SW "The uart receives well-formed messages" : 
+			assume "The uart receives well-formed messages" : 
 							CASEAgree::WellformedCASE_UART_Msg(uart_recv);
-			guarantee Req003_SW "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : 
+			guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : 
 							CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID);
-			guarantee Req004_SW "The uart_send outputs only well formed CASE_RF_Msg.Impl types" : 
+			guarantee "The uart_send outputs only well formed CASE_RF_Msg.Impl types" : 
 							CASEAgree::WellformedCASE_UART_Msg(uart_send);
 		**};
 
