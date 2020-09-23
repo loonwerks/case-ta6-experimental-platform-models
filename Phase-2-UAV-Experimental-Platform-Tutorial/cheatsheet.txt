@@ -1,1 +1,59 @@
 CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(AutomationResponse)
+
+guarantee Req_AutomationResponse_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(filter_out);
+
+-- Monitor policy (models the expected behavior in terms of the input ports)
+			-- AutomationResponse (observed) occurs within two scheduling cycles after AutomationRequest (AutomationRequest)
+			eq empty_day : bool = not event(observed) and not event(AutomationRequest);
+			property CASE_Monitor_policy = 
+				Historically(event(AutomationRequest) or (empty_day and Yesterday(event(AutomationRequest) or 
+				(empty_day and Yesterday(event(AutomationRequest)))	)) => event(observed));
+
+
+		annex agree {**
+			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
+			-- Monitor policy (models the expected behavior in terms of the input ports)
+			property CASE_Monitor1_policy = Historically(
+								event(observed) =>
+									 (WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(observed), KeepInZone) and 
+						                	  WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(observed), KeepOutZone)
+									 and not DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(observed))));
+			fun GET_MISSION_COMMAND(automationResponse: CMASI::AutomationResponse.i) : CMASI::MissionCommand.i =
+						              automationResponse.MissionCommandList[0];
+			fun WAYPOINTS_IN_ZONE(mission : CMASI::MissionCommand.i, zone : CMASI::Polygon.i) : bool =
+						              forall waypoint in mission.WaypointList, WAYPOINT_IN_ZONE_RECTANGLE(waypoint, zone);
+			fun WAYPOINTS_NOT_IN_ZONE(mission : CMASI::MissionCommand.i, zone : CMASI::Polygon.i) : bool =
+						              forall waypoint in mission.WaypointList, not WAYPOINT_IN_ZONE_RECTANGLE(waypoint, zone);
+			-- Assumes rectangle that is defined by two corners so it is aligned
+			-- with the origin (not rotated in space)
+			-- Assumes that the altitude is the same in all the coordinates
+			-- Assmes zone[0] is the bottom left corner and zone[2] in the upper right corner
+			fun WAYPOINT_IN_ZONE_RECTANGLE(waypoint : CMASI::Waypoint.i, zone : CMASI::Polygon.i) : bool =
+						                  (waypoint.Latitude >= (zone.BoundaryPointsList[0]).Latitude)
+						              and (waypoint.Latitude <= (zone.BoundaryPointsList[1]).Latitude)
+						              and (waypoint.Longitude >= (zone.BoundaryPointsList[0]).Longitude)
+						              and (waypoint.Longitude <= (zone.BoundaryPointsList[1]).Longitude)
+						              and (waypoint.Altitude >= (zone.BoundaryPointsList[0]).Altitude);
+			fun DUPLICATES_IN_MISSION(mission : CMASI::MissionCommand.i) : bool =
+						      exists waypoint in mission.WaypointList, not IS_LAST_WAYPOINT(waypoint) and IS_DUPLICATE(mission, waypoint) ;
+			fun IS_LAST_WAYPOINT(waypoint : CMASI::Waypoint.i) : bool = waypoint.Number = waypoint.NextWaypoint;
+			-- Checking if there exists a waypoint with the same lat,long,alt as a given waypoint with the restriction that it
+			-- follows immediately after the given waypoint in the linked-list of waypoints.
+			fun IS_DUPLICATE(mission : CMASI::MissionCommand.i, waypoint : CMASI::Waypoint.i) : bool =
+						      exists wp in mission.WaypointList, not IS_LAST_WAYPOINT(wp) and wp.Number = waypoint.NextWaypoint and wp.Latitude = waypoint.Latitude and
+							 wp.Longitude = waypoint.Longitude and wp.Altitude = waypoint.Altitude;
+			guarantee Req_CASE_Monitor1 "A violation of the monitor policy shall trigger an alert, and observed input shall not be propagated." :
+				if is_latched and prev(event(alert), not CASE_Monitor1_policy) then
+					event(alert) and not event(output)
+				else
+					if event(observed) then
+						if CASE_Monitor1_policy then
+							not event(alert) and event(output) and output = observed
+						else
+							event(alert) and not event(output)
+					else
+						not event(alert) and not event(output);
+			assume Req_WellFormed_Monitor_AResp_In "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(observed);
+			guarantee Req_WellFormed_Monitor_AResp "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(output);
+		**};
+

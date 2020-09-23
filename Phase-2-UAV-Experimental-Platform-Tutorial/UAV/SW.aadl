@@ -6,6 +6,7 @@ public
 	with CASEAgree;
 	with CASE_Properties;
 	with CMASI;
+	with Base_Types;
 	renames AGREE_PLTL::all;
 
 
@@ -25,6 +26,20 @@ public
 			Dispatch_Protocol => Sporadic;
 	end WaypointManager.Impl;
 
+	thread FlyZones
+		-- The KeepInZoneDatabase is a collection of polygons that represent areas on a map that the UAV can traverse.
+		-- The database is populated at build-time and stored in memory.
+		features
+			KeepInZone: out data port CMASI::Polygon.i;
+			KeepOutZone: out data port CMASI::Polygon.i;
+	end FlyZones;
+
+	thread implementation FlyZones.Impl
+		properties
+			Dispatch_Protocol => Periodic;
+			Period => 500ms;
+	end FlyZones.Impl;
+
 	process SW
 		features
 			uart_recv: in event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
@@ -33,14 +48,10 @@ public
 			radio_send: out event data port CASE_Model_Transformations::CASE_RF_Msg.Impl;
 
 		annex agree {**
-			assume "The radio receives well-formed messages" : 
-							CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEAgree::GS_ID, CASEAgree::UAV_ID);
-			assume "The uart receives well-formed messages" : 
-							CASEAgree::WellformedCASE_UART_Msg(uart_recv);
-			guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : 
-							CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID);
-			guarantee "The uart_send outputs only well formed CASE_RF_Msg.Impl types" : 
-							CASEAgree::WellformedCASE_UART_Msg(uart_send);
+			assume "The radio receives well-formed messages" : CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEAgree::GS_ID, CASEAgree::UAV_ID);
+			assume "The uart receives well-formed messages" : CASEAgree::WellformedCASE_UART_Msg(uart_recv);
+			guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID);
+			guarantee "The uart_send outputs only well formed CASE_RF_Msg.Impl types" : CASEAgree::WellformedCASE_UART_Msg(uart_send);
 		**};
 
 	end SW;
@@ -51,6 +62,7 @@ public
 			Radio: thread Drivers::RadioDriver.Impl;
 			UxAS: thread Waterways_UxAS::Waterways.i;
 			WaypointManager: thread WaypointManager.Impl;
+			FlyZones: thread FlyZones.Impl;
 		connections
 			------------------
 			-- Primary Inputs

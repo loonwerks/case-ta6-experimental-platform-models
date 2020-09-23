@@ -11,8 +11,6 @@ public
 		features
 			recv_data: in event data port CASE_Model_Transformations::CASE_RF_Msg.Impl;
 			send_data: out event data port CASE_Model_Transformations::CASE_RF_Msg.Impl;
-			am_request: in event data port CASE_Model_Transformations::CASE_AttestationRequestMsg.Impl;
-			am_response: out event data port CASE_Model_Transformations::CASE_AttestationResponseMsg.Impl;
 			alert: in event data port Base_Types::Boolean;
 
 			AutomationRequest: out event data port CMASI::AutomationRequest.i; --CMASI::AddressAttributedMessage.i;
@@ -23,10 +21,8 @@ public
 			CASE_Properties::Component_Type => COMM_DRIVER;
 
 		annex agree {**
-			assume Req001_Radio "The radio receives well-formed messages" : 
-																CASEAgree::WellformedCASE_RF_Msg(recv_data, CASEAgree::GS_ID, CASEAgree::UAV_ID);
-			guarantee Req002_Radio "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : 
-												                CASEAgree::WellformedCASE_RF_Msg(send_data, CASEAgree::UAV_ID, CASEAgree::GS_ID);
+			assume Req001_Radio "The radio receives well-formed messages" : CASEAgree::WellformedCASE_RF_Msg(recv_data, CASEAgree::GS_ID, CASEAgree::UAV_ID);
+			guarantee Req002_Radio "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : CASEAgree::WellformedCASE_RF_Msg(send_data, CASEAgree::UAV_ID, CASEAgree::GS_ID);
 		**};
 
 	end RadioDriver;

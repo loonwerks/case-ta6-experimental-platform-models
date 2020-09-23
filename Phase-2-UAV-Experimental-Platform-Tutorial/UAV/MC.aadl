@@ -42,7 +42,7 @@ public
 
 	processor implementation MC_Proc.Impl
 		properties
-			CASE_Properties::OS => "seL4";
+			CASE_Properties::OS => "Linux";
 	end MC_Proc.Impl;
 
 	-- The Mission Computer RAM
@@ -117,12 +117,12 @@ public
 			Actual_Connection_Binding => (reference (BUS_HW)) applies to c04, c06, c10, c11;
 
 		annex resolute {**
-			prove Req_WellFormed_AutomationRequest(this.SW.UxAS, "Req_Filter_AReq")
-			prove Req_Attestation(this.SW.UxAS)
-			prove Req_WellFormed_OperatingRegion(this.SW.UxAS, "Req_Filter_OR")
-			prove Req_WellFormed_LineSearchTask(this.SW.UxAS, "Req_Filter_LST")
+			prove Req_Attestation(this.SW.Radio)
 			prove Req_UxAS_Response(this.SW.UxAS)
 			prove Req_UxAS_Geofence(this.SW.UxAS)
+--			prove Req_WellFormed_OperatingRegion(this.SW.UxAS, "Req_Filter_OR")
+--			prove Req_WellFormed_LineSearchTask(this.SW.UxAS, "Req_Filter_LST")
+--			prove Req_WellFormed_AutomationRequest(this.SW.UxAS, "Req_Filter_AReq")
 		**};
 
 	end MissionComputer.Impl;
