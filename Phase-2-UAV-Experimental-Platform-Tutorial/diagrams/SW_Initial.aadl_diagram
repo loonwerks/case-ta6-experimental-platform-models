@@ -161,20 +161,6 @@
         </bo>
         <position y="60.0"/>
       </element>
-      <element uuid="10ef2a9b-226f-4cc1-bb62-084837382409" manual="true" dockArea="left">
-        <bo>
-          <seg>feature</seg>
-          <seg>am_request</seg>
-        </bo>
-        <position y="160.0"/>
-      </element>
-      <element uuid="6252b950-74e0-401c-8b03-4e357d1f5ca7" manual="true" dockArea="left">
-        <bo>
-          <seg>feature</seg>
-          <seg>am_response</seg>
-        </bo>
-        <position y="110.0"/>
-      </element>
       <element uuid="a4d04e94-a801-41a8-8c6d-0ec0c07336f0" manual="true" dockArea="right">
         <bo>
           <seg>feature</seg>
