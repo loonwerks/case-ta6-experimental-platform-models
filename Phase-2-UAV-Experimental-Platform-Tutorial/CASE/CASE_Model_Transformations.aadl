@@ -366,7 +366,7 @@ public
 		----------------
 	
 		-- This connects to evidence that AGREE was previously run on the current version of the design.
-		agree_property_checked(c : component, property_id : string) <=
+		agree_prop_checked(c : component, property_id : string) <=
 			** "AGREE properties passed" **
 			AgreeLib.hasAgreeProperty(c, property_id) and analysis("AgreeCheck", type(parent(c)))
 		

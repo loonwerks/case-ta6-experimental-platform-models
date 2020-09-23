@@ -1,9 +1,0 @@
-{
-	"tool" : "GearCASE",
-	"grammar" : "placeholder",
-	"date" : "2020-07-01-144231",
-	"hash" : "89b8a347a1b68bb5a37891807776270bd1aff9056d9c306ebc4044d22a5c4a2126376816b15c6c7adf1e9f3a3cac6c691701aa13df6f37c72d09b07d8f1f77aa",
-	"attack plans" :
-	
-	]
-}

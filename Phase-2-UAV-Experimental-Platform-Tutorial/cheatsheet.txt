@@ -1,0 +1,1 @@
+CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(AutomationResponse)

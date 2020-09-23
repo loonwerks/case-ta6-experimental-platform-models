@@ -4,6 +4,7 @@ public
 	with UAS_Buses;
 	with CASE_Model_Transformations;
 	with SW;
+	with CASE_Properties;
 
 	-- The radio communication hardware
 	device Radio
@@ -40,6 +41,8 @@ public
 	end MC_Proc;
 
 	processor implementation MC_Proc.Impl
+		properties
+			CASE_Properties::OS => "seL4";
 	end MC_Proc.Impl;
 
 	-- The Mission Computer RAM

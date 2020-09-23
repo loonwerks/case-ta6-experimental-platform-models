@@ -7,7 +7,7 @@ private
 			context Generated_On : "Jul 20, 2020";
 			context Req_Component : "MC::MissionComputer.Impl.SW.UxAS";
 			context Formalized : "True";
-			agree_property_checked(comp_context, property_id)
+			agree_prop_checked(comp_context, property_id)
 		
 		goal Req_WellFormed_OperatingRegion(comp_context : component, property_id : string) <=
 			** "[permit_well_formed_OR_data] Messages that are not well formed should be filtered out" **
@@ -15,7 +15,7 @@ private
 			context Generated_On : "Jul 20, 2020";
 			context Req_Component : "MC::MissionComputer.Impl.SW.UxAS";
 			context Formalized : "True";
-			agree_property_checked(comp_context, property_id)
+			agree_prop_checked(comp_context, property_id)
 		
 		goal Req_WellFormed_LineSearchTask(comp_context : component, property_id : string) <=
 			** "[permit_well_formed_LST_data] Messages that are not well formed should be filtered out" **
@@ -23,7 +23,7 @@ private
 			context Generated_On : "Jul 20, 2020";
 			context Req_Component : "MC::MissionComputer.Impl.SW.UxAS";
 			context Formalized : "True";
-			agree_property_checked(comp_context, property_id)
+			agree_prop_checked(comp_context, property_id)
 		
 		goal Req_UxAS_Response(comp_context : component) <=
 			** "[monitor_response] Uncontrolled UxAS component shall be monitored for crashes" **

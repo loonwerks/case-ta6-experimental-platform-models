@@ -1,6 +1,0 @@
-{
-	"Total Number of Attack Plans": 0,
-	"Total Number of Attack/Atom Pairs": 0,
-	"Attacks": {
-	}
-}
