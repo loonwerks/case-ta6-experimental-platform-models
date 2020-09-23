@@ -21,8 +21,8 @@ public
 			CASE_Properties::Component_Type => COMM_DRIVER;
 
 		annex agree {**
-			assume Req001_Radio "The radio receives well-formed messages" : CASEAgree::WellformedCASE_RF_Msg(recv_data, CASEAgree::GS_ID, CASEAgree::UAV_ID);
-			guarantee Req002_Radio "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : CASEAgree::WellformedCASE_RF_Msg(send_data, CASEAgree::UAV_ID, CASEAgree::GS_ID);
+			assume "The radio receives well-formed messages" : CASEAgree::WellformedCASE_RF_Msg(recv_data, CASEAgree::GS_ID, CASEAgree::UAV_ID);
+			guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : CASEAgree::WellformedCASE_RF_Msg(send_data, CASEAgree::UAV_ID, CASEAgree::GS_ID);
 		**};
 
 	end RadioDriver;
