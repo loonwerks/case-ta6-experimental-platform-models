@@ -16,10 +16,10 @@ guarantee Req_AutomationResponse_Filter "Messages that are not well formed shoul
 			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
 			-- Monitor policy (models the expected behavior in terms of the input ports)
 			property CASE_Monitor1_policy = Historically(
-								event(observed) =>
-									 (WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(observed), KeepInZone) and 
-						                	  WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(observed), KeepOutZone)
-									 and not DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(observed))));
+								event(Observed) =>
+									 (WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(Observed), KeepInZone) and 
+						                	  WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(Observed), KeepOutZone)
+									 and not DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(Observed))));
 			fun GET_MISSION_COMMAND(automationResponse: CMASI::AutomationResponse.i) : CMASI::MissionCommand.i =
 						              automationResponse.MissionCommandList[0];
 			fun WAYPOINTS_IN_ZONE(mission : CMASI::MissionCommand.i, zone : CMASI::Polygon.i) : bool =
@@ -46,33 +46,33 @@ guarantee Req_AutomationResponse_Filter "Messages that are not well formed shoul
 							 wp.Longitude = waypoint.Longitude and wp.Altitude = waypoint.Altitude;
 			guarantee Req_CASE_Monitor1 "A violation of the monitor policy shall trigger an alert, and observed input shall not be propagated." :
 				if is_latched and prev(event(alert), not CASE_Monitor1_policy) then
-					event(alert) and not event(output)
+					event(Alert) and not event(Output)
 				else
-					if event(observed) then
+					if event(Observed) then
 						if CASE_Monitor1_policy then
-							not event(alert) and event(output) and output = observed
+							not event(Alert) and event(Output) and Output = Observed
 						else
-							event(alert) and not event(output)
+							event(Alert) and not event(Output)
 					else
-						not event(alert) and not event(output);
-			assume Req_WellFormed_Monitor_AResp_In "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(observed);
-			guarantee Req_WellFormed_Monitor_AResp "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(output);
+						not event(Alert) and not event(Output);
+			assume Req_WellFormed_Monitor_AResp_In "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(Observed);
+			guarantee Req_WellFormed_Monitor_AResp "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(Output);
 		**};
 
 
 prove Req_WellFormed_OperatingRegion(this.SW.UxAS, "Req_Filter_OR")
 
 
-guarantee Req_OperatingRegion_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_OPERATING_REGION(filter_out);
+guarantee Req_OperatingRegion_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_OPERATING_REGION(Output);
 
 
 prove Req_WellFormed_LineSearchTask(this.SW.UxAS, "Req_Filter_LST")
 
 
-guarantee Req_LineSearchTask_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_LINE_SEARCH_TASK(filter_out);
+guarantee Req_LineSearchTask_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_LINE_SEARCH_TASK(Output);
 
 
 prove Req_WellFormed_AutomationRequest(this.SW.UxAS, "Req_Filter_AReq")
 
 
-guarantee Req_AutomationRequest_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_REQUEST(filter_out);
+guarantee Req_AutomationRequest_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_REQUEST(Output);
