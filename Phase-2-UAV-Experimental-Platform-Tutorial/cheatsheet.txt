@@ -1,7 +1,7 @@
 CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(AutomationResponse)
 
 
-guarantee Req_AutomationResponse_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(filter_out);
+guarantee Req_AutomationResponse_Filter "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(Output);
 
 
 -- Monitor policy (models the expected behavior in terms of the input ports)
