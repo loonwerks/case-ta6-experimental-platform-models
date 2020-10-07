@@ -5,11 +5,11 @@ guarantee Req_AutomationResponse_Filter "Messages that are not well formed shoul
 
 
 -- Monitor policy (models the expected behavior in terms of the input ports)
-			-- AutomationResponse (observed) occurs within two scheduling cycles after AutomationRequest (AutomationRequest)
-			eq empty_day : bool = not event(observed) and not event(AutomationRequest);
+			-- AutomationResponse (Observed) occurs within two scheduling cycles after AutomationRequest (AutomationRequest)
+			eq empty_day : bool = not event(Observed) and not event(AutomationRequest);
 			property CASE_Monitor_policy = 
 				Historically(event(AutomationRequest) or (empty_day and Yesterday(event(AutomationRequest) or 
-				(empty_day and Yesterday(event(AutomationRequest)))	)) => event(observed));
+				(empty_day and Yesterday(event(AutomationRequest)))	)) => event(Observed));
 
 
 		annex agree {**
