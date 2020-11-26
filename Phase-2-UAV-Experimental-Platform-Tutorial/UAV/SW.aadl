@@ -6,7 +6,6 @@ public
 	with CASEAgree;
 	with CASE_Properties;
 	with CMASI;
-	with Base_Types;
 	renames AGREE_PLTL::all;
 
 
