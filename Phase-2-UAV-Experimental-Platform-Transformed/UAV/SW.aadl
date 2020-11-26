@@ -11,11 +11,11 @@ public
 	with CM_Property_Set;
 	with HAMR;
 
-	
+
 	------------------
 	-- Radio Driver --
 	------------------
-	
+
 	thread RadioDriver_Attestation_thr extends Drivers::RadioDriver
 		features
 			am_request: in event data port CASE_Model_Transformations::CASE_AttestationRequestMsg.Impl;
@@ -29,12 +29,12 @@ public
 
 	thread implementation RadioDriver_Attestation_thr.Impl extends Drivers::RadioDriver.Impl
 	end RadioDriver_Attestation_thr.Impl;
-	
+
 	process RadioDriver_Attestation
 		features
 			am_request: in event data port CASE_Model_Transformations::CASE_AttestationRequestMsg.Impl;
 			am_response: out event data port CASE_Model_Transformations::CASE_AttestationResponseMsg.Impl;
-			
+
 			recv_data: in event data port CASE_Model_Transformations::CASE_RF_Msg.Impl;
 			send_data: out event data port CASE_Model_Transformations::CASE_RF_Msg.Impl;
 
@@ -49,7 +49,7 @@ public
 				 event(send_data) => CASEAgree::WellformedCASE_RF_Msg(send_data, CASEAgree::UAV_ID, CASEAgree::GS_ID);
 		**};
 	end RadioDriver_Attestation;
-	
+
 	process implementation RadioDriver_Attestation.Impl
 		subcomponents
 			RadioDriver_Attestation: thread RadioDriver_Attestation_thr.Impl;
@@ -87,7 +87,7 @@ public
 			Dispatch_Protocol => Periodic;
 			Stack_Size => CM_Property_Set::Stack_Size;
 	end CASE_AttestationManager_thr.Impl;
-	
+
 	process CASE_AttestationManager
 		features
 			trusted_ids: out data port CMASI::AddressArray.i;
@@ -96,7 +96,7 @@ public
 		properties
 			CASE_Scheduling::Domain => 4;
 	end CASE_AttestationManager;
-	
+
 	process implementation CASE_AttestationManager.Impl
 		subcomponents
 			CASE_AttestationManager: thread CASE_AttestationManager_thr.Impl;
@@ -127,7 +127,7 @@ public
 			Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
-			fun IS_TRUSTED(src_id : CMASI::Address.i) : bool = exists id in trusted_ids, id = src_id;
+			fun IS_TRUSTED(srcid : CMASI::Address.i) : bool = (exists id in trusted_ids, id = srcid);
 			guarantee CASE_AttestationGate_policy "Only messages from trusted sources shall be forwarded" :
 				if event(AutomationRequest_in) and IS_TRUSTED(AutomationRequest_in.id) then event(AutomationRequest_out) and not (event(OperatingRegion_out) or event(LineSearchTask_out)) and AutomationRequest_out = AutomationRequest_in.payload.AutomationRequest
 				else if event(OperatingRegion_in) and IS_TRUSTED(OperatingRegion_in.id) then event(OperatingRegion_out) and not (event(AutomationRequest_out) or event(LineSearchTask_out)) and OperatingRegion_out = OperatingRegion_in.payload.OperatingRegion
@@ -138,7 +138,7 @@ public
 
 	thread implementation CASE_AttestationGate_thr.Impl
 	end CASE_AttestationGate_thr.Impl;
-	
+
 	process CASE_AttestationGate
 		features
 			trusted_ids: in data port CMASI::AddressArray.i;
@@ -151,7 +151,7 @@ public
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::CASE_AttestationGate_Domain;
 	end CASE_AttestationGate;
-	
+
 	process implementation CASE_AttestationGate.Impl
 		subcomponents
 			CASE_AttestationGate: thread CASE_AttestationGate_thr.Impl;
@@ -182,13 +182,16 @@ public
 			Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
-			guarantee Req_Filter_LST "Well-formed Line Search Task message" : CASEAgree::WELL_FORMED_LINE_SEARCH_TASK(filter_out);
+			guarantee Req_Filter_LST "Well-formed Line Search Task message" :
+			if event(filter_in) and CASEAgree::WELL_FORMED_LINE_SEARCH_TASK(filter_in) then
+			   event(filter_out) and (filter_out = filter_in)
+			else not(event(filter_out));
 		**};
 	end CASE_Filter_LST_thr;
 
 	thread implementation CASE_Filter_LST_thr.Impl
 	end CASE_Filter_LST_thr.Impl;
-	
+
 	process CASE_Filter_LST
 		features
 			filter_in: in event data port CMASI::LineSearchTask.i;
@@ -196,7 +199,7 @@ public
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::CASE_Filter_LST_Domain;
 	end CASE_Filter_LST;
-	
+
 	process implementation CASE_Filter_LST.Impl
 		subcomponents
 			CASE_Filter_LST: thread CASE_Filter_LST_thr.Impl;
@@ -204,8 +207,8 @@ public
 			c1: port filter_in -> CASE_Filter_LST.filter_in;
 			c2: port CASE_Filter_LST.filter_out -> filter_out;
 	end CASE_Filter_LST.Impl;
-	
-	
+
+
 	-------------------------------------
 	-- Operating Region message Filter --
 	-------------------------------------
@@ -222,13 +225,16 @@ public
 			Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
-			guarantee Req_Filter_OR "Well-formed Operating Region message" : CASEAgree::WELL_FORMED_OPERATING_REGION(filter_out);
+			guarantee Req_Filter_OR "Well-formed Operating Region message" :
+			if event(filter_in) and CASEAgree::WELL_FORMED_OPERATING_REGION(filter_in) then
+			   event(filter_out) and (filter_out = filter_in)
+			else not(event(filter_in));
 		**};
 	end CASE_Filter_OR_thr;
 
 	thread implementation CASE_Filter_OR_thr.Impl
 	end CASE_Filter_OR_thr.Impl;
-	
+
 	process CASE_Filter_OR
 		features
 			filter_in: in event data port CMASI::OperatingRegion.i;
@@ -236,7 +242,7 @@ public
 		properties
 			CASE_Scheduling::Domain => 8;
 	end CASE_Filter_OR;
-	
+
 	process implementation CASE_Filter_OR.Impl
 		subcomponents
 			CASE_Filter_OR: thread CASE_Filter_OR_thr.Impl;
@@ -244,8 +250,8 @@ public
 			c1: port filter_in -> CASE_Filter_OR.filter_in;
 			c2: port CASE_Filter_OR.filter_out -> filter_out;
 	end CASE_Filter_OR.Impl;
-	
-	
+
+
 	---------------------------------------
 	-- Automation Request message Filter --
 	---------------------------------------
@@ -264,13 +270,20 @@ public
 			Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
-			guarantee Req_Filter_AReq "Well-formed Automation Request message" : CASEAgree::WELL_FORMED_AUTOMATION_REQUEST(filter_out_UXAS);
+			guarantee Req_Filter_AReq "Well-formed Automation Request message" :
+			if event(filter_in) and CASEAgree::WELL_FORMED_AUTOMATION_REQUEST(filter_in) then
+			   event(filter_out_UXAS) and
+			   event(filter_out_MON_REQ) and
+			   (filter_out_UXAS = filter_in) and
+			   (filter_out_MON_REQ = filter_in)
+		 else not (event (filter_out_UXAS)) and
+		      not (event(filter_out_MON_REQ));
 		**};
 	end CASE_Filter_AReq_thr;
 
 	thread implementation CASE_Filter_AReq_thr.Impl
 	end CASE_Filter_AReq_thr.Impl;
-	
+
 	process CASE_Filter_AReq
 		features
 			filter_in: in event data port CMASI::AutomationRequest.i;
@@ -279,7 +292,7 @@ public
 		properties
 			CASE_Scheduling::Domain => 6;
 	end CASE_Filter_AReq;
-	
+
 	process implementation CASE_Filter_AReq.Impl
 		subcomponents
 			CASE_Filter_AReq: thread CASE_Filter_AReq_thr.Impl;
@@ -304,13 +317,13 @@ public
         properties
             Dispatch_Protocol => Periodic;
             Period => 500ms;
-            Compute_Execution_Time => 2ms .. 2ms;   
-			Stack_Size => CM_Property_Set::Stack_Size;             
+            Compute_Execution_Time => 2ms .. 2ms;
+			Stack_Size => CM_Property_Set::Stack_Size;
     end UxAS_thr;
-    
-    thread implementation UxAS_thr.Impl 
+
+    thread implementation UxAS_thr.Impl
     end UxAS_thr.Impl;
-    
+
 	process UxAS
 		features
 			AutomationRequest : in event data port CMASI::AutomationRequest.i;
@@ -322,7 +335,7 @@ public
 			CASE_Scheduling::Domain => CM_Property_Set::UxAS_Domain;
 --			HAMR::Component_Type => VIRTUAL_MACHINE;
 	end UxAS;
-	
+
 	process implementation UxAS.Impl
 		subcomponents
 			UxAS: thread UxAS_thr.Impl;
@@ -333,16 +346,16 @@ public
 			c4: port LineSearchTask -> UxAS.LineSearchTask;
 			c6: port UxAS.AutomationResponse -> AutomationResponse;
 	end UxAS.Impl;
-	
-	
+
+
 	------------------------------
 	-- Request-Response Monitor --
 	------------------------------
-	
+
 	thread CASE_Monitor_Req_thr
 		features
-			observed: in event data port CMASI::AutomationResponse.i;
-			reference_1: in event data port CMASI::AutomationRequest.i;
+			reqt : in event data port CMASI::AutomationRequest.i;
+			resp: in event data port CMASI::AutomationResponse.i;
 			alert: out event data port Base_Types::Boolean;
 		properties
 			CASE_Properties::Component_Type => MONITOR; -- marks this component as a monitor
@@ -358,54 +371,83 @@ public
 			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
 
 			-- Monitor policy (models the expected behavior in terms of the input ports)
-			-- AutomationResponse (observed) occurs within two scheduling cycles after AutomationRequest (reference_1)
---			eq empty_day : bool = not event(observed) and not event(reference_1);
---			property CASE_Monitor_Req_Resp_policy = Historically(event(reference_1) or (empty_day and Yesterday(event(reference_1) or (empty_day and Yesterday(event(reference_1))))) => event(observed));
-            eq counter_increment : int = 0 ->
-              if (event(observed))
-                then 0
-                else if (event(reference_1))
-                  then 1
-                  else pre(counter_increment);
-            eq count : int = 0 ->
-              if (event(reference_1) or event(observed))
-                then 0
-                else pre(count) + counter_increment;
+			-- AutomationResponse (resp) occurs within two scheduling cycles after AutomationRequest (reqt)
+                        -- eq empty_day : bool = not event(resp) and not event(reqt);
+                        -- property CASE_Monitor_Req_Resp_policy = Historically(event(reqt) or (empty_day and Yesterday(event(reqt) or (empty_day and Yesterday(event(reqt))))) => event(resp));
+            -- eq counter_increment : int = 0 ->
+            --   if (event(resp))
+            --     then 0
+            --     else if (event(reqt))
+            --       then 1
+            --       else pre(counter_increment);
+            -- eq count : int = 0 ->
+            --   if (event(reqt) or event(resp))
+            --     then 0
+            --     else pre(count) + counter_increment;
+
             const nMonitorInvocations : int = 10; -- user-defined value for "days"
-            eq response_received_in_time : bool = count < nMonitorInvocations;
+
+            const FAIL : int = nMonitorInvocations + 1;
+
+            fun Inc (x:int) : int = if x < nMonitorInvocations then x+1 else FAIL;
+
+            eq ticks : int =
+                (if event(resp) then FAIL
+                 else if event (reqt) then 1 else 0)
+                ->
+                if (event(reqt) and event(resp)) then
+                   FAIL
+                else
+                if not (event(reqt) or event(resp)) then
+                   (if (pre(ticks) = 0) then 0 else Inc (pre(ticks)))
+                else
+                if event(resp) then
+                   (if (1 <= pre(ticks)) then 0 else FAIL)
+                else
+                   (if (pre(ticks) = 0) then 1 else FAIL);
+
+            eq response_received_in_time : bool = ticks < nMonitorInvocations;
+
             property CASE_Monitor_Req_Resp_policy = Historically(response_received_in_time);
 
-			-- Monitor guarantee (guarantees on the output ports in terms of the input ports and monitor policy)
-			guarantee Req002_ReqRespMonitorEvent "The monitor shall only output an alert when the monitor policy is false" :
-				alert <=> false -> (is_latched and pre(event(alert))) or not CASE_Monitor_Req_Resp_policy;
-		**};
+	-- Monitor guarantee (guarantees on the output ports in terms of the input ports and
+        -- monitor policy)
+
+	guarantee Req002_ReqRespMonitorEvent
+            "The monitor shall only output an alert when the monitor policy is false" :
+	    alert <=> (false -> (is_latched and pre(event(alert)))
+                                 or not CASE_Monitor_Req_Resp_policy);
+
+        guarantee alert_defined "correspondence between data and event":
+            event(alert) <=> alert;
+            		**};
 	end CASE_Monitor_Req_thr;
 
 	thread implementation CASE_Monitor_Req_thr.Impl
 	end CASE_Monitor_Req_thr.Impl;
-	
+
 	process CASE_Monitor_Req
 		features
-			observed: in event data port CMASI::AutomationResponse.i;
-			reference_1: in event data port CMASI::AutomationRequest.i;
+			resp: in event data port CMASI::AutomationResponse.i;
+			reqt: in event data port CMASI::AutomationRequest.i;
 			alert: out event data port Base_Types::Boolean;
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::CASE_Monitor_Req_Domain;
 	end CASE_Monitor_Req;
-	
+
 	process implementation CASE_Monitor_Req.Impl
 		subcomponents
 			CASE_Monitor_Req: thread CASE_Monitor_Req_thr.Impl;
 		connections
-			c1: port observed -> CASE_Monitor_Req.observed;
-			c2: port reference_1 -> CASE_Monitor_Req.reference_1;
+			c1: port resp -> CASE_Monitor_Req.resp;
+			c2: port reqt -> CASE_Monitor_Req.reqt;
 			c3: port CASE_Monitor_Req.alert -> alert;
 	end CASE_Monitor_Req.Impl;
-	
+
 	----------------------------------------
 	-- Automation Response message Filter --
 	----------------------------------------
-	
+
 	thread CASE_Filter_ARes_thr
 		features
 			filter_in: in event data port CMASI::AutomationResponse.i;
@@ -418,7 +460,10 @@ public
 			Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
-			guarantee Req_Filter_ARes "Well-formed Automation Response message" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(filter_out);
+			guarantee Req_Filter_ARes "Well-formed Automation Response message" :
+			if (event(filter_in) and CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(filter_in)) then
+			   (event_(filter_out) and (filter_out = filter_in))
+			               else not(event (filter_out));
 		**};
 	end CASE_Filter_ARes_thr;
 
@@ -426,7 +471,7 @@ public
 		properties
 			Dispatch_Protocol => Periodic;
 	end CASE_Filter_ARes_thr.Impl;
-	
+
 	process CASE_Filter_ARes
 		features
 			filter_in: in event data port CMASI::AutomationResponse.i;
@@ -434,7 +479,7 @@ public
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::CASE_Filter_ARes_Domain;
 	end CASE_Filter_ARes;
-	
+
 	process implementation CASE_Filter_ARes.Impl
 		subcomponents
 			CASE_Filter_ARes: thread CASE_Filter_ARes_thr.Impl;
@@ -461,12 +506,12 @@ public
 	annex agree {**
 		guarantee "Keep in zones do not change" : true -> keep_in_zones = pre(keep_in_zones);
 		guarantee "Keep out zones do not change" : true -> keep_out_zones = pre(keep_out_zones);
-	**};	
+	**};
 	end FlyZonesDatabase_thr;
 
 	thread implementation FlyZonesDatabase_thr.Impl
 	end FlyZonesDatabase_thr.Impl;
-	
+
 	process FlyZonesDatabase
 		features
 			keep_in_zones: out data port CMASI::Polygon.i;
@@ -474,7 +519,7 @@ public
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::FlyZonesDatabase_Domain;
 	end FlyZonesDatabase;
-	
+
 	process implementation FlyZonesDatabase.Impl
 		subcomponents
 			FlyZonesDatabase: thread FlyZonesDatabase_thr.Impl;
@@ -482,12 +527,12 @@ public
 			c1: port FlyZonesDatabase.keep_in_zones -> keep_in_zones;
 			c2: port FlyZonesDatabase.keep_out_zones -> keep_out_zones;
 	end FlyZonesDatabase.Impl;
-	
-	
+
+
 	----------------------
 	-- Geofence Monitor --
 	----------------------
-	
+
 	thread CASE_Monitor_Geo_thr
 		features
 			keep_in_zones: in data port CMASI::Polygon.i;
@@ -510,23 +555,23 @@ public
 			-- Monitor policy (models the expected behavior in terms of the input ports)
 			property CASE_Monitor_Coord_policy =
 				Historically(event(observed) =>
-					(CASEAgree::WAYPOINTS_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_in_zones) and 
-		            CASEAgree::WAYPOINTS_NOT_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_out_zones)
-					and not CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(observed))));
+					(CASEAgree::WAYPOINTS_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_in_zones) and
+		             CASEAgree::WAYPOINTS_NOT_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_out_zones)
+					and not (CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(observed)))));
 
 			-- Monitor guarantee (guarantees on the output ports in terms of the input ports and monitor policy)
 			guarantee GeofenceMonitor_alert_event "An alert is generated only when observed is invalid" :
-				event(alert) <=> false -> (is_latched and pre(event(alert))) or not CASE_Monitor_Coord_policy;
+				event(alert) <=> (false -> (is_latched and pre(event(alert))) or not CASE_Monitor_Coord_policy);
 			guarantee GeofenceMonitor_output_event "The output event fires only when observed is valid" :
-				event(output) <=> event(observed) and not event(alert);
+				event(output) <=> (event(observed) and not (event(alert)));
 			guarantee GeofenceMonitor_output_data "Output is equal to observed when observed is valid" :
-				event(observed) and not event(alert) => output = observed;
+				event(observed) and not (event(alert)) => output = observed;
 		**};
 	end CASE_Monitor_Geo_thr;
 
 	thread implementation CASE_Monitor_Geo_thr.Impl
 	end CASE_Monitor_Geo_thr.Impl;
-	
+
 	process CASE_Monitor_Geo
 		features
 			keep_in_zones: in data port CMASI::Polygon.i;
@@ -543,7 +588,7 @@ public
 				event(output) => not CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(output));
 		**};
 	end CASE_Monitor_Geo;
-	
+
 	process implementation CASE_Monitor_Geo.Impl
 		subcomponents
 			CASE_Monitor_Geo: thread CASE_Monitor_Geo_thr.Impl;
@@ -554,8 +599,8 @@ public
 			c4: port observed -> CASE_Monitor_Geo.observed;
 			c5: port CASE_Monitor_Geo.output -> output;
 	end CASE_Monitor_Geo.Impl;
-	
-	
+
+
 	----------------------
 	-- Waypoint Manager --
 	----------------------
@@ -572,11 +617,11 @@ public
             Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
     end WaypointPlanManagerService_thr;
-    
+
     thread implementation WaypointPlanManagerService_thr.Impl
-        
+
     end WaypointPlanManagerService_thr.Impl;
-	
+
 	process WaypointPlanManagerService
 		features
 			-- Subscribed Messages
@@ -598,7 +643,7 @@ public
 				event(AutomationResponse) => not CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(AutomationResponse));
 		**};
 	end WaypointPlanManagerService;
-	
+
 	process implementation WaypointPlanManagerService.Impl
 		subcomponents
 			WaypointPlanManagerService: thread WaypointPlanManagerService_thr.Impl;
@@ -608,12 +653,12 @@ public
 			c3: port WaypointPlanManagerService.MissionCommand -> MissionCommand;
 			c4: port ReturnHome -> WaypointPlanManagerService.ReturnHome;
 	end WaypointPlanManagerService.Impl;
-	
-	
+
+
 	-----------------
 	-- UART Driver --
 	-----------------
-	
+
 	process UARTDriver
 		features
 			recv_data: in event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
@@ -631,7 +676,7 @@ public
 				event(send_data) => CASEAgree::WellformedCASE_UART_Msg(send_data);
 		**};
 	end UARTDriver;
-	
+
 	process implementation UARTDriver.Impl
 		subcomponents
 			UARTDriver: thread Drivers::UARTDriver.Impl;
@@ -646,7 +691,7 @@ public
 	---------------------
 	-- Software system --
 	---------------------
-	
+
 	----------------------------------------------------------------------
     processor proc
     end proc;
@@ -698,13 +743,13 @@ public
 			c01: port uart_recv -> FC_UART.recv_data;
 			c02: port radio_recv -> RADIO.recv_data;
 
-			----------- 	           
+			-----------
 			-- FC_UART
 			-----------
 			c03: port FC_UART.send_data -> uart_send;
 			c04: port FC_UART.AirVehicleState_UXAS -> UXAS.AirVehicleState;
 			c05: port FC_UART.AirVehicleState_WPM -> WPM.AirVehicleState;
-			
+
 			---------
 			-- RADIO
 			---------
@@ -724,7 +769,7 @@ public
 			-- UXAS
 			--------
 			c13: port UXAS.AutomationResponse -> FLT_ARes.filter_in;
-			
+
 			--------
 			-- WPM
 			--------
@@ -747,17 +792,17 @@ public
 			-- FILTERS
 			------------
 			c22: port FLT_AReq.filter_out_UXAS -> UXAS.AutomationRequest;
-			c23: port FLT_AReq.filter_out_MON_REQ -> MON_REQ.reference_1;
+			c23: port FLT_AReq.filter_out_MON_REQ -> MON_REQ.reqt;
 			c24: port FLT_OR.filter_out -> UXAS.OperatingRegion;
 			c25: port FLT_LST.filter_out -> UXAS.LineSearchTask;
-			c26: port FLT_ARes.filter_out -> MON_REQ.observed;
+			c26: port FLT_ARes.filter_out -> MON_REQ.resp;
 			c27: port FLT_ARes.filter_out -> MON_GEO.observed;
 
 			-------------
 			-- MONITORS
 			-------------
 			c28: port MON_GEO.output -> WPM.AutomationResponse;
-			c29: port MON_GEO.alert -> WPM.ReturnHome;	
+			c29: port MON_GEO.alert -> WPM.ReturnHome;
 		properties
 			Actual_Processor_Binding => (reference (proc)) applies to FC_UART;
             Actual_Processor_Binding => (reference (proc)) applies to RADIO;
@@ -776,12 +821,12 @@ public
             HAMR::Default_Bit_Width => 32;
             HAMR::Default_Max_Sequence_Size => 1;
             HAMR::Max_String_Size => 256;
-            HAMR::Bit_Codec_Raw_Connections => true; 
+            HAMR::Bit_Codec_Raw_Connections => true;
 
         annex resolute {**
             check CASE_Tools
         **};
 
 	end SW.Impl;
-	
+
 end SW;
