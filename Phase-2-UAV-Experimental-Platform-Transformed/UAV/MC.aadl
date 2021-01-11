@@ -68,17 +68,17 @@ public
 
 	virtual processor CASE_Virtual_Machine
 		properties
-			CASE_Properties::Component_Type => VIRTUAL_MACHINE;
+			CASE_Properties::Isolating => 100;
 	end CASE_Virtual_Machine;
 
 	virtual processor implementation CASE_Virtual_Machine.Radio
 		properties
-			CASE_Properties::OS => "Linux";
+			CASE_Properties::OS => Linux;
 	end CASE_Virtual_Machine.Radio;
 	
 	virtual processor implementation CASE_Virtual_Machine.UxAS
 		properties
-			CASE_Properties::OS => "Linux";
+			CASE_Properties::OS => Linux;
 	end CASE_Virtual_Machine.UxAS;
 
 	-- The MissionComputer on-board the UAV

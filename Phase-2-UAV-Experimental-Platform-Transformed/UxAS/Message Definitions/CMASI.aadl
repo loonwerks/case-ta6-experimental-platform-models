@@ -24,14 +24,22 @@ public
 			AutomationResponse: data AutomationResponse.i;
 	end LMCPObject.i;
 	
-	data Address
-		properties
-            Data_Model::Data_Representation => Array;
-            Data_Model::Base_Type => (classifier (Integer_8));
-            Data_Model::Dimension => (4);
-    end Address;
+--	data Address
+--		properties
+--            Data_Model::Data_Representation => Array;
+--            Data_Model::Base_Type => (classifier (Integer_8));
+--            Data_Model::Dimension => (4);
+--    end Address;
+--
+--	data implementation Address.i
+--	end Address.i;
 
+	data Address
+	end Address;
+	
 	data implementation Address.i
+		subcomponents
+			value: data Integer_8[4];
 	end Address.i;
 	
 	data AddressArray

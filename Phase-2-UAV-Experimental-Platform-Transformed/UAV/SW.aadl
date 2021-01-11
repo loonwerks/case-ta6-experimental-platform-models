@@ -73,7 +73,7 @@ public
 			attestation_request: out event data port CASE_Model_Transformations::CASE_AttestationRequestMsg.Impl;
 			attestation_response: in event data port CASE_Model_Transformations::CASE_AttestationResponseMsg.Impl;
 		properties
-			CASE_Properties::Component_Type => ATTESTATION;
+			CASE_Properties::Attesting => 100;
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
@@ -82,7 +82,7 @@ public
 	thread implementation CASE_AttestationManager_thr.Impl
 		properties
 			CASE_Properties::Component_Impl => "CakeML";
-			CASE_Properties::Cache_Timeout => 30;
+			CASE_Properties::Cache_Timeout => 30 min;
 			CASE_Properties::Cache_Size => 3;
 			Dispatch_Protocol => Periodic;
 			Stack_Size => CM_Property_Set::Stack_Size;
@@ -120,7 +120,7 @@ public
 			LineSearchTask_in: in event data port CMASI::AddressAttributedMessage.i;
 			LineSearchTask_out: out event data port CMASI::LineSearchTask.i;
 		properties
-			CASE_Properties::Component_Type => MONITOR;
+			CASE_Properties::Monitoring => 100;
 			CASE_Properties::Component_Spec => ("CASE_AttestationGate_policy");
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
@@ -175,7 +175,7 @@ public
 			filter_in: in event data port CMASI::LineSearchTask.i;
 			filter_out: out event data port CMASI::LineSearchTask.i;
 		properties
-			CASE_Properties::Component_Type => FILTER;
+			CASE_Properties::Filtering => 100;
 			CASE_Properties::Component_Spec => ("Req_Filter_LST");
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
@@ -218,7 +218,7 @@ public
 			filter_in: in event data port CMASI::OperatingRegion.i;
 			filter_out: out event data port CMASI::OperatingRegion.i;
 		properties
-			CASE_Properties::Component_Type => FILTER;
+			CASE_Properties::Filtering => 100;
 			CASE_Properties::Component_Spec => ("Req_Filter_OR");
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
@@ -262,7 +262,7 @@ public
 			filter_out_UXAS: out event data port CMASI::AutomationRequest.i;
 			filter_out_MON_REQ: out event data port CMASI::AutomationRequest.i;
 		properties
-			CASE_Properties::Component_Type => FILTER;
+			CASE_Properties::Filtering => 100;
 			CASE_Properties::Component_Spec => ("Req_Filter_AReq");
 			Dispatch_Protocol => Periodic;
 
@@ -358,7 +358,7 @@ public
 			resp: in event data port CMASI::AutomationResponse.i;
 			alert: out event data port Base_Types::Boolean;
 		properties
-			CASE_Properties::Component_Type => MONITOR; -- marks this component as a monitor
+			CASE_Properties::Monitoring => 100; -- marks this component as a monitor
 			CASE_Properties::Monitor_Latched => false; -- indicates if the monitor is latched
 			CASE_Properties::Component_Spec => ("Req002_ReqRespMonitorEvent"); -- monitor guarantee
 			Dispatch_Protocol => Periodic;
@@ -453,7 +453,7 @@ public
 			filter_in: in event data port CMASI::AutomationResponse.i;
 			filter_out: out event data port CMASI::AutomationResponse.i;
 		properties
-			CASE_Properties::Component_Type => FILTER;
+			CASE_Properties::Filtering => 100;
 			CASE_Properties::Component_Spec => ("Req_Filter_ARes");
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
@@ -462,7 +462,7 @@ public
 		annex agree {**
 			guarantee Req_Filter_ARes "Well-formed Automation Response message" :
 			if (event(filter_in) and CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(filter_in)) then
-			   (event_(filter_out) and (filter_out = filter_in))
+			   (event(filter_out) and (filter_out = filter_in))
 			               else not(event (filter_out));
 		**};
 	end CASE_Filter_ARes_thr;
@@ -541,7 +541,7 @@ public
 			observed: in event data port CMASI::AutomationResponse.i;
 			output: out event data port CMASI::AutomationResponse.i;
 		properties
-			CASE_Properties::Component_Type => MONITOR; -- marks this component as a monitor
+			CASE_Properties::Monitoring => 100; -- marks this component as a monitor
 			CASE_Properties::Component_Spec => ("GeofenceMonitor_alert_event", "GeofenceMonitor_output_event", "GeofenceMonitor_output_data"); -- monitor guarantee
 			CASE_Properties::Monitor_Latched => true; -- indicates if the monitor is latched
 			Dispatch_Protocol => Periodic;
@@ -672,7 +672,7 @@ public
 		annex agree {**
 --			assume Req001_UARTDriver "Assumes recv_data only gets well formed CASE_UART_Msg.Impl types" :
 --				event(recv_data) => CASEAgree::WellformedCASE_UART_Msg(recv_data);
-			guarantee Req003_UARTDRiver "The uart send_data outputs only well formed CASE_RF_Msg.Impl types" :
+			guarantee Req006_UARTDRiver "The uart send_data outputs only well formed CASE_RF_Msg.Impl types" :
 				event(send_data) => CASEAgree::WellformedCASE_UART_Msg(send_data);
 		**};
 	end UARTDriver;
