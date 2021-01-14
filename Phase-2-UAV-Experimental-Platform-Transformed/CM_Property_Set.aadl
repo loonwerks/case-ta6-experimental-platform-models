@@ -19,6 +19,7 @@ property set CM_Property_Set is
     MissionCommand_Bit_Codec_Max_Size: constant Size => 16384 Bits; -- 1834 Bytes --> made 2^14 bits
     AirVehicleState_Bit_Codec_Max_Size: constant Size => 4096 Bits; -- 263 Bytes --> made 2^12 bits
     Address_Array_Bit_Codec_Max_Size: constant Size => 96 Bits;
+    Address_Bit_Codec_Max_Size: constant Size => 32 Bits;
     OperatingRegion_Bit_Codec_Max_Size: constant Size => 2048 Bits; -- 131 Bytes --> 2^11 bits
     LineSearchTask_Bit_Codec_Max_Size: constant Size => 65536 Bits; -- 7989 Bytes --> 2^16 bits
     AddressAttributedMessage_Bit_Codec_Max_Size: constant Size => 131072 Bits;
