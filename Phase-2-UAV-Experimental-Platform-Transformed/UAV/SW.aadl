@@ -45,7 +45,7 @@ public
 			CASE_Scheduling::Domain => CM_Property_Set::RadioDriver_Attestation_Domain;
 			HAMR::Component_Type => VIRTUAL_MACHINE;
 		annex agree {**
-			guarantee Req001_SW "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
+			guarantee Req001_SW1 "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
 				 event(send_data) => CASEAgree::WellformedCASE_RF_Msg(send_data, CASEAgree::UAV_ID, CASEAgree::GS_ID);
 		**};
 	end RadioDriver_Attestation;
@@ -447,6 +447,35 @@ public
 			c3: port CASE_Monitor_Req.alert -> alert;
 	end CASE_Monitor_Req.Impl;
 
+
+    ---------------------------------------------------------
+    -- Sync for alert output from Request Response Monitor --
+    ---------------------------------------------------------
+    thread alert_sync_thr
+    	features
+    		alert_in: in event data port Base_Types::Boolean;
+        properties
+            Dispatch_Protocol => Periodic;
+            Period => 500ms;
+            Compute_Execution_Time => 2ms .. 2ms;
+            Stack_Size => CM_Property_Set::Stack_Size;
+    end alert_sync_thr;
+        
+    thread implementation alert_sync_thr.Impl
+    end alert_sync_thr.Impl;
+    
+    process alert_sync
+    	features
+    		alert_in: in event data port Base_Types::Boolean;
+    end alert_sync;
+    
+    process implementation alert_sync.Impl
+    	subcomponents
+    		alert_sync: thread alert_sync_thr.Impl;
+    	connections
+    		c1: port alert_in -> alert_sync.alert_in;
+    end alert_sync.Impl;
+    
 	----------------------------------------
 	-- Automation Response message Filter --
 	----------------------------------------
@@ -715,10 +744,10 @@ public
 			uart_recv: in event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
 			uart_send: out event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
 		annex agree {**
---			guarantee Req001_SW "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
---				 event(radio_send) => CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID);
---			guarantee Req002_SW "The uart_send outputs only well formed CASE_RF_Msg.Impl types" :
---				   event(uart_send) => CASEAgree::WellformedCASE_UART_Msg(uart_send);
+			guarantee Req001_SW "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
+				 event(radio_send) => CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID);
+			guarantee Req002_SW "The uart_send outputs only well formed CASE_RF_Msg.Impl types" :
+				   event(uart_send) => CASEAgree::WellformedCASE_UART_Msg(uart_send);
 		**};
 	end SW;
 
@@ -736,6 +765,7 @@ public
 			FLT_OR: process CASE_Filter_OR.Impl;
 			FLT_LST: process CASE_Filter_LST.Impl;
 			MON_REQ: process CASE_Monitor_Req.Impl;
+			ALERT_SYNC: process alert_sync.Impl;
 			FLT_ARes: process CASE_Filter_ARes.Impl;
 			MON_GEO: process CASE_Monitor_Geo.Impl;
 		connections
@@ -806,6 +836,8 @@ public
 			-------------
 			c28: port MON_GEO.output -> WPM.AutomationResponse;
 			c29: port MON_GEO.alert -> WPM.ReturnHome;
+			c30: port MON_REQ.alert -> ALERT_SYNC.alert_in;
+			
 		properties
 			Actual_Processor_Binding => (reference (proc)) applies to FC_UART;
             Actual_Processor_Binding => (reference (proc)) applies to RADIO;
@@ -819,6 +851,7 @@ public
 			Actual_Processor_Binding => (reference (proc)) applies to FLT_ARes;
 			Actual_Processor_Binding => (reference (proc)) applies to FLT_OR;
             Actual_Processor_Binding => (reference (proc)) applies to MON_REQ;
+            Actual_Processor_Binding => (reference (proc)) applies to ALERT_SYNC;
             Actual_Processor_Binding => (reference (proc)) applies to MON_GEO;
 
             HAMR::Default_Bit_Width => 32;

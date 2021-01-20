@@ -132,6 +132,15 @@ annex agree {**
             and wp.Latitude = waypoint.Latitude
             and wp.Longitude = waypoint.Longitude
             and wp.Altitude = waypoint.Altitude;
+    
+    fun WELL_FORMED_MISSION_COMMAND(msg : CMASI::MissionCommand.i) : bool = 
+        (forall waypoint in msg.WaypointList, WELL_FORMED_WAYPOINT(waypoint)) and
+        msg.FirstWaypoint > 0 and msg.FirstWaypoint <= 200;
+        
+    fun WELL_FORMED_AIR_VEHICLE_STATE(msg : CMASI::AirVehicleState.i) : bool =
+        true;
+    
+        
 **};
 
 
