@@ -415,16 +415,23 @@ public
 
             property CASE_Monitor_Req_Resp_policy = Historically(response_received_in_time);
 
-	-- Monitor guarantee (guarantees on the output ports in terms of the input ports and
-        -- monitor policy)
-
-	guarantee Req002_ReqRespMonitorEvent
-            "The monitor shall only output an alert when the monitor policy is false" :
-	    alert <=> (false -> (is_latched and pre(event(alert)))
-                                 or not CASE_Monitor_Req_Resp_policy);
-
-        guarantee alert_defined "correspondence between data and event":
-            event(alert) <=> alert;
+-- Tutorial pattern
+            guarantee Req_CASE_Monitor2 "A violation of the monitor policy shall trigger an alert, and observed input shall not be propagated." :
+                if (is_latched and pre(event(alert))) or not CASE_Monitor_Req_Resp_policy then
+                    event(alert) and alert = true
+                else
+                    if CASE_Monitor_Req_Resp_policy then
+                        not event(alert) and alert = false
+                    else
+                        event(alert) and alert = true;
+ 
+ -- Original
+--        	guarantee Req002_ReqRespMonitorEvent
+--                    "The monitor shall only output an alert when the monitor policy is false" :
+--        	    alert <=> (false -> (is_latched and pre(event(alert)))
+--                                         or not CASE_Monitor_Req_Resp_policy);
+--            guarantee alert_defined "correspondence between data and event":
+--                event(alert) <=> alert;
             		**};
 	end CASE_Monitor_Req_thr;
 
@@ -585,7 +592,7 @@ public
 		annex agree {**
 			-- a constant generated from the component property above, handy for expressing the monitor guarantee
 			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
-
+                                    
 			-- Monitor policy (models the expected behavior in terms of the input ports)
 			property CASE_Monitor_Coord_policy =
 				Historically(event(observed) =>
@@ -593,13 +600,29 @@ public
 		             CASEAgree::WAYPOINTS_NOT_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_out_zones)
 					and not (CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(observed)))));
 
+-- Tutorial
+            guarantee Req_CASE_Monitor1 "A violation of the monitor policy shall trigger an alert, and observed input shall not be propagated." :
+                if (is_latched and pre(event(alert))) or not CASE_Monitor_Coord_policy then
+                    event(alert) and not event(output)
+                else
+                    if event(observed) then
+                        if CASE_Monitor_Coord_policy then
+                            not event(alert) and event(output) and output = observed
+                        else
+                            event(alert) and not event(output)
+                    else
+                        not event(alert) and not event(output);
+            assume Req_WellFormed_Monitor_AResp_In "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(observed);
+            guarantee Req_WellFormed_Monitor_AResp "Messages that are not well formed should be filtered out" : CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(output);
+
+-- Original            
 			-- Monitor guarantee (guarantees on the output ports in terms of the input ports and monitor policy)
-			guarantee GeofenceMonitor_alert_event "An alert is generated only when observed is invalid" :
-				event(alert) <=> (false -> (is_latched and pre(event(alert))) or not CASE_Monitor_Coord_policy);
-			guarantee GeofenceMonitor_output_event "The output event fires only when observed is valid" :
-				event(output) <=> (event(observed) and not (event(alert)));
-			guarantee GeofenceMonitor_output_data "Output is equal to observed when observed is valid" :
-				event(observed) and not (event(alert)) => output = observed;
+--			guarantee GeofenceMonitor_alert_event "An alert is generated only when observed is invalid" :
+--				event(alert) <=> (false -> (is_latched and pre(event(alert))) or not CASE_Monitor_Coord_policy);
+--			guarantee GeofenceMonitor_output_event "The output event fires only when observed is valid" :
+--				event(output) <=> (event(observed) and not (event(alert)));
+--			guarantee GeofenceMonitor_output_data "Output is equal to observed when observed is valid" :
+--				event(observed) and not (event(alert)) => output = observed;
 		**};
 	end CASE_Monitor_Geo_thr;
 
@@ -616,6 +639,7 @@ public
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::CASE_Monitor_Geo_Domain;
 		annex agree {**
+-- Are these suppose to be here? Do they come from the TA1 tools?	        
 			guarantee Req001a_GeoMon "Once the WPM receives a return home message, it does not receive further AutomationResponse messages" :
 				Historically(Since(not event(output), event(alert)));
 			guarantee Req002_GeoMon "The set of waypoints received will not have duplicates in them" :
