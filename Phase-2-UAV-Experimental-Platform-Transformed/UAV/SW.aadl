@@ -45,6 +45,8 @@ public
 			CASE_Scheduling::Domain => CM_Property_Set::RadioDriver_Attestation_Domain;
 			HAMR::Component_Type => VIRTUAL_MACHINE;
 		annex agree {**
+		    assume "The radio receives well-formed messages" : 
+                event(recv_data) => CASEAgree::WellformedCASE_RF_Msg(recv_data, CASEAgree::GS_ID, CASEAgree::UAV_ID);
 			guarantee Req001_SW1 "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
 				 event(send_data) => CASEAgree::WellformedCASE_RF_Msg(send_data, CASEAgree::UAV_ID, CASEAgree::GS_ID);
 		**};
@@ -667,12 +669,16 @@ public
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::WaypointPlanManangerService_Domain;
 		annex agree {**
---			assume Req001_UARTDriver "Assumes recv_data only gets well formed CASE_UART_Msg.Impl types" :
---				event(recv_data) => CASEAgree::WellformedCASE_UART_Msg(recv_data);
+            assume Req_WPM_Good_Automation_Response "The Waypoint Manager shall receive valid automation response" :
+                event(AutomationResponse) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(AutomationResponse);
+            assume Req_WPM_Good_AirVehicle_State "The Waypoint Manager shall receive well-formed air vehicle state messages" :
+                event(AirVehicleState) => CASEAgree::WELL_FORMED_AIR_VEHICLE_STATE(AirVehicleState);                
 			assume Req001a_WPM "Once the WPM receives a return home message, it does not receive further AutomationResponse messages" :
 				Historically(Since(not event(AutomationResponse), event(ReturnHome)));
 			assume Req002_WPM "The set of waypoints received will not have duplicates in them" :
 				event(AutomationResponse) => not CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(AutomationResponse));
+			guarantee Req_WPM_Good_Mission_Command "The Waypoint Manager shall output valid mission commands" : 
+                event(MissionCommand) => CASEAgree::WELL_FORMED_MISSION_COMMAND(MissionCommand);          
 		**};
 	end WaypointPlanManagerService;
 
@@ -701,12 +707,6 @@ public
 			AirVehicleState_UXAS: out event data port CMASI::AirVehicleState.i;
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::UARTDriver_Domain;
-		annex agree {**
---			assume Req001_UARTDriver "Assumes recv_data only gets well formed CASE_UART_Msg.Impl types" :
---				event(recv_data) => CASEAgree::WellformedCASE_UART_Msg(recv_data);
-			guarantee Req006_UARTDRiver "The uart send_data outputs only well formed CASE_RF_Msg.Impl types" :
-				event(send_data) => CASEAgree::WellformedCASE_UART_Msg(send_data);
-		**};
 	end UARTDriver;
 
 	process implementation UARTDriver.Impl
@@ -743,11 +743,11 @@ public
 			radio_send: out event data port CASE_Model_Transformations::CASE_RF_Msg.Impl;
 			uart_recv: in event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
 			uart_send: out event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
-		annex agree {**
-			guarantee Req001_SW "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
-				 event(radio_send) => CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID);
-			guarantee Req002_SW "The uart_send outputs only well formed CASE_RF_Msg.Impl types" :
-				   event(uart_send) => CASEAgree::WellformedCASE_UART_Msg(uart_send);
+		annex agree {**        
+		    assume "The radio receives well-formed messages" : event(radio_recv) => CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEAgree::GS_ID, CASEAgree::UAV_ID);
+            assume "The uart receives well-formed messages" : event(uart_recv) => CASEAgree::WellformedCASE_UART_Msg(uart_recv);
+            guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : event(radio_send) => CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID);
+            guarantee "The uart_send outputs only well formed CASE_UART_Msg.Impl types" : event(uart_send) => CASEAgree::WellformedCASE_UART_Msg(uart_send);	    
 		**};
 	end SW;
 
