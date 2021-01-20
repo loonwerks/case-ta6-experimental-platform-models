@@ -99,9 +99,9 @@ public
 	data implementation KeyValuePair.i
 		subcomponents
 			--A key (name) for the property
-			Key: data String;
+			Key: data Integer_64; -- EGM: should be String but changed for AGREE
 			--A value for the property
-			Value: data String;
+			Value: data Integer_64; -- EGM: should be String but changed for AGREE
 	end KeyValuePair.i;
 		
 	-- Location is defined as a point in the world using the WGS84
@@ -265,7 +265,7 @@ public
 			VehicleCommandList: data VehicleActionCommandArray;
 			--Status from the automation service to the simulation regarding
 			--errors or conditions.
---			Info: data KeyValuePair.i {Data_Model::Data_Representation => Array;};
+			Info: data KeyValuePairArray;
 		properties
 			HAMR::Bit_Codec_Max_Size => CM_Property_Set::AutomationResponse_Bit_Codec_Max_Size;
 	end AutomationResponse.i;
@@ -464,7 +464,7 @@ public
 	        Time: data Integer_64;
 	        --A list that maps keys to values for the inclusion of extra, custom
 	        --information about this entity
-        Info: data KeyValuePairArray;
+            Info: data KeyValuePairArray;
 	end EntityState.i;
 	
 	---------------------------------------------------------------------
@@ -891,7 +891,7 @@ public
 	    properties
             Data_Model::Data_Representation => Array;
             Data_Model::Base_Type => (classifier (Waypoint.i));
-            Data_Model::Dimension => (200);    
+            Data_Model::Dimension => (10); -- EGM: made small for AGREE     
 	end WaypointArray;
 	
 	data MissionCommand extends VehicleActionCommand	
