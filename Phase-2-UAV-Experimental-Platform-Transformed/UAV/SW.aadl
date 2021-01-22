@@ -131,12 +131,12 @@ public
 		annex agree {**
 		    fun IS_EQUAL(lop : CMASI::Address.i, rop : CMASI::Address.i) : bool = 
 		      (forall i in indices(lop.value), lop.value[i] = rop.value[i]);
-			fun IS_TRUSTED(srcid : CMASI::Address.i) : bool = (exists id in trusted_ids.value, IS_EQUAL(srcid, id));
+			fun IS_TRUSTED(ids : CMASI::AddressArray.i, srcid : CMASI::Address.i) : bool = (exists id in ids.value, IS_EQUAL(srcid, id));
 		
 			guarantee CASE_AttestationGate_policy "Only messages from trusted sources shall be forwarded" :
-				if event(AutomationRequest_in) and IS_TRUSTED(AutomationRequest_in.id) then event(AutomationRequest_out) and not (event(OperatingRegion_out) or event(LineSearchTask_out)) and AutomationRequest_out = AutomationRequest_in.payload.AutomationRequest
-				else if event(OperatingRegion_in) and IS_TRUSTED(OperatingRegion_in.id) then event(OperatingRegion_out) and not (event(AutomationRequest_out) or event(LineSearchTask_out)) and OperatingRegion_out = OperatingRegion_in.payload.OperatingRegion
-				else if event(LineSearchTask_in) and IS_TRUSTED(LineSearchTask_in.id) then event(LineSearchTask_out) and not (event(AutomationRequest_out) or event(OperatingRegion_out)) and LineSearchTask_out = LineSearchTask_in.payload.LineSearchTask
+				if event(AutomationRequest_in) and IS_TRUSTED(trusted_ids, AutomationRequest_in.id) then event(AutomationRequest_out) and not (event(OperatingRegion_out) or event(LineSearchTask_out)) and AutomationRequest_out = AutomationRequest_in.payload.AutomationRequest
+				else if event(OperatingRegion_in) and IS_TRUSTED(trusted_ids, OperatingRegion_in.id) then event(OperatingRegion_out) and not (event(AutomationRequest_out) or event(LineSearchTask_out)) and OperatingRegion_out = OperatingRegion_in.payload.OperatingRegion
+				else if event(LineSearchTask_in) and IS_TRUSTED(trusted_ids, LineSearchTask_in.id) then event(LineSearchTask_out) and not (event(AutomationRequest_out) or event(OperatingRegion_out)) and LineSearchTask_out = LineSearchTask_in.payload.LineSearchTask
 				else not (event(AutomationRequest_out) or event(OperatingRegion_out) or event(LineSearchTask_out));
 		**};
 	end CASE_AttestationGate_thr;
