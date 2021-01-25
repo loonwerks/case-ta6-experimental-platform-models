@@ -744,7 +744,9 @@ public
 			properties
 				Data_Model::Data_Representation => Array;
 				Data_Model::Base_Type => (classifier (Location3D.i));
-				Data_Model::Dimension => (1024);
+				--Data_Model::Dimension => (1024);
+				-- https://github.com/loonwerks/AGREE/issues/52
+				Data_Model::Dimension => (10);
     end PointListArray;
     
     data WedgeArray
