@@ -629,16 +629,7 @@ public
                 event(observed) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(observed);
            guarantee Req_WellFormed_Monitor_AResp "Messages that are not well formed should be filtered out" : 
                 event(output) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(output);
-
-
--- EGM: I don't know where these came from, there were just on the process definition,
--- separate from the thread contract, but they are required for the AGREE analysis to work
-            guarantee Req001a_GeoMon "Once the WPM receives a return home message, it does not receive further AutomationResponse messages" :
-                Historically(Since(not event(output), event(alert)));
-            guarantee Req002_GeoMon "The set of waypoints received will not have duplicates in them" :
-                event(output) => not CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(output));
-
-		**};
+	**};
 	end CASE_Monitor_Geo_thr;
 
 	thread implementation CASE_Monitor_Geo_thr.Impl
@@ -687,10 +678,6 @@ public
                 event(AutomationResponse) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(AutomationResponse);
             assume Req_WPM_Good_AirVehicle_State "The Waypoint Manager shall receive well-formed air vehicle state messages" :
                 event(AirVehicleState) => CASEAgree::WELL_FORMED_AIR_VEHICLE_STATE(AirVehicleState);                
-            assume Req001a_WPM "Once the WPM receives a return home message, it does not receive further AutomationResponse messages" :
-                Historically(Since(not event(AutomationResponse), event(ReturnHome)));
-            assume Req002_WPM "The set of waypoints received will not have duplicates in them" :
-                event(AutomationResponse) => not CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(AutomationResponse));
             guarantee Req_WPM_Good_Mission_Command "The Waypoint Manager shall output valid mission commands" : 
                 event(MissionCommand) => CASEAgree::WELL_FORMED_MISSION_COMMAND(MissionCommand);          
         **};			
