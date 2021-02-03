@@ -361,7 +361,7 @@ public
 		features
 			reqt : in event data port CMASI::AutomationRequest.i;
 			resp: in event data port CMASI::AutomationResponse.i;
-			alert: out event data port Base_Types::Boolean;
+			alert: out event port;
 		properties
 			CASE_Properties::Monitoring => 100; -- marks this component as a monitor
 			CASE_Properties::Monitor_Latched => false; -- indicates if the monitor is latched
@@ -372,23 +372,11 @@ public
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
 
-			-- a constant generated from the component property above, handy for expressing the monitor guarantee
-			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
+            -- a constant generated from the component property above, handy for expressing the monitor guarantee
+            const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
 
-			-- Monitor policy (models the expected behavior in terms of the input ports)
-			-- AutomationResponse (resp) occurs within two scheduling cycles after AutomationRequest (reqt)
-                        -- eq empty_day : bool = not event(resp) and not event(reqt);
-                        -- property CASE_Monitor_Req_Resp_policy = Historically(event(reqt) or (empty_day and Yesterday(event(reqt) or (empty_day and Yesterday(event(reqt))))) => event(resp));
-            -- eq counter_increment : int = 0 ->
-            --   if (event(resp))
-            --     then 0
-            --     else if (event(reqt))
-            --       then 1
-            --       else pre(counter_increment);
-            -- eq count : int = 0 ->
-            --   if (event(reqt) or event(resp))
-            --     then 0
-            --     else pre(count) + counter_increment;
+            -- Monitor policy expresses the expected behavior in terms of the input ports.
+            -- AutomationResponse (resp) occurs within nMonitorInvocations after AutomationRequest (reqt)
 
             const nMonitorInvocations : int = 10; -- user-defined value for "days"
 
@@ -398,7 +386,7 @@ public
 
             eq ticks : int =
                 (if event(resp) then FAIL
-                 else if event (reqt) then 1 else 0)
+                 else (if event (reqt) then 1 else 0))
                 ->
                 if (event(reqt) and event(resp)) then
                    FAIL
@@ -408,28 +396,14 @@ public
                 else
                 if event(resp) then
                    (if (1 <= pre(ticks)) then 0 else FAIL)
-                else
-                   (if (pre(ticks) = 0) then 1 else FAIL);
+                else -- rqts set ticks to 1, so rqt.rqt.resp is fine
+                   1;
 
-            eq response_received_in_time : bool = ticks < nMonitorInvocations;
+            eq Policy : bool = ticks < nMonitorInvocations;
 
-            property CASE_Monitor_Req_Resp_policy = Historically(response_received_in_time);
-
-           guarantee Req_CASE_Monitor2 "A violation of the monitor policy shall trigger an alert, and observed input shall not be propagated." :
-                if (is_latched and pre(event(alert))) or not CASE_Monitor_Req_Resp_policy then
-                    event(alert) and alert = true
-                else
-                    if CASE_Monitor_Req_Resp_policy then
-                        not event(alert) and alert = false
-                    else
-                        event(alert) and alert = true;
-
---        	guarantee Req002_ReqRespMonitorEvent
---                    "The monitor shall only output an alert when the monitor policy is false" :
---        	    alert <=> (false -> (is_latched and pre(event(alert)))
---                                         or not CASE_Monitor_Req_Resp_policy);
---            guarantee alert_defined "correspondence between data and event":
---                event(alert) <=> alert;
+            guarantee Req002_ReqRespMonitorEvent
+                "alert trace property, to be proved by SPLAT" :
+                event(alert) <=>  (not Policy -> (if is_latched then Once (not Policy) else not Policy));
          **};
 	end CASE_Monitor_Req_thr;
 
@@ -440,7 +414,7 @@ public
 		features
 			resp: in event data port CMASI::AutomationResponse.i;
 			reqt: in event data port CMASI::AutomationRequest.i;
-			alert: out event data port Base_Types::Boolean;
+			alert: out event port;
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::CASE_Monitor_Req_Domain;
 	end CASE_Monitor_Req;
@@ -460,7 +434,7 @@ public
     ---------------------------------------------------------
     thread alert_sync_thr
     	features
-    		alert_in: in event data port Base_Types::Boolean;
+    		alert_in: in event port;
         properties
             Dispatch_Protocol => Periodic;
             Period => 500ms;
@@ -473,7 +447,7 @@ public
     
     process alert_sync
     	features
-    		alert_in: in event data port Base_Types::Boolean;
+    		alert_in: in event port;
     end alert_sync;
     
     process implementation alert_sync.Impl
@@ -913,7 +887,7 @@ public
             FLT_OR: thread CASE_Filter_OR_thr.Impl;
             FLT_LST: thread CASE_Filter_LST_thr.Impl;
             MON_REQ: thread CASE_Monitor_Req_thr.Impl;
-            ALERT_SYNC: thread alert_sync_thr.Impl;
+--            ALERT_SYNC: thread alert_sync_thr.Impl;
             FLT_ARes: thread CASE_Filter_ARes_thr.Impl;
             MON_GEO: thread CASE_Monitor_Geo_thr.Impl;
         connections
@@ -984,7 +958,7 @@ public
             -------------
             c28: port MON_GEO.output -> WPM.AutomationResponse;
             c29: port MON_GEO.alert -> WPM.ReturnHome;
-            c30: port MON_REQ.alert -> ALERT_SYNC.alert_in;
+--            c30: port MON_REQ.alert -> ALERT_SYNC.alert_in;
             
      end SW_Process.Impl;
     
