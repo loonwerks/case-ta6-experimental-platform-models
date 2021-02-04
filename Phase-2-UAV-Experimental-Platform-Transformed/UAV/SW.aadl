@@ -63,6 +63,10 @@ public
 			c5: port RadioDriver_Attestation.AutomationRequest -> AutomationRequest;
 			c6: port RadioDriver_Attestation.OperatingRegion -> OperatingRegion;
 			c7: port RadioDriver_Attestation.LineSearchTask -> LineSearchTask;
+	
+	    annex agree {**
+            lift contract;
+        **};
 	end RadioDriver_Attestation.Impl;
 
 	---------------------
@@ -106,6 +110,10 @@ public
 			c1: port CASE_AttestationManager.trusted_ids -> trusted_ids;
 			c2: port CASE_AttestationManager.attestation_request -> attestation_request;
 			c3: port attestation_response -> CASE_AttestationManager.attestation_response;
+        
+        annex agree {**
+            lift contract;
+        **};
 	end CASE_AttestationManager.Impl;
 
 	---------------------
@@ -168,6 +176,10 @@ public
 			c5: port CASE_AttestationGate.OperatingRegion_out -> OperatingRegion_out;
 			c6: port LineSearchTask_in -> CASE_AttestationGate.LineSearchTask_in;
 			c7: port CASE_AttestationGate.LineSearchTask_out -> LineSearchTask_out;
+	
+	   annex agree {**
+            lift contract;
+        **}; 
 	end CASE_AttestationGate.Impl;
 
 
@@ -211,6 +223,10 @@ public
 		connections
 			c1: port filter_in -> CASE_Filter_LST.filter_in;
 			c2: port CASE_Filter_LST.filter_out -> filter_out;
+
+        annex agree {**
+            lift contract;
+        **};
 	end CASE_Filter_LST.Impl;
 
 
@@ -254,6 +270,10 @@ public
 		connections
 			c1: port filter_in -> CASE_Filter_OR.filter_in;
 			c2: port CASE_Filter_OR.filter_out -> filter_out;
+
+        annex agree {**
+            lift contract;
+        **};
 	end CASE_Filter_OR.Impl;
 
 
@@ -305,6 +325,10 @@ public
 			c1: port filter_in -> CASE_Filter_AReq.filter_in;
 			c2: port CASE_Filter_AReq.filter_out_UXAS -> filter_out_UXAS;
 			c3: port CASE_Filter_AReq.filter_out_MON_REQ -> filter_out_MON_REQ;
+
+        annex agree {**
+            lift contract;
+        **};
 	end CASE_Filter_AReq.Impl;
 
 
@@ -350,6 +374,10 @@ public
 			c3: port OperatingRegion -> UxAS.OperatingRegion;
 			c4: port LineSearchTask -> UxAS.LineSearchTask;
 			c6: port UxAS.AutomationResponse -> AutomationResponse;
+	
+	   annex agree {**
+            lift contract;
+        **};
 	end UxAS.Impl;
 
 
@@ -426,6 +454,10 @@ public
 			c1: port resp -> CASE_Monitor_Req.resp;
 			c2: port reqt -> CASE_Monitor_Req.reqt;
 			c3: port CASE_Monitor_Req.alert -> alert;
+	
+	   annex agree {**
+            lift contract;
+        **};
 	end CASE_Monitor_Req.Impl;
 
 
@@ -455,6 +487,10 @@ public
     		alert_sync: thread alert_sync_thr.Impl;
     	connections
     		c1: port alert_in -> alert_sync.alert_in;
+   
+        annex agree {**
+            lift contract;
+        **};
     end alert_sync.Impl;
     
 	----------------------------------------
@@ -499,6 +535,10 @@ public
 		connections
 			c1: port filter_in -> CASE_Filter_ARes.filter_in;
 			c2: port CASE_Filter_ARes.filter_out -> filter_out;
+
+        annex agree {**
+            lift contract;
+        **};
 	end CASE_Filter_ARes.Impl;
 
 	------------------------
@@ -539,6 +579,10 @@ public
 		connections
 			c1: port FlyZonesDatabase.keep_in_zones -> keep_in_zones;
 			c2: port FlyZonesDatabase.keep_out_zones -> keep_out_zones;
+			
+	    annex agree {**
+            lift contract;
+        **};
 	end FlyZonesDatabase.Impl;
 
 
@@ -613,6 +657,10 @@ public
 			c3: port CASE_Monitor_Geo.alert -> alert;
 			c4: port observed -> CASE_Monitor_Geo.observed;
 			c5: port CASE_Monitor_Geo.output -> output;
+	
+	    annex agree {**
+            lift contract;
+        **};
 	end CASE_Monitor_Geo.Impl;
 
 
@@ -659,6 +707,7 @@ public
 			ReturnHome: in event port;
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::WaypointPlanManangerService_Domain;
+		
 	end WaypointPlanManagerService;
 
 	process implementation WaypointPlanManagerService.Impl
@@ -669,6 +718,9 @@ public
 			c2: port AirVehicleState -> WaypointPlanManagerService.AirVehicleState;
 			c3: port WaypointPlanManagerService.MissionCommand -> MissionCommand;
 			c4: port ReturnHome -> WaypointPlanManagerService.ReturnHome;
+		annex agree {**
+            lift contract;
+        **};
 	end WaypointPlanManagerService.Impl;
 
 
@@ -697,6 +749,10 @@ public
 			c3: port UARTDriver.send_data -> send_data;
 			c4: port UARTDriver.AirVehicleState_WPM -> AirVehicleState_WPM;
 			c5: port UARTDriver.AirVehicleState_UXAS -> AirVehicleState_UXAS;
+	
+	    annex agree {**
+            lift contract;
+        **};
 	end UARTDriver.Impl;
 
 	---------------------
