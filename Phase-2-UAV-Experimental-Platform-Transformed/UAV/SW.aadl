@@ -565,37 +565,21 @@ public
 			-- a constant generated from the component property above, handy for expressing the monitor guarantee
 			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
                                     
-			-- Monitor policy (models the expected behavior in terms of the input ports)
-			property CASE_Monitor_Coord_policy =
-				Historically(event(observed) =>
-					(CASEAgree::WAYPOINTS_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_in_zones) and
-		             CASEAgree::WAYPOINTS_NOT_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_out_zones)
-					and not (CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(observed)))));
-
--- Tutorial Version of Generated Contract
-            guarantee Req_CASE_Monitor1 "A violation of the monitor policy shall trigger an alert, and observed input shall not be propagated." :
-                if (is_latched and pre(event(alert))) or not CASE_Monitor_Coord_policy then
-                    event(alert) and not event(output)
-                else
-                    if event(observed) then
-                        if CASE_Monitor_Coord_policy then
-                            not event(alert) and event(output) and output = observed
-                        else
-                            event(alert) and not event(output)
-                    else
-                        not event(alert) and not event(output);
+			eq Policy : bool = 
+                  event(observed) =>
+                  (CASEAgree::WAYPOINTS_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_in_zones)
+                  and CASEAgree::WAYPOINTS_NOT_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_out_zones)
+                  and not (CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(observed))));
                         
+            guarantee GeofenceMonitor_alert 
+             "alert trace property. To be proved by SPLAT" :
+            event(alert) <=>  (not Policy -> (if is_latched then Once (not (Policy)) else not Policy));
 
--- EGM: AGREE is not able to prove MON_GEO is consistent with the below version of the contract.
--- This version, I think, is what Junaid originally defined -- Need to verify
-			-- Monitor guarantee (guarantees on the output ports in terms of the input ports and monitor policy)
---			guarantee GeofenceMonitor_alert_event "An alert is generated only when observed is invalid" :
---				event(alert) <=> (false -> (is_latched and pre(event(alert))) or not CASE_Monitor_Coord_policy);
---			guarantee GeofenceMonitor_output_event "The output event fires only when observed is valid" :
---				event(output) <=> (event(observed) and not (event(alert)));
---			guarantee GeofenceMonitor_output_data "Output is equal to observed when observed is valid" :
---				event(observed) and not (event(alert)) => (output = observed);
-				
+            guarantee GeofenceMonitor_output 
+            "The output event fires only when observed is valid and alert is not raised" :
+                (event(output) <=> (event(observed) and not (event(alert)))) and
+                (event(output) => output = observed);
+                				
 -- EGM: Cong added this contract, but it is not needed for the AGREE analysis on 
 -- "Verify Single Layer", though if removed, then MON_GEO is not part of the obligations 
 -- in the top-lovel contract guarantees proof
