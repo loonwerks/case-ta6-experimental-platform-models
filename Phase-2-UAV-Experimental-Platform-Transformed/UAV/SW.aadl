@@ -629,8 +629,12 @@ public
 
             guarantee GeofenceMonitor_output 
             "The output event fires only when observed is valid and alert is not raised" :
-                (event(output) <=> (event(observed) and not (event(alert)))) and
-                (event(output) => output = observed);
+                if event(alert) then 
+                  not (event(output))
+                else if event(observed) then
+                        (event(output) and (output = observed))
+                     else
+                        not (event(output));
                 				
 -- EGM: Cong added this contract, but it is not needed for the AGREE analysis on 
 -- "Verify Single Layer", though if removed, then MON_GEO is not part of the obligations 
@@ -908,107 +912,5 @@ public
         **};
 
 	end SW.Impl;
-
-    process SW_Process
-        features
-            radio_recv: in event data port CASE_Model_Transformations::CASE_RF_Msg.Impl;
-            radio_send: out event data port CASE_Model_Transformations::CASE_RF_Msg.Impl;
-            uart_recv: in event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
-            uart_send: out event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
-        annex agree {**        
-            assume "The radio receives well-formed messages" : event(radio_recv) => CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEAgree::GS_ID, CASEAgree::UAV_ID);
-            assume "The uart receives well-formed messages" : event(uart_recv) => CASEAgree::WellformedCASE_UART_Msg(uart_recv);
-            guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : event(radio_send) => CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID);
-            guarantee "The uart_send outputs only well formed CASE_UART_Msg.Impl types" : event(uart_send) => CASEAgree::WellformedCASE_UART_Msg(uart_send);        
-        **};
-    end SW_Process;
-    
-    process implementation SW_Process.Impl
-        subcomponents
-            FC_UART: thread Drivers::UARTDriver.Impl;
-            RADIO: thread RadioDriver_Attestation_thr.Impl;
-            FlyZones: thread FlyZonesDatabase_thr.Impl;
-            UXAS: thread UxAS_thr.Impl;
-            WPM: thread WaypointPlanManagerService_thr.Impl;
-            AM: thread CASE_AttestationManager_thr.Impl;
-            AM_Gate: thread CASE_AttestationGate_thr.Impl;
-            FLT_AReq: thread CASE_Filter_AReq_thr.Impl;
-            FLT_OR: thread CASE_Filter_OR_thr.Impl;
-            FLT_LST: thread CASE_Filter_LST_thr.Impl;
-            MON_REQ: thread CASE_Monitor_Req_thr.Impl;
---            ALERT_SYNC: thread alert_sync_thr.Impl;
-            FLT_ARes: thread CASE_Filter_ARes_thr.Impl;
-            MON_GEO: thread CASE_Monitor_Geo_thr.Impl;
-        connections
-
-            ------------------
-            -- Primary Inputs
-            ------------------
-            c01: port uart_recv -> FC_UART.recv_data;
-            c02: port radio_recv -> RADIO.recv_data;
-
-            -----------
-            -- FC_UART
-            -----------
-            c03: port FC_UART.send_data -> uart_send;
-            c04: port FC_UART.AirVehicleState_UXAS -> UXAS.AirVehicleState;
-            c05: port FC_UART.AirVehicleState_WPM -> WPM.AirVehicleState;
-
-            ---------
-            -- RADIO
-            ---------
-            c06: port RADIO.send_data -> radio_send;
-            c07: port RADIO.AutomationRequest -> AM_Gate.AutomationRequest_in;
-            c08: port RADIO.OperatingRegion -> AM_Gate.OperatingRegion_in;
-            c09: port RADIO.LineSearchTask -> AM_Gate.LineSearchTask_in;
-            c10: port RADIO.am_response -> AM.attestation_response;
-
-            --------------
-            -- FlyZones
-            --------------
-            c11: port FlyZones.keep_in_zones -> MON_GEO.keep_in_zones;
-            c12: port FlyZones.keep_out_zones -> MON_GEO.keep_out_zones;
-
-            --------
-            -- UXAS
-            --------
-            c13: port UXAS.AutomationResponse -> FLT_ARes.filter_in;
-
-            --------
-            -- WPM
-            --------
-            c15: port WPM.MissionCommand -> FC_UART.MissionCommand;
-
-            -------
-            -- AM
-            -------
-            c16: port AM.attestation_request -> RADIO.am_request;
-            c17: port AM.trusted_ids -> AM_Gate.trusted_ids;
-
-            -----------
-            -- AM_GATE
-            ------------
-            c18: port AM_Gate.AutomationRequest_out -> FLT_AReq.filter_in;
-            c19: port AM_Gate.OperatingRegion_out -> FLT_OR.filter_in;
-            c20: port AM_Gate.LineSearchTask_out -> FLT_LST.filter_in;
-
-            ------------
-            -- FILTERS
-            ------------
-            c22: port FLT_AReq.filter_out_UXAS -> UXAS.AutomationRequest;
-            c23: port FLT_AReq.filter_out_MON_REQ -> MON_REQ.reqt;
-            c24: port FLT_OR.filter_out -> UXAS.OperatingRegion;
-            c25: port FLT_LST.filter_out -> UXAS.LineSearchTask;
-            c26: port FLT_ARes.filter_out -> MON_REQ.resp;
-            c27: port FLT_ARes.filter_out -> MON_GEO.observed;
-
-            -------------
-            -- MONITORS
-            -------------
-            c28: port MON_GEO.output -> WPM.AutomationResponse;
-            c29: port MON_GEO.alert -> WPM.ReturnHome;
---            c30: port MON_REQ.alert -> ALERT_SYNC.alert_in;
-            
-     end SW_Process.Impl;
     
 end SW;
