@@ -16,10 +16,17 @@ public
 	-- Radio Driver --
 	------------------
 
-	thread RadioDriver_Attestation_thr extends Drivers::RadioDriver
+	thread RadioDriver_Attestation_thr
 		features
 			am_request: in event data port CASE_Model_Transformations::CASE_AttestationRequestMsg.Impl;
 			am_response: out event data port CASE_Model_Transformations::CASE_AttestationResponseMsg.Impl;
+
+			recv_data: in event data port CASE_Model_Transformations::CASE_RF_Msg.Impl;
+            send_data: out event data port CASE_Model_Transformations::CASE_RF_Msg.Impl;
+
+            AutomationRequest: out event data port CMASI::AddressAttributedMessage.i;
+            OperatingRegion: out event data port CMASI::AddressAttributedMessage.i;
+            LineSearchTask: out event data port CMASI::AddressAttributedMessage.i;			
 		properties
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
@@ -33,7 +40,7 @@ public
         **};
 	end RadioDriver_Attestation_thr;
 
-	thread implementation RadioDriver_Attestation_thr.Impl extends Drivers::RadioDriver.Impl
+	thread implementation RadioDriver_Attestation_thr.Impl
 	end RadioDriver_Attestation_thr.Impl;
 
 	process RadioDriver_Attestation
@@ -445,6 +452,7 @@ public
 			alert: out event port;
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::CASE_Monitor_Req_Domain;
+			CASE_Properties::Monitor_Latched => true;
 	end CASE_Monitor_Req;
 
 	process implementation CASE_Monitor_Req.Impl
@@ -646,6 +654,7 @@ public
 			output: out event data port CMASI::AutomationResponse.i;
 		properties
 			CASE_Scheduling::Domain => CM_Property_Set::CASE_Monitor_Geo_Domain;
+            CASE_Properties::Monitor_Latched => true;
 	end CASE_Monitor_Geo;
 
 	process implementation CASE_Monitor_Geo.Impl
