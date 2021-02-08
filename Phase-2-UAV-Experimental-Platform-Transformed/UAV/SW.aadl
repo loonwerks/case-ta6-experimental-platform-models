@@ -810,7 +810,6 @@ public
 			AM_Gate: process CASE_AttestationGate.Impl;
 			FLT_AReq: process CASE_Filter_AReq.Impl;
 			FLT_OR: process CASE_Filter_OR.Impl;
---			EGM: TOGGLE NO_FLT_LST
 			FLT_LST: process CASE_Filter_LST.Impl;
 			MON_REQ: process CASE_Monitor_Req.Impl;
 			ALERT_SYNC: process alert_sync.Impl;
@@ -867,9 +866,7 @@ public
 			------------
 			c18: port AM_Gate.AutomationRequest_out -> FLT_AReq.filter_in;
 			c19: port AM_Gate.OperatingRegion_out -> FLT_OR.filter_in;
---			EGM: TOGGLE c20 for NO_FLT_LST
 			c20: port AM_Gate.LineSearchTask_out -> FLT_LST.filter_in;
---            c20: port AM_Gate.LineSearchTask_out -> UXAS.LineSearchTask;
 
 			------------
 			-- FILTERS
@@ -877,7 +874,6 @@ public
 			c22: port FLT_AReq.filter_out_UXAS -> UXAS.AutomationRequest;
 			c23: port FLT_AReq.filter_out_MON_REQ -> MON_REQ.reqt;
 			c24: port FLT_OR.filter_out -> UXAS.OperatingRegion;
---			EGM: TOGGLE NO_FLT_LST
 			c25: port FLT_LST.filter_out -> UXAS.LineSearchTask;
 			c26: port FLT_ARes.filter_out -> MON_REQ.resp;
 			c27: port FLT_ARes.filter_out -> MON_GEO.observed;
@@ -897,7 +893,6 @@ public
             Actual_Processor_Binding => (reference (proc)) applies to WPM;
 			Actual_Processor_Binding => (reference (proc)) applies to AM;
             Actual_Processor_Binding => (reference (proc)) applies to AM_GATE;
---          EGM: TOGGLE NO_FLT_LST  
             Actual_Processor_Binding => (reference (proc)) applies to FLT_LST;
 			Actual_Processor_Binding => (reference (proc)) applies to FLT_AReq;
 			Actual_Processor_Binding => (reference (proc)) applies to FLT_ARes;
