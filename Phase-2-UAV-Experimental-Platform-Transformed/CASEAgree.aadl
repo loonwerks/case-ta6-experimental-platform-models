@@ -140,7 +140,11 @@ annex agree {**
     fun WELL_FORMED_AIR_VEHICLE_STATE(msg : CMASI::AirVehicleState.i) : bool =
         true;
     
-        
+    fun IS_EQUAL(lop : CMASI::Address.i, rop : CMASI::Address.i) : bool = 
+        (forall i in indices(lop.value), lop.value[i] = rop.value[i]);
+    
+    fun IS_TRUSTED(ids : CMASI::AddressArray.i, srcid : CMASI::Address.i) : bool = 
+        (exists id in ids.value, IS_EQUAL(srcid, id));    
 **};
 
 

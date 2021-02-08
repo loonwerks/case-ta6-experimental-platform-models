@@ -1,9 +1,9 @@
 package SW
 public
-	with Base_Types;
 	with Drivers;
 	with CASE_Model_Transformations;
 	with CASEAgree;
+	renames CASEAgree::all;
 	with CASE_Properties;
 	with CASE_Scheduling;
 	with CMASI;
@@ -34,9 +34,9 @@ public
 			Stack_Size => CM_Property_Set::Stack_Size;
         annex agree {**
             assume "The radio receives well-formed messages" : 
-                event(recv_data) => CASEAgree::WellformedCASE_RF_Msg(recv_data, CASEAgree::GS_ID, CASEAgree::UAV_ID);
+                event(recv_data) => WellformedCASE_RF_Msg(recv_data, GS_ID, UAV_ID);
             guarantee Req001_SW1 "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
-                 event(send_data) => CASEAgree::WellformedCASE_RF_Msg(send_data, CASEAgree::UAV_ID, CASEAgree::GS_ID);
+                 event(send_data) => WellformedCASE_RF_Msg(send_data, UAV_ID, GS_ID);
         **};
 	end RadioDriver_Attestation_thr;
 
@@ -90,6 +90,9 @@ public
 			Dispatch_Protocol => Periodic;
 			Period => 500ms;
 			Compute_Execution_Time => 2ms .. 2ms;
+		annex agree {**
+		    guarantee "Trusted IDs are valid" : true;
+		**};
 	end CASE_AttestationManager_thr;
 
 	thread implementation CASE_AttestationManager_thr.Impl
@@ -144,10 +147,6 @@ public
 			Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
-		    fun IS_EQUAL(lop : CMASI::Address.i, rop : CMASI::Address.i) : bool = 
-		      (forall i in indices(lop.value), lop.value[i] = rop.value[i]);
-			fun IS_TRUSTED(ids : CMASI::AddressArray.i, srcid : CMASI::Address.i) : bool = (exists id in ids.value, IS_EQUAL(srcid, id));
-		
 			guarantee CASE_AttestationGate_policy "Only messages from trusted sources shall be forwarded" :
 				if event(AutomationRequest_in) and IS_TRUSTED(trusted_ids, AutomationRequest_in.id) then event(AutomationRequest_out) and not (event(OperatingRegion_out) or event(LineSearchTask_out)) and AutomationRequest_out = AutomationRequest_in.payload.AutomationRequest
 				else if event(OperatingRegion_in) and IS_TRUSTED(trusted_ids, OperatingRegion_in.id) then event(OperatingRegion_out) and not (event(AutomationRequest_out) or event(LineSearchTask_out)) and OperatingRegion_out = OperatingRegion_in.payload.OperatingRegion
@@ -207,7 +206,7 @@ public
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
 			guarantee Req_Filter_LST "Well-formed Line Search Task message" :
-			if event(filter_in) and CASEAgree::WELL_FORMED_LINE_SEARCH_TASK(filter_in) then
+			if event(filter_in) and WELL_FORMED_LINE_SEARCH_TASK(filter_in) then
 			   event(filter_out) and (filter_out = filter_in)
 			else not(event(filter_out));
 		**};
@@ -254,9 +253,9 @@ public
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
 			guarantee Req_Filter_OR "Well-formed Operating Region message" :
-			if event(filter_in) and CASEAgree::WELL_FORMED_OPERATING_REGION(filter_in) then
+			if event(filter_in) and WELL_FORMED_OPERATING_REGION(filter_in) then
 			   event(filter_out) and (filter_out = filter_in)
-			else not(event(filter_in));
+			else not(event(filter_out));
 		**};
 	end CASE_Filter_OR_thr;
 
@@ -303,7 +302,7 @@ public
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
 			guarantee Req_Filter_AReq "Well-formed Automation Request message" :
-			if event(filter_in) and CASEAgree::WELL_FORMED_AUTOMATION_REQUEST(filter_in) then
+			if event(filter_in) and WELL_FORMED_AUTOMATION_REQUEST(filter_in) then
 			   event(filter_out_UXAS) and
 			   event(filter_out_MON_REQ) and
 			   (filter_out_UXAS = filter_in) and
@@ -355,6 +354,9 @@ public
             Period => 500ms;
             Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
+		annex agree {**
+		  guarantee "UXAS is untrusted" : true; 
+		**};
     end UxAS_thr;
 
     thread implementation UxAS_thr.Impl
@@ -518,7 +520,7 @@ public
 			Stack_Size => CM_Property_Set::Stack_Size;
 		annex agree {**
 			guarantee Req_Filter_ARes "Well-formed Automation Response message" :
-			if (event(filter_in) and CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(filter_in)) then
+			if (event(filter_in) and WELL_FORMED_AUTOMATION_RESPONSE(filter_in)) then
 			   (event(filter_out) and (filter_out = filter_in))
 			               else not(event (filter_out));
 		**};
@@ -619,9 +621,9 @@ public
                                     
 			eq Policy : bool = 
                   event(observed) =>
-                  (CASEAgree::WAYPOINTS_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_in_zones)
-                  and CASEAgree::WAYPOINTS_NOT_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_out_zones)
-                  and not (CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(observed))));
+                  (WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(observed), keep_in_zones)
+                  and WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(observed), keep_out_zones)
+                  and not (DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(observed))));
                         
             guarantee GeofenceMonitor_alert 
              "alert trace property. To be proved by SPLAT" :
@@ -635,14 +637,6 @@ public
                         (event(output) and (output = observed))
                      else
                         not (event(output));
-                				
--- EGM: Cong added this contract, but it is not needed for the AGREE analysis on 
--- "Verify Single Layer", though if removed, then MON_GEO is not part of the obligations 
--- in the top-lovel contract guarantees proof
-           assume Req_WellFormed_Monitor_AResp_In "Messages that are not well formed should be filtered out" : 
-                event(observed) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(observed);
-           guarantee Req_WellFormed_Monitor_AResp "Messages that are not well formed should be filtered out" : 
-                event(output) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(output);
 	**};
 	end CASE_Monitor_Geo_thr;
 
@@ -694,13 +688,11 @@ public
 			Stack_Size => CM_Property_Set::Stack_Size;
         annex agree {**
             assume Req_WPM_Good_Automation_Response "The Waypoint Manager shall receive valid automation response" :
-                event(AutomationResponse) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(AutomationResponse);
+                event(AutomationResponse) => WELL_FORMED_AUTOMATION_RESPONSE(AutomationResponse);
             assume Req_WPM_Good_AirVehicle_State "The Waypoint Manager shall receive well-formed air vehicle state messages" :
-                event(AirVehicleState) => CASEAgree::WELL_FORMED_AIR_VEHICLE_STATE(AirVehicleState);    
-	    assume Req002_WPM "The set of waypoints received will not have duplicates in them" :
-                event(AutomationResponse) => not CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(AutomationResponse));	
+                event(AirVehicleState) => WELL_FORMED_AIR_VEHICLE_STATE(AirVehicleState);
             guarantee Req_WPM_Good_Mission_Command "The Waypoint Manager shall output valid mission commands" : 
-                event(MissionCommand) => CASEAgree::WELL_FORMED_MISSION_COMMAND(MissionCommand);          
+                event(MissionCommand) => WELL_FORMED_MISSION_COMMAND(MissionCommand);          
         **};			
     end WaypointPlanManagerService_thr;
 
@@ -792,10 +784,10 @@ public
 			uart_recv: in event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
 			uart_send: out event data port CASE_Model_Transformations::CASE_UART_Msg.Impl;
 		annex agree {**        
-		    assume "The radio receives well-formed messages" : event(radio_recv) => CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEAgree::GS_ID, CASEAgree::UAV_ID);
-            assume "The uart receives well-formed messages" : event(uart_recv) => CASEAgree::WellformedCASE_UART_Msg(uart_recv);
-            guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : event(radio_send) => CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID);
-            guarantee "The uart_send outputs only well formed CASE_UART_Msg.Impl types" : event(uart_send) => CASEAgree::WellformedCASE_UART_Msg(uart_send);	    
+		    assume "The radio receives well-formed messages" : event(radio_recv) => WellformedCASE_RF_Msg(radio_recv, GS_ID, UAV_ID);
+            assume "The uart receives well-formed messages" : event(uart_recv) => WellformedCASE_UART_Msg(uart_recv);
+            guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : event(radio_send) => WellformedCASE_RF_Msg(radio_send, UAV_ID, GS_ID);
+            guarantee "The uart_send outputs only well formed CASE_UART_Msg.Impl types" : event(uart_send) => WellformedCASE_UART_Msg(uart_send);	    
 		**};
 	end SW;
 
@@ -911,6 +903,49 @@ public
             check CASE_Tools
         **};
 
+        annex agree {**                 
+            eq trustedAutomationRequest : bool = 
+                event(UXAS.AutomationRequest) => 
+                    (     event(RADIO.AutomationRequest) 
+                      and IS_TRUSTED(AM.trusted_ids, RADIO.AutomationRequest.id)
+                      and RADIO.AutomationRequest.payload.AutomationRequest = UXAS.AutomationRequest
+                    );
+            eq trustedLineSearchTask : bool = 
+                event(UXAS.LineSearchTask) => 
+                    (     event(RADIO.LineSearchTask) 
+                      and IS_TRUSTED(AM.trusted_ids, RADIO.LineSearchTask.id)
+                      and RADIO.LineSearchTask.payload.LineSearchTask = UXAS.LineSearchTask
+                    );
+            eq trustedOperatingRegion : bool = 
+                event(UXAS.OperatingRegion) => 
+                    (     event(RADIO.OperatingRegion) 
+                      and IS_TRUSTED(AM.trusted_ids, RADIO.OperatingRegion.id)
+                      and RADIO.OperatingRegion.payload.OperatingRegion = UXAS.OperatingRegion
+                    );
+            lemma "UXAS only recieves trusted messages from the Radio" : 
+                    trustedAutomationRequest
+                and trustedLineSearchTask
+                and trustedOperatingRegion;
+           
+            eq wellFormedAutomationRequest : bool =
+                event(UXAS.AutomationRequest) =>
+                    WELL_FORMED_AUTOMATION_REQUEST(UXAS.AutomationRequest); 
+            eq wellFormedLineSearchTask : bool =
+                event(UXAS.LineSearchTask) =>
+                    WELL_FORMED_LINE_SEARCH_TASK(UXAS.LineSearchTask);
+            eq wellFormedOperatingRegion : bool = 
+                event(UXAS.OperatingRegion) =>
+                    WELL_FORMED_OPERATING_REGION(UXAS.OperatingRegion);
+            eq wellFormedAirVehicleState : bool =
+                event(UXAS.AirVehicleState) =>
+                    WELL_FORMED_AIR_VEHICLE_STATE(UXAS.AirVehicleState);
+            lemma "UXAS only receives well-formed messages from the Radio and UART" :
+                    wellFormedAutomationRequest
+                and wellFormedLineSearchTask
+                and wellFormedOperatingRegion
+                and wellFormedAirVehicleState;
+        **};
+        
 	end SW.Impl;
     
 end SW;
