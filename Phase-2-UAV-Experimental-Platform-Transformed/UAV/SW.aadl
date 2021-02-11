@@ -576,7 +576,9 @@ public
 	annex agree {**
 		guarantee "Keep in zones do not change" : true -> keep_in_zones = pre(keep_in_zones);
 		guarantee "Keep out zones do not change" : true -> keep_out_zones = pre(keep_out_zones);
-	**};
+		guarantee "Keep in zones are well-formed" : WELL_FORMED_ZONES(keep_in_zones);
+		guarantee "keep oun zones are well-formed" : WELL_FORMED_ZONES(keep_out_zones);
+    **};
 	end FlyZonesDatabase_thr;
 
 	thread implementation FlyZonesDatabase_thr.Impl
@@ -856,20 +858,28 @@ public
                      trustedAutomationRequest
                 and trustedLineSearchTask
                 and trustedOperatingRegion;
-            
-            ---------
-            -- WPM --
-            ---------
+
+            ---------------
+            -- Fly Zones --
+            ---------------
             eq keep_in_zones : CMASI::Polygon.i;
             eq keep_out_zones: CMASI::Polygon.i;
             
+            guarantee "Keep in zones are well-formed" :
+                WELL_FORMED_ZONES(keep_in_zones);
+            guarantee "Keep out zones are well-formed" :
+                WELL_FORMED_ZONES(keep_out_zones);
+
+            ---------
+            -- WPM --
+            ---------
             eq WPM_EventAutomationResponse : bool;
             eq WPM_AutomationResponse : CMASI::AutomationResponse.i;
             
-            eq obeysKeepInZone : bool = 
+            eq obeysKeepInZones : bool =
                 WPM_EventAutomationResponse =>
                     WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(WPM_AutomationResponse), keep_in_zones);
-            eq obeysKeepOutZone : bool = 
+            eq obeysKeepOutZones : bool =
                 WPM_EventAutomationResponse =>
                     WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(WPM_AutomationResponse), keep_out_zones);
             eq noDuplicates : bool =
@@ -877,8 +887,8 @@ public
                     not (DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(WPM_AutomationResponse)));
            
             guarantee "WPM only receives AutomationResponse messages with fenced and no-duplicate waypoint mission plans" :
-                    obeysKeepInZone
-                and obeysKeepOutZone
+                    obeysKeepInZones
+                and obeysKeepOutZones
                 and noDuplicates;
 		**};
 	end SW;
@@ -1017,19 +1027,28 @@ public
             assign RADIO_LineSearchTask = RADIO.LineSearchTask;
             assign RADIO_OperatingRegion = RADIO.OperatingRegion;
             
+            ---------------
+            -- Fly Zones --
+            ---------------
+            assign keep_in_zones = FlyZones.keep_in_zones;
+            assign keep_out_zones = FlyZones.keep_out_zones;
+
             ---------
             -- WPM --
             --------- 
-            assign keep_in_zones = FlyZones.keep_in_zones;
-            assign keep_out_zones = FlyZones.keep_out_zones;
             assign WPM_EventAutomationResponse = event(WPM.AutomationResponse);
             assign WPM_AutomationResponse = WPM.AutomationResponse;
             
-            ----------------------------------------
-            -- Fenced is as string as well-formed --
-            ----------------------------------------
-            lemma "Geo-fenced implies a well-formed automation response" :
-                (obeysKeepInZone and obeysKeepOutZone) => WELL_FORMED_AUTOMATION_RESPONSE(WPM.AutomationResponse);
+            -------------------------------------------- 
+            -- Geo-fenced is as strong as well-formed --
+            --------------------------------------------
+            eq wellFormedAutomationResponse : bool =
+                event(WPM.AutomationResponse) =>
+                    WELL_FORMED_AUTOMATION_RESPONSE(WPM.AutomationResponse);
+
+            lemma "Geo-fenced implies well-formed automation response" :
+                (obeysKeepInZones and obeysKeepOutZones) =>
+                    (wellFormedAutomationResponse);
         **};
         
 	end SW.Impl;
@@ -1134,78 +1153,39 @@ public
             check CASE_Tools
         **};
 
-        annex agree {**                 
---            eq trustedAutomationRequest : bool = 
---                event(UXAS.AutomationRequest) => 
---                    (     event(RADIO.AutomationRequest) 
---                      and IS_TRUSTED(AM.trusted_ids, RADIO.AutomationRequest.id)
---                      and RADIO.AutomationRequest.payload.AutomationRequest = UXAS.AutomationRequest
---                    );
---            eq trustedLineSearchTask : bool = 
---                event(UXAS.LineSearchTask) => 
---                    (     event(RADIO.LineSearchTask) 
---                      and IS_TRUSTED(AM.trusted_ids, RADIO.LineSearchTask.id)
---                      and RADIO.LineSearchTask.payload.LineSearchTask = UXAS.LineSearchTask
---                    );
---            eq trustedOperatingRegion : bool = 
---                event(UXAS.OperatingRegion) => 
---                    (     event(RADIO.OperatingRegion) 
---                      and IS_TRUSTED(AM.trusted_ids, RADIO.OperatingRegion.id)
---                      and RADIO.OperatingRegion.payload.OperatingRegion = UXAS.OperatingRegion
---                    );
---            lemma "UXAS only recieves trusted messages from the Radio" : 
---                    trustedAutomationRequest
---                and trustedLineSearchTask
---                and trustedOperatingRegion;
---           
---            eq wellFormedAutomationRequest : bool =
---                event(UXAS.AutomationRequest) =>
---                    (     event(RADIO.AutomationRequest)
---                      and WELL_FORMED_AUTOMATION_REQUEST(UXAS.AutomationRequest)  
---                    );
---            eq wellFormedLineSearchTask : bool =
---                event(UXAS.LineSearchTask) =>
---                    (     event(RADIO.LineSearchTask)
---                      and WELL_FORMED_LINE_SEARCH_TASK(UXAS.LineSearchTask)
---                    );
---            eq wellFormedOperatingRegion : bool = 
---                event(UXAS.OperatingRegion) =>
---                    (     event(RADIO.OperatingRegion)
---                      and WELL_FORMED_OPERATING_REGION(UXAS.OperatingRegion)
---                    );
---            eq wellFormedAirVehicleState : bool =
---                event(UXAS.AirVehicleState) =>
---                    (     event(FC_UART.AirVehicleState_UXAS)
---                      and WELL_FORMED_AIR_VEHICLE_STATE(UXAS.AirVehicleState)
---                    );
---            lemma "UXAS only receives well-formed messages from the Radio and UART" :
---                    wellFormedAutomationRequest
---                and wellFormedLineSearchTask
---                and wellFormedOperatingRegion
---                and wellFormedAirVehicleState;
---            
---            
---            eq keep_in_zones : CMASI::Polygon.i;
---            eq keep_out_zones: CMASI::Polygon.i;
---            eq obeysKeepInZone : bool = 
---                event(WPM.AutomationResponse) =>
---                    (     event(UXAS.AutomationResponse)
---                      and WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(WPM.AutomationResponse), keep_in_zones)
---                    );
---            eq obeysKeepOutZone : bool = 
---                event(WPM.AutomationResponse) =>
---                    (     event(UXAS.AutomationResponse)
---                      and WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(WPM.AutomationResponse), keep_out_zones)
---                    );
---            eq noDuplicates : bool =
---                event(WPM.AutomationResponse) =>
---                    (     event(UXAS.AutomationResponse)
---                      and not (DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(WPM.AutomationResponse)))
---                    );
---            lemma "WPM only receives AutomationResponses that observe the keep-in zone, the keep-out zone, and have no duplicates" :
---                    obeysKeepInZone
---                and obeysKeepOutZone
---                and noDuplicates;
+        annex agree {**
+
+            ----------
+            -- UXAS --
+            ----------
+            assign UXAS_EventAutomationRequest = event(UXAS.AutomationRequest);
+            assign UXAS_AutomationRequest = UXAS.AutomationRequest;
+
+            assign UXAS_EventLineSearchTask = event(UXAS.LineSearchTask);
+            assign UXAS_LineSearchTask = UXAS.LineSearchTask;
+
+            assign UXAS_EventOperatingRegion = event(UXAS.OperatingRegion);
+            assign UXAS_OperatingRegion = UXAS.OperatingRegion;
+
+            assign UXAS_EventAirVehicleState = event(UXAS.AirVehicleState);
+            assign UXAS_AirVehicleState = UXAS.AirVehicleState;
+
+            assign trusted_ids = AM.trusted_ids;
+            assign RADIO_AutomationRequest = RADIO.AutomationRequest;
+            assign RADIO_LineSearchTask = RADIO.LineSearchTask;
+            assign RADIO_OperatingRegion = RADIO.OperatingRegion;
+
+            ---------------
+            -- Fly Zones --
+            ---------------
+            assert WELL_FORMED_ZONES(keep_in_zones);
+            assert WELL_FORMED_ZONES(keep_out_zones);
+
+            ---------
+            -- WPM --
+            ---------
+            assign WPM_EventAutomationResponse = event(WPM.AutomationResponse);
+            assign WPM_AutomationResponse = WPM.AutomationResponse;
         **};
         
     end SW.NO_MON_GEO_Impl;

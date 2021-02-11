@@ -77,12 +77,15 @@ annex agree {**
    fun WELL_FORMED_AUTOMATION_RESPONSE(msg : CMASI::AutomationResponse.i) : bool =
         forall cmd in msg.MissionCommandList,
         forall waypoint in cmd.WaypointList,
-  WELL_FORMED_WAYPOINT(waypoint);
+        WELL_FORMED_WAYPOINT(waypoint);
 
     fun WELL_FORMED_POINT(point : CMASI::Location3D.i) : bool =
         point.Latitude >= LATITUDE_MIN and point.Latitude <= LATITUDE_MAX and
         point.Longitude >= LONGITUDE_MIN and point.Longitude <= LONGITUDE_MAX and
         point.Altitude >= ALTITUDE_MIN and point.Altitude <= ALTITUDE_MAX;
+
+    fun WELL_FORMED_ZONES(zone : CMASI::Polygon.i) : bool =
+        (forall point in zone.BoundaryPointsList, WELL_FORMED_POINT(point));
 
     fun WELL_FORMED_VIEWANGLE(viewangle : CMASI::Wedge.i) : bool =
         viewangle.AzimuthCenterline >= AZIMUTH_CENTERLINE_MIN and
@@ -113,7 +116,8 @@ annex agree {**
         and (waypoint.Latitude <= (zone.BoundaryPointsList[1]).Latitude)
         and (waypoint.Longitude >= (zone.BoundaryPointsList[0]).Longitude)
         and (waypoint.Longitude <= (zone.BoundaryPointsList[1]).Longitude)
-        and (waypoint.Altitude >= (zone.BoundaryPointsList[0]).Altitude);
+        and (waypoint.Altitude >= (zone.BoundaryPointsList[0]).Altitude)
+        and (waypoint.Altitude <= (zone.BoundaryPointsList[1]).Altitude);
 
     fun DUPLICATES_IN_MISSION(mission : CMASI::MissionCommand.i) : bool =
         exists waypoint in mission.WaypointList,

@@ -893,7 +893,7 @@ public
 	    properties
             Data_Model::Data_Representation => Array;
             Data_Model::Base_Type => (classifier (Waypoint.i));
-            Data_Model::Dimension => (10); -- EGM: made small for AGREE     
+            Data_Model::Dimension => (3); -- EGM: made small for AGREE
 	end WaypointArray;
 	
 	data MissionCommand extends VehicleActionCommand	
