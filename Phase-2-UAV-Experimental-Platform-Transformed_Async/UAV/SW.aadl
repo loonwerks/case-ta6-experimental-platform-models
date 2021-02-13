@@ -413,8 +413,8 @@ public
 						   (event(filter_out) and (filter_out = filter_in))
 						               else not(event (filter_out))
 	               );
---			guarantee Req_WellFormed_Monitor_AResp "Messages that are not well formed should be filtered out" : 
---				(event(filter_out) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(filter_out));						               
+			guarantee Req_WellFormed_Filter_AResp "Messages that are not well formed should be filtered out" : 
+				Complete => (event(filter_out) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(filter_out));						               
 		**};
 	end CASE_Filter_ARes_thr;
 
@@ -510,6 +510,9 @@ public
 			                    else
 			                        not event(alert) and not event(output)
 				);
+			guarantee Req_WellFormed_Monitor_AResp "Messages that are not well formed should be filtered out" : 
+				Complete => (event(output) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(output));	
+				
 			-- EGM: AGREE is not able to prove MON_GEO is consistent with the below version of the contract.
 			-- This version, I think, is what Junaid originally defined -- Need to verify
 			-- Monitor guarantee (guarantees on the output ports in terms of the input ports and monitor policy)
@@ -607,43 +610,47 @@ public
 			eq UxAS_AutomationResponse_Event : bool;
 			eq Radio_recv_data : CASE_Model_Transformations::CASE_RF_Msg.Impl;
 			eq Radio_recv_event : bool;
+			
+			-- The schedule is based on the SEL4 domain schedule defined in "UAV/behavior_code/kernel/domain_schedule.c".
+			-- Frame repeated counts from 0 to 250. Each frame represent 2ms in time.
+			-- Note UART thread is moved to the end of the schedule due to Jkind performance issue
+			const PERIOD :	 int = 250;			
 			eq Frame : int = CASEAsyncAgree::Counter(0, 1, prev(Frame = PERIOD, false));
-			assume "schedule from UAV/behavior_code/kernel/domain_schedule.c" :
+			assume "SEL4 domain schedule" :
 				Radio_Dispatch = (Frame = 60) and
 				Radio_Complete = (Frame = 70) and
-				UART_Dispatch = (Frame = 79) and
-				UART_Complete = (Frame = 82) and
-				AttestationManager_Dispatch = (Frame = 91) and
-				AttestationManager_Complete = (Frame = 92) and
-				AttestationGate_Dispatch = (Frame = 101) and
-				AttestationGate_Complete = (Frame = 102) and
-				FLT_AReq_Dispatch = (Frame = 111) and
-				FLT_AReq_Complete = (Frame = 112) and
-				FLT_LST_Dispatch = (Frame = 121) and 
-				FLT_LST_Complete = (Frame = 122) and 
-				FLT_OR_Dispatch = (Frame = 131) and
-				FLT_OR_Complete = (Frame = 132) and
-				UxAS_Dispatch = (Frame = 141) and
-				UxAS_Complete = (Frame = 191) and
-				FlyZones_Dispatch = (Frame = 200) and
-				FlyZones_Complete = (Frame = 201) and
-				MON_REQ_Dispatch = (Frame = 210) and
-				MON_REQ_Complete = (Frame = 211) and
-				FLT_ARes_Dispatch  = (Frame = 220) and   	
-				FLT_ARes_Complete  = (Frame = 221) and   	
-				MON_GEO_Dispatch = (Frame = 230) and
-				MON_GEO_Complete = (Frame = 231) and
-				WaypointManager_Dispatch = (Frame = 240) and			        	  	
-				WaypointManager_Complete = (Frame = 250);
-				const PERIOD :	 int = 250;
+				AttestationManager_Dispatch = (Frame = 79) and
+				AttestationManager_Complete = (Frame = 80) and
+				AttestationGate_Dispatch = (Frame = 89) and
+				AttestationGate_Complete = (Frame = 90) and
+				FLT_AReq_Dispatch = (Frame = 99) and
+				FLT_AReq_Complete = (Frame = 100) and
+				FLT_LST_Dispatch = (Frame = 109) and 
+				FLT_LST_Complete = (Frame = 110) and 
+				FLT_OR_Dispatch = (Frame = 119) and
+				FLT_OR_Complete = (Frame = 120) and
+				UxAS_Dispatch = (Frame = 129) and
+				UxAS_Complete = (Frame = 179) and
+				FlyZones_Dispatch = (Frame = 188) and
+				FlyZones_Complete = (Frame = 189) and
+				MON_REQ_Dispatch = (Frame = 198) and
+				MON_REQ_Complete = (Frame = 199) and
+				FLT_ARes_Dispatch  = (Frame = 208) and   	
+				FLT_ARes_Complete  = (Frame = 209) and   	
+				MON_GEO_Dispatch = (Frame = 218) and
+				MON_GEO_Complete = (Frame = 219) and
+				WaypointManager_Dispatch = (Frame = 228) and			        	  	
+				WaypointManager_Complete = (Frame = 238) and
+				UART_Dispatch = (Frame = 247) and
+				UART_Complete = (Frame = 250);
 
---			Radio and UART input messages are sporadic and may arrive at any time. Radio and UART threads are periodic.
---			We assume the message could arrive at most once per cycle, and the input arrival time equals consumer thread dispatch time
---			to simplify the model of event/data latching and consumption inside AGREE Annex.   
+--			Radio and UART messages are external inputs to SW. They are sporadic and may arrive at any time. Radio and UART threads are periodic.
+--			We assume the messages arrive only when the consumer thread is activated to simplify the modelling.  
 			assume Sem_Radio_Event_Hold "Radio event should be latched" : 
 				event(radio_recv) => Radio_Dispatch;
 			assume Sem_UART_Event_Hold "UART event should be latched" : 
 				event(uart_recv) => UART_Dispatch;
+				
 			assume "The radio receives well-formed messages" : event(radio_recv) => CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEAgree::GS_ID, CASEAgree::UAV_ID);
 			assume "The uart receives well-formed messages" : event(uart_recv) => CASEAgree::WellformedCASE_UART_Msg(uart_recv);
 			guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : event(radio_send) => CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID);
