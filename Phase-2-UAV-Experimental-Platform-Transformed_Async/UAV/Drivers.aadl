@@ -49,23 +49,22 @@ public
 			eq Complete: bool;
 			-- 	AADL/HAMR Semantics
 			guarantee Sem_UART_Output_Event_Hold_AirVehicleState_WPM "Output event should hold till next Complete" : 
-							not Complete => (event(AirVehicleState_WPM) = prev(event(AirVehicleState_WPM), false));
+				not Complete => (event(AirVehicleState_WPM) = prev(event(AirVehicleState_WPM), false));
 			guarantee Sem_UART_Output_Data_Hold_AirVehicleState_WPM "Output data should hold till next Complete" : 
-							not Complete => (true -> (AirVehicleState_WPM = pre(AirVehicleState_WPM)));
+				not Complete => (true -> (AirVehicleState_WPM = pre(AirVehicleState_WPM)));
 			guarantee Sem_UART_Output_Event_Hold_send_data "Output event should hold till next Complete" : 
-							not Complete => (event(send_data) = prev(event(send_data), false));
+				not Complete => (event(send_data) = prev(event(send_data), false));
 			guarantee Sem_UART_Output_Data_Hold_send_data "Output data should hold till next Complete" : 
-							not Complete => (true -> (send_data = pre(send_data)));
+				not Complete => (true -> (send_data = pre(send_data)));
 			-- Security Requirements													
 			assume Req001_UARTDriver "Assumes recv_data only gets well formed CASE_UART_Msg.Impl types" : 
-			                Dispatch => (event(recv_data) => CASEAgree::WellformedCASE_UART_Msg(recv_data));
+			  	Dispatch => (event(recv_data) => CASEAgree::WellformedCASE_UART_Msg(recv_data));
 			assume Req002_UARTDriver "The UART shall receive valid mission commands" :
---				Dispatch => (event(MissionCommand) => CASEAgree::WELL_FORMED_MISSION_COMMAND(MissionCommand));
-				(event(MissionCommand) => CASEAgree::WELL_FORMED_MISSION_COMMAND(MissionCommand));
+				Dispatch => (event(MissionCommand) => CASEAgree::WELL_FORMED_MISSION_COMMAND(MissionCommand));
 			guarantee Req003_UARTDRiver "The send_data outputs only well formed CASE_UART_Msg.Impl types" : 
-			                Complete => (event(send_data) => CASEAgree::WellformedCASE_UART_Msg(send_data));
+			    	Complete => (event(send_data) => CASEAgree::WellformedCASE_UART_Msg(send_data));
 			guarantee Req004_UARTDriver "The UART shall send well-formed air vehicle state messages" : 
-			                Complete => (event(AirVehicleState_WPM) => CASEAgree::WELL_FORMED_AIR_VEHICLE_STATE(AirVehicleState_WPM));
+			      	Complete => (event(AirVehicleState_WPM) => CASEAgree::WELL_FORMED_AIR_VEHICLE_STATE(AirVehicleState_WPM));
 		**};
 	end UARTDriver;
 
