@@ -71,9 +71,6 @@ annex agree {**
         (forall point in msg.PointList, WELL_FORMED_POINT(point)) and
         (forall viewangle in msg.ViewAngleList, WELL_FORMED_VIEWANGLE(viewangle));
 
---   fun WELL_FORMED_AUTOMATION_RESPONSE(msg : CMASI::AutomationResponse.i) : bool =
---     WELL_FORMED_WAYPOINT(msg.MissionCommandList[0].WaypointList[0]);
-
    fun WELL_FORMED_AUTOMATION_RESPONSE(msg : CMASI::AutomationResponse.i) : bool =
         forall cmd in msg.MissionCommandList,
         forall waypoint in cmd.WaypointList,
@@ -148,8 +145,15 @@ annex agree {**
         (forall i in indices(lop.value), lop.value[i] = rop.value[i]);
     
     fun IS_TRUSTED(ids : CMASI::AddressArray.i, srcid : CMASI::Address.i) : bool = 
-        (exists id in ids.value, IS_EQUAL(srcid, id));    
-**};
+        (exists id in ids.value, IS_EQUAL(srcid, id));
 
+    fun IS_SUBSET_OF_LOCATIONS(lop : PointListArray, rop : CMASI::MissionCommand.i) : bool =
+        (forall i in lop, (exists j in rop.WaypointList, IS_EQUAL_LOCATION(i, j)));
 
+    fun IS_EQUAL_LOCATION(lop : CMASI::Location3D.i, rop : CMASI::Waypoint.i) : bool =
+        (     lop.Latitude = rop.Latitude
+          and lop.Longitude = rop.Longitude
+          and lop.Altitude = rop.Altitude
+        );
+    **};
 end CASEAgree;

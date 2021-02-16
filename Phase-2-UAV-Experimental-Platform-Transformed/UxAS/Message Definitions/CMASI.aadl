@@ -746,7 +746,7 @@ public
 				Data_Model::Base_Type => (classifier (Location3D.i));
 				--Data_Model::Dimension => (1024);
 				-- https://github.com/loonwerks/AGREE/issues/52
-				Data_Model::Dimension => (10);
+				Data_Model::Dimension => (3); -- EGM: made small for AGREE analysis
     end PointListArray;
     
     data WedgeArray
