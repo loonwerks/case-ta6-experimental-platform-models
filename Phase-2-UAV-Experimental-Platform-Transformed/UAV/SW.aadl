@@ -820,34 +820,26 @@ public
             guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : event(radio_send) => WellformedCASE_RF_Msg(radio_send, UAV_ID, GS_ID);
             guarantee "The uart_send outputs only well formed CASE_UART_Msg.Impl types" : event(uart_send) => WellformedCASE_UART_Msg(uart_send);
             
-            ------------------------------------
-            -- UXAS reveives trusted messages --
-            ------------------------------------
-            eq trustedAutomationRequest : bool;
-            eq trustedLineSearchTask : bool;
-            eq trustedOperatingRegion : bool;
-            guarantee "UXAS only receives trusted messages" :
-                     trustedAutomationRequest
-                and trustedLineSearchTask
-                and trustedOperatingRegion;
+            -------------------------------------------------
+            -- The system only responds to trusted sources --
+            -------------------------------------------------
+            eq trustedSourcesOnly : bool;
+            guarantee "The system only responds to trusted sources" :
+                trustedSourcesOnly;
 
-            -------------------------------------------------------------------
-            -- WPM reveives geo-fenced and no-duplicate automation responses --
-            -------------------------------------------------------------------
-            eq obeysKeepInZones : bool;
-            eq obeysKeepOutZones : bool;
-            eq noDuplicates : bool;
-            guarantee "WPM only recieves responses with fenced and no-duplicate waypoint mission plans" :
-                    obeysKeepInZones
-                and obeysKeepOutZones
-                and noDuplicates;
+            --------------------------------------------
+            -- The uart_send waypoints are geo-fenced --
+            --------------------------------------------
+            eq geoFenced : bool;
+            guarantee "The uart_send waypoints are geo-fenced" :
+               geoFenced;
 
-            --------------------------------------------------------------------
-            -- WPM receives messages with waypoints from the line search task --
-            --------------------------------------------------------------------
-            eq waypointsFromLineSearchTask : bool;
-            guarantee "WPM only receives responses with waypoints from the line search task" :
-                waypointsFromLineSearchTask;
+            -----------------------------------------------------------
+            -- The uart_send waypoints correspond to the line search --
+            -----------------------------------------------------------
+            eq waypointsFromLineSearch : bool;
+            guarantee "The uart_send waypoints correspond to the line search" :
+                waypointsFromLineSearch;
  		**};
 	end SW;
 
@@ -964,49 +956,59 @@ public
         **};
 
         annex agree {**
-            ------------------------------------
-            -- UXAS reveives trusted messages --
-            ------------------------------------
+            -------------------------------------------------
+            -- The system only responds to trusted sources --
+            -------------------------------------------------
             eq trusted_ids : CMASI::AddressArray.i = AM.trusted_ids;
-            assign trustedAutomationRequest =
+            eq trustedAutomationRequest : bool =
                 (event(UXAS.AutomationRequest) =>
                     (     IS_TRUSTED(trusted_ids, RADIO.AutomationRequest.id)
                       and RADIO.AutomationRequest.payload.AutomationRequest = UXAS.AutomationRequest
                     ));
-            assign trustedLineSearchTask =
+            eq trustedLineSearchTask : bool =
                 (event(UXAS.LineSearchTask) =>
                     (     IS_TRUSTED(trusted_ids, RADIO.LineSearchTask.id)
                       and RADIO.LineSearchTask.payload.LineSearchTask = UXAS.LineSearchTask
                     ));
-            assign trustedOperatingRegion =
+            eq trustedOperatingRegion : bool =
                 (event(UXAS.OperatingRegion) =>
                     (     IS_TRUSTED(trusted_ids, RADIO.OperatingRegion.id)
                       and RADIO.OperatingRegion.payload.OperatingRegion = UXAS.OperatingRegion
                     ));
+            assign trustedSourcesOnly =
+                (     trustedAutomationRequest
+                  and trustedLineSearchTask
+                  and trustedOperatingRegion
+                );
 
-            -------------------------------------------------------------------
-            -- WPM reveives geo-fenced and no-duplicate automation responses --
-            -------------------------------------------------------------------
+            --------------------------------------------
+            -- The uart_send waypoints are geo-fenced --
+            --------------------------------------------
             eq keep_in_zones : CMASI::Polygon.i = FlyZones.keep_in_zones;
             eq keep_out_zones: CMASI::Polygon.i = FlyZones.keep_out_zones;
             
-            assign obeysKeepInZones =
+            eq obeysKeepInZones : bool =
                 (event(WPM.AutomationResponse) =>
                     WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(WPM.AutomationResponse), keep_in_zones)
                 );
-            assign obeysKeepOutZones =
+            eq obeysKeepOutZones : bool =
                 (event(WPM.AutomationResponse) =>
                     WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(WPM.AutomationResponse), keep_out_zones)
                 );
-            assign noDuplicates =
+            eq noDuplicates : bool =
                 (event(WPM.AutomationResponse) =>
                     not (DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(WPM.AutomationResponse)))
                 );
+            assign geoFenced = 
+                (     obeysKeepInZones
+                  and obeysKeepOutZones
+                  and noDuplicates
+                );
 
-            --------------------------------------------------------------------
-            -- WPM receives messages with waypoints from the line search task --
-            --------------------------------------------------------------------
-            assign waypointsFromLineSearchTask =
+            -----------------------------------------------------------
+            -- The uart_send waypoints correspond to the line search --
+            -----------------------------------------------------------
+            assign waypointsFromLineSearch =
                 (event(WPM.AutomationResponse) =>
                     IS_SUBSET_OF_LOCATIONS(UXAS.LineSearchTask.PointList,
                         WPM.AutomationResponse.MissionCommandList[0])
@@ -1132,52 +1134,62 @@ public
         **};
 
         annex agree {**
-            ------------------------------------
-            -- UXAS reveives trusted messages --
-            ------------------------------------
+            -------------------------------------------------
+            -- The system only responds to trusted sources --
+            -------------------------------------------------
             eq trusted_ids : CMASI::AddressArray.i = AM.trusted_ids;
-            assign trustedAutomationRequest =
+            eq trustedAutomationRequest : bool =
                 (event(UXAS.AutomationRequest) =>
                     (     IS_TRUSTED(trusted_ids, RADIO.AutomationRequest.id)
                       and RADIO.AutomationRequest.payload.AutomationRequest = UXAS.AutomationRequest
                     ));
-            assign trustedLineSearchTask =
+            eq trustedLineSearchTask : bool =
                 (event(UXAS.LineSearchTask) =>
                     (     IS_TRUSTED(trusted_ids, RADIO.LineSearchTask.id)
                       and RADIO.LineSearchTask.payload.LineSearchTask = UXAS.LineSearchTask
                     ));
-            assign trustedOperatingRegion =
+            eq trustedOperatingRegion : bool =
                 (event(UXAS.OperatingRegion) =>
                     (     IS_TRUSTED(trusted_ids, RADIO.OperatingRegion.id)
                       and RADIO.OperatingRegion.payload.OperatingRegion = UXAS.OperatingRegion
                     ));
+            assign trustedSourcesOnly =
+                (     trustedAutomationRequest
+                  and trustedLineSearchTask
+                  and trustedOperatingRegion
+                );
 
-            -------------------------------------------------------------------
-            -- WPM reveives geo-fenced and no-duplicate automation responses --
-            -------------------------------------------------------------------
+            --------------------------------------------
+            -- The uart_send waypoints are geo-fenced --
+            --------------------------------------------
             eq keep_in_zones : CMASI::Polygon.i;
             assert(WELL_FORMED_ZONES(keep_in_zones));
             eq keep_out_zones: CMASI::Polygon.i;
             assert(WELL_FORMED_ZONES(keep_out_zones));
             assert(event(WPM.ReturnHome) = false);
-
-            assign obeysKeepInZones =
+            
+            eq obeysKeepInZones : bool =
                 (event(WPM.AutomationResponse) =>
                     WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(WPM.AutomationResponse), keep_in_zones)
                 );
-            assign obeysKeepOutZones =
+            eq obeysKeepOutZones : bool =
                 (event(WPM.AutomationResponse) =>
                     WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(WPM.AutomationResponse), keep_out_zones)
                 );
-            assign noDuplicates =
+            eq noDuplicates : bool =
                 (event(WPM.AutomationResponse) =>
                     not (DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(WPM.AutomationResponse)))
                 );
+            assign geoFenced = 
+                (     obeysKeepInZones
+                  and obeysKeepOutZones
+                  and noDuplicates
+                );
 
-            --------------------------------------------------------------------
-            -- WPM receives messages with waypoints from the line search task --
-            --------------------------------------------------------------------
-            assign waypointsFromLineSearchTask =
+            -----------------------------------------------------------
+            -- The uart_send waypoints correspond to the line search --
+            -----------------------------------------------------------
+            assign waypointsFromLineSearch =
                 (event(WPM.AutomationResponse) =>
                     IS_SUBSET_OF_LOCATIONS(UXAS.LineSearchTask.PointList,
                         WPM.AutomationResponse.MissionCommandList[0])
