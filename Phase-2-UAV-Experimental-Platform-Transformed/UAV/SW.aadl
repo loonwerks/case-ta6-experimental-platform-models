@@ -714,6 +714,10 @@ public
             Compute_Execution_Time => 2ms .. 2ms;
 			Stack_Size => CM_Property_Set::Stack_Size;
         annex agree {**
+            assume Req_WPM_Mutex "The Waypoint Manager return home and automation response are mutually exclusive" :
+                (     (event(ReturnHome) => not event(AutomationResponse))
+                  and (event(AutomationResponse) => not event(ReturnHome))
+                );
             assume Req_WPM_Good_Automation_Response "The Waypoint Manager shall receive valid automation responses" :
                 event(AutomationResponse) => WELL_FORMED_AUTOMATION_RESPONSE(AutomationResponse);
             assume Req_WPM_Good_AirVehicle_State "The Waypoint Manager shall receive well-formed air vehicle states" :
@@ -1017,7 +1021,6 @@ public
             eq UxasObeysKeepOutZones : bool =
                 (event(UXAS.AutomationResponse) =>
                     WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(UXAS.AutomationResponse), keep_out_zones));
-
             eq UxasWellFormedAutomationResponse : bool =
                 event(UXAS.AutomationResponse) =>
                     WELL_FORMED_AUTOMATION_RESPONSE(UXAS.AutomationResponse);
@@ -1130,7 +1133,7 @@ public
 
         annex agree {**
             ------------------------------------
-            -- UXAS Reveives Trusted Messages --
+            -- UXAS reveives trusted messages --
             ------------------------------------
             eq trusted_ids : CMASI::AddressArray.i = AM.trusted_ids;
             assign trustedAutomationRequest =
@@ -1149,25 +1152,36 @@ public
                       and RADIO.OperatingRegion.payload.OperatingRegion = UXAS.OperatingRegion
                     ));
 
-            --------------------------------------------------------------------------
-            -- WPM Reveives Geo-fenced and No-duplicate AutomationResponse Messages --
-            --------------------------------------------------------------------------
+            -------------------------------------------------------------------
+            -- WPM reveives geo-fenced and no-duplicate automation responses --
+            -------------------------------------------------------------------
             eq keep_in_zones : CMASI::Polygon.i;
             assert(WELL_FORMED_ZONES(keep_in_zones));
             eq keep_out_zones: CMASI::Polygon.i;
             assert(WELL_FORMED_ZONES(keep_out_zones));
+            assert(event(WPM.ReturnHome) = false);
 
             assign obeysKeepInZones =
                 (event(WPM.AutomationResponse) =>
-                    WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(WPM.AutomationResponse), keep_in_zones));
+                    WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(WPM.AutomationResponse), keep_in_zones)
+                );
             assign obeysKeepOutZones =
                 (event(WPM.AutomationResponse) =>
-                    WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(WPM.AutomationResponse), keep_out_zones));
+                    WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(WPM.AutomationResponse), keep_out_zones)
+                );
             assign noDuplicates =
                 (event(WPM.AutomationResponse) =>
-                    not (DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(WPM.AutomationResponse))));
-          **};
-        
+                    not (DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(WPM.AutomationResponse)))
+                );
+
+            --------------------------------------------------------------------
+            -- WPM receives messages with waypoints from the line search task --
+            --------------------------------------------------------------------
+            assign waypointsFromLineSearchTask =
+                (event(WPM.AutomationResponse) =>
+                    IS_SUBSET_OF_LOCATIONS(UXAS.LineSearchTask.PointList,
+                        WPM.AutomationResponse.MissionCommandList[0])
+                );
+        **};
     end SW.NO_MON_GEO_Impl;
-    
 end SW;
