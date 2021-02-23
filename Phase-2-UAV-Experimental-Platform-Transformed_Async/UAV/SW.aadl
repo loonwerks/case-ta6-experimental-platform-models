@@ -655,6 +655,19 @@ public
 			assume "The uart receives well-formed messages" : event(uart_recv) => WellformedCASE_UART_Msg(uart_recv);
 			guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : event(radio_send) => WellformedCASE_RF_Msg(radio_send, UAV_ID, GS_ID);
 			guarantee "The uart_send outputs only well formed CASE_UART_Msg.Impl types" : event(uart_send) => WellformedCASE_UART_Msg(uart_send);
+			
+	    -------------------------------------------------
+            -- The system only responds to trusted sources --
+            -------------------------------------------------
+            eq trustedSourcesOnly : bool;
+            guarantee "The system only responds to trusted sources" :
+                UxAS_Dispatch => trustedSourcesOnly;
+            --------------------------------------------
+            -- The uart_send waypoints are geo-fenced --
+            --------------------------------------------
+            eq geoFenced : bool;
+            guarantee "The uart_send waypoints are geo-fenced" :
+               WaypointManager_Complete => geoFenced;
 		**};
 	end SW;
 
