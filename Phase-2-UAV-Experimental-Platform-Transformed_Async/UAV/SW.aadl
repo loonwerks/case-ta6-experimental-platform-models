@@ -3,7 +3,7 @@ public
 	with Base_Types;
 	with Drivers;
 	with CASE_Model_Transformations;
-	with CASEAgree;
+	renames CASEAgree::all;
 	with CASE_Properties;
 	with CASE_Scheduling;
 	with CMASI;
@@ -53,9 +53,9 @@ public
 				
 			-- Security Requirements				
 			assume "The radio receives well-formed messages" : 
-				Dispatch => (event(recv_data) => CASEAgree::WellformedCASE_RF_Msg(recv_data, CASEAgree::GS_ID, CASEAgree::UAV_ID));
+				Dispatch => (event(recv_data) => WellformedCASE_RF_Msg(recv_data, GS_ID, UAV_ID));
 			guarantee Req001_SW1 "The radio_send outputs only well formed CASE_RF_Msg.Impl types" :
-				Complete => (event(send_data) => CASEAgree::WellformedCASE_RF_Msg(send_data, CASEAgree::UAV_ID, CASEAgree::GS_ID));
+				Complete => (event(send_data) => WellformedCASE_RF_Msg(send_data, UAV_ID, GS_ID));
 		**};
 	end RadioDriver_Attestation_thr;
 
@@ -181,7 +181,7 @@ public
 			-- Security Requirements				
 			guarantee Req_Filter_LST "Well-formed Line Search Task message" :
 				Complete => (			
-						if event(filter_in) and CASEAgree::WELL_FORMED_LINE_SEARCH_TASK(filter_in) then
+						if event(filter_in) and WELL_FORMED_LINE_SEARCH_TASK(filter_in) then
 						   event(filter_out) and (filter_out = filter_in)
 						else not(event(filter_out))
 				);
@@ -219,9 +219,9 @@ public
 			-- Security Requirements				
 			guarantee Req_Filter_OR "Well-formed Operating Region message" :
 				Complete => (
-						if event(filter_in) and CASEAgree::WELL_FORMED_OPERATING_REGION(filter_in) then
+						if event(filter_in) and WELL_FORMED_OPERATING_REGION(filter_in) then
 						   event(filter_out) and (filter_out = filter_in)
-						else not(event(filter_in))
+						else not(event(filter_out))
 				);
 		**};
 	end CASE_Filter_OR_thr;
@@ -263,7 +263,7 @@ public
 			-- Security Requirements				
 			guarantee Req_Filter_AReq "Well-formed Automation Request message" :
 				Complete => (			
-						if event(filter_in) and CASEAgree::WELL_FORMED_AUTOMATION_REQUEST(filter_in) then
+						if event(filter_in) and WELL_FORMED_AUTOMATION_REQUEST(filter_in) then
 						   event(filter_out_UXAS) and
 						   event(filter_out_MON_REQ) and
 						   (filter_out_UXAS = filter_in) and
@@ -351,16 +351,16 @@ public
 	                	(if event(resp) then FAIL
 						else if event (reqt) then 1 else 0)
 					else
-						if (event(reqt) and event(resp)) then
-							FAIL
-						else
-						    if not (event(reqt) or event(resp)) then
-						   		(if (pre(ticks) = 0) then 0 else Inc (pre(ticks)))
-						        else		
-						   		if event(resp) then
-						            (if (1 <= pre(ticks)) then 0 else FAIL)
-						        else
-						           (if (pre(ticks) = 0) then 1 else FAIL)
+               					if (event(reqt) and event(resp)) then
+                   					FAIL
+                				else
+                					if not (event(reqt) or event(resp)) then
+                   						(if (pre(ticks) = 0) then 0 else Inc (pre(ticks)))
+                					else
+                						if event(resp) then
+                   							(if (1 <= pre(ticks)) then 0 else FAIL)
+                						else -- rqts set ticks to 1, so rqt.rqt.resp is fine
+                   							1	
 				else prev(ticks, 0);
 						               
 			eq response_received_in_time : bool = ticks < nMonitorInvocations;
@@ -409,12 +409,12 @@ public
 			-- Security Requirements				
 			guarantee Req_Filter_ARes "Well-formed Automation Response message" :
 				Complete => (
-						if (event(filter_in) and CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(filter_in)) then
+						if (event(filter_in) and WELL_FORMED_AUTOMATION_RESPONSE(filter_in)) then
 						   (event(filter_out) and (filter_out = filter_in))
 						               else not(event (filter_out))
 	               );
 			guarantee Req_WellFormed_Filter_AResp "Messages that are not well formed should be filtered out" : 
-				Complete => (event(filter_out) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(filter_out));						               
+				Complete => (event(filter_out) => WELL_FORMED_AUTOMATION_RESPONSE(filter_out));						               
 		**};
 	end CASE_Filter_ARes_thr;
 
@@ -487,15 +487,17 @@ public
 				not Complete => (event(output) = prev(event(output), false));
 			guarantee Sem_Geo_Mon_Output_Data_Hold_output "Output data should hold till next Complete" : 
 				not Complete => (true -> (output = pre(output)));
+			guarantee Sem_Geo_Mon_Output_Event_Hold_alert "Output event should hold till next Complete" : 
+				not Complete => (event(alert) = prev(event(alert), false));
 				
 			-- a constant generated from the component property above, handy for expressing the monitor guarantee
 			const is_latched : bool = Get_Property(this, CASE_Properties::Monitor_Latched);
 			-- Monitor policy (models the expected behavior in terms of the input ports)
 			property CASE_Monitor_Coord_policy =
 				Historically(event(observed) =>
-					(CASEAgree::WAYPOINTS_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_in_zones) and
-					             CASEAgree::WAYPOINTS_NOT_IN_ZONE(CASEAgree::GET_MISSION_COMMAND(observed), keep_out_zones)
-					and not (CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(observed)))));
+					(WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(observed), keep_in_zones) and
+					             WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(observed), keep_out_zones)
+					and not (DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(observed)))));
 			-- Tutorial Version of Generated Contract
 			 guarantee Req_CASE_Monitor1 "A violation of the monitor policy shall trigger an alert, and observed input shall not be propagated." :
 				Complete => (
@@ -511,7 +513,7 @@ public
 			                        not event(alert) and not event(output)
 				);
 			guarantee Req_WellFormed_Monitor_AResp "Messages that are not well formed should be filtered out" : 
-				Complete => (event(output) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(output));	
+				Complete => (event(output) => WELL_FORMED_AUTOMATION_RESPONSE(output));	
 				
 			-- EGM: AGREE is not able to prove MON_GEO is consistent with the below version of the contract.
 			-- This version, I think, is what Junaid originally defined -- Need to verify
@@ -555,13 +557,13 @@ public
 				
 			-- Security Requirements					        		
 			assume Req_WPM_Good_Automation_Response "The Waypoint Manager shall receive valid automation response" :
-				Dispatch => (event(AutomationResponse) => CASEAgree::WELL_FORMED_AUTOMATION_RESPONSE(AutomationResponse));
+				Dispatch => (event(AutomationResponse) => WELL_FORMED_AUTOMATION_RESPONSE(AutomationResponse));
 			assume Req_WPM_Good_AirVehicle_State "The Waypoint Manager shall receive well-formed air vehicle state messages" :
-				Dispatch => (event(AirVehicleState) => CASEAgree::WELL_FORMED_AIR_VEHICLE_STATE(AirVehicleState));
+				Dispatch => (event(AirVehicleState) => WELL_FORMED_AIR_VEHICLE_STATE(AirVehicleState));
 			assume Req002_WPM "The set of waypoints received will not have duplicates in them" :
-				Dispatch => (event(AutomationResponse) => not CASEAgree::DUPLICATES_IN_MISSION(CASEAgree::GET_MISSION_COMMAND(AutomationResponse)));	
+				Dispatch => (event(AutomationResponse) => not DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(AutomationResponse)));	
 			guarantee Req_WPM_Good_Mission_Command "The Waypoint Manager shall output valid mission commands" : 
-				Complete => (event(MissionCommand) => CASEAgree::WELL_FORMED_MISSION_COMMAND(MissionCommand));
+				Complete => (event(MissionCommand) => WELL_FORMED_MISSION_COMMAND(MissionCommand));
 		**};
 	end WaypointPlanManagerService_thr;
 
@@ -611,38 +613,36 @@ public
 			eq Radio_recv_data : CASE_Model_Transformations::CASE_RF_Msg.Impl;
 			eq Radio_recv_event : bool;
 			
-			-- The schedule is based on the SEL4 domain schedule defined in "UAV/behavior_code/kernel/domain_schedule.c".
-			-- Frame repeated counts from 0 to 250. Each frame represent 2ms in time.
-			-- Note UART thread is moved to the end of the schedule due to Jkind performance issue
-			const PERIOD :	 int = 250;			
-			eq Frame : int = CASEAsyncAgree::Counter(0, 1, prev(Frame = PERIOD, false));
+			-- The schedule is based on the SEL4 domain schedule defined in "UAV/behavior_code/kernel/domain_schedule.c".			
+			const PERIOD :	 int = 95;			
+			eq Frame : int = CASEAsyncAgree::Counter(1, 1, prev(Frame = PERIOD, false));
 			assume "SEL4 domain schedule" :
-				Radio_Dispatch = (Frame = 60) and
-				Radio_Complete = (Frame = 70) and
-				AttestationManager_Dispatch = (Frame = 79) and
-				AttestationManager_Complete = (Frame = 80) and
-				AttestationGate_Dispatch = (Frame = 89) and
-				AttestationGate_Complete = (Frame = 90) and
-				FLT_AReq_Dispatch = (Frame = 99) and
-				FLT_AReq_Complete = (Frame = 100) and
-				FLT_LST_Dispatch = (Frame = 109) and 
-				FLT_LST_Complete = (Frame = 110) and 
-				FLT_OR_Dispatch = (Frame = 119) and
-				FLT_OR_Complete = (Frame = 120) and
-				UxAS_Dispatch = (Frame = 129) and
-				UxAS_Complete = (Frame = 179) and
-				FlyZones_Dispatch = (Frame = 188) and
-				FlyZones_Complete = (Frame = 189) and
-				MON_REQ_Dispatch = (Frame = 198) and
-				MON_REQ_Complete = (Frame = 199) and
-				FLT_ARes_Dispatch  = (Frame = 208) and   	
-				FLT_ARes_Complete  = (Frame = 209) and   	
-				MON_GEO_Dispatch = (Frame = 218) and
-				MON_GEO_Complete = (Frame = 219) and
-				WaypointManager_Dispatch = (Frame = 228) and			        	  	
-				WaypointManager_Complete = (Frame = 238) and
-				UART_Dispatch = (Frame = 247) and
-				UART_Complete = (Frame = 250);
+				Radio_Dispatch = (Frame = 1) and
+				Radio_Complete = (Frame = 11) and
+				AttestationManager_Dispatch = (Frame = 12) and
+				AttestationManager_Complete = (Frame = 13) and
+				AttestationGate_Dispatch = (Frame = 14) and
+				AttestationGate_Complete = (Frame = 15) and
+				FLT_AReq_Dispatch = (Frame = 16) and
+				FLT_AReq_Complete = (Frame = 17) and
+				FLT_LST_Dispatch = (Frame = 18) and 
+				FLT_LST_Complete = (Frame = 19) and 
+				FLT_OR_Dispatch = (Frame = 20) and
+				FLT_OR_Complete = (Frame = 21) and
+				UxAS_Dispatch = (Frame = 22) and
+				UxAS_Complete = (Frame = 72) and
+				FlyZones_Dispatch = (Frame = 73) and
+				FlyZones_Complete = (Frame = 74) and
+				MON_REQ_Dispatch = (Frame = 75) and
+				MON_REQ_Complete = (Frame = 76) and
+				FLT_ARes_Dispatch  = (Frame = 77) and   	
+				FLT_ARes_Complete  = (Frame = 78) and   	
+				MON_GEO_Dispatch = (Frame = 79) and
+				MON_GEO_Complete = (Frame = 80) and
+				WaypointManager_Dispatch = (Frame = 81) and	
+				WaypointManager_Complete = (Frame = 91) and						        	  	
+				UART_Dispatch = (Frame = 92) and
+				UART_Complete = (Frame = 95);		
 
 --			Radio and UART messages are external inputs to SW. They are sporadic and may arrive at any time. Radio and UART threads are periodic.
 --			We assume the messages arrive only when the consumer thread is activated to simplify the modelling.  
@@ -651,10 +651,10 @@ public
 			assume Sem_UART_Event_Hold "UART event should be latched" : 
 				event(uart_recv) => UART_Dispatch;
 				
-			assume "The radio receives well-formed messages" : event(radio_recv) => CASEAgree::WellformedCASE_RF_Msg(radio_recv, CASEAgree::GS_ID, CASEAgree::UAV_ID);
-			assume "The uart receives well-formed messages" : event(uart_recv) => CASEAgree::WellformedCASE_UART_Msg(uart_recv);
-			guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : event(radio_send) => CASEAgree::WellformedCASE_RF_Msg(radio_send, CASEAgree::UAV_ID, CASEAgree::GS_ID);
-			guarantee "The uart_send outputs only well formed CASE_UART_Msg.Impl types" : event(uart_send) => CASEAgree::WellformedCASE_UART_Msg(uart_send);
+			assume "The radio receives well-formed messages" : event(radio_recv) => WellformedCASE_RF_Msg(radio_recv, GS_ID, UAV_ID);
+			assume "The uart receives well-formed messages" : event(uart_recv) => WellformedCASE_UART_Msg(uart_recv);
+			guarantee "The radio_send outputs only well formed CASE_RF_Msg.Impl types" : event(radio_send) => WellformedCASE_RF_Msg(radio_send, UAV_ID, GS_ID);
+			guarantee "The uart_send outputs only well formed CASE_UART_Msg.Impl types" : event(uart_send) => WellformedCASE_UART_Msg(uart_send);
 		**};
 	end SW;
 
@@ -743,6 +743,55 @@ public
 			c29: port MON_GEO.alert -> WPM.ReturnHome;
 
 		annex agree {**
+           -------------------------------------------------
+            -- The system only responds to trusted sources --
+            -------------------------------------------------
+            eq trusted_ids : CMASI::AddressArray.i = AM.trusted_ids;
+            eq trustedAutomationRequest : bool =
+                (event(UXAS.AutomationRequest) =>
+                    (     IS_TRUSTED(trusted_ids, RADIO.AutomationRequest.id)
+                      and RADIO.AutomationRequest.payload.AutomationRequest = UXAS.AutomationRequest
+                    ));
+            eq trustedLineSearchTask : bool =
+                (event(UXAS.LineSearchTask) =>
+                    (     IS_TRUSTED(trusted_ids, RADIO.LineSearchTask.id)
+                      and RADIO.LineSearchTask.payload.LineSearchTask = UXAS.LineSearchTask
+                    ));
+            eq trustedOperatingRegion : bool =
+                (event(UXAS.OperatingRegion) =>
+                    (     IS_TRUSTED(trusted_ids, RADIO.OperatingRegion.id)
+                      and RADIO.OperatingRegion.payload.OperatingRegion = UXAS.OperatingRegion
+                    ));
+            assign trustedSourcesOnly =
+                (     trustedAutomationRequest
+                  and trustedLineSearchTask
+                  and trustedOperatingRegion
+                );
+
+            --------------------------------------------
+            -- The uart_send waypoints are geo-fenced --
+            --------------------------------------------
+            eq keep_in_zones : CMASI::Polygon.i = FlyZones.keep_in_zones;
+            eq keep_out_zones: CMASI::Polygon.i = FlyZones.keep_out_zones;
+            
+            eq obeysKeepInZones : bool =
+                (event(WPM.AutomationResponse) =>
+                    WAYPOINTS_IN_ZONE(GET_MISSION_COMMAND(WPM.AutomationResponse), keep_in_zones)
+                );
+            eq obeysKeepOutZones : bool =
+                (event(WPM.AutomationResponse) =>
+                    WAYPOINTS_NOT_IN_ZONE(GET_MISSION_COMMAND(WPM.AutomationResponse), keep_out_zones)
+                );
+            eq noDuplicates : bool =
+                (event(WPM.AutomationResponse) =>
+                    not (DUPLICATES_IN_MISSION(GET_MISSION_COMMAND(WPM.AutomationResponse)))
+                );
+            assign geoFenced = 
+                (     obeysKeepInZones
+                  and obeysKeepOutZones
+                  and noDuplicates
+                );
+		
 			assign Radio_Dispatch = RADIO.Dispatch;
 			assign Radio_Complete = RADIO.Complete;
 			assign UART_Dispatch = FC_UART.Dispatch;
